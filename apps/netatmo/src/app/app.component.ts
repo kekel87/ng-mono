@@ -1,11 +1,12 @@
-import { NxWelcomeComponent } from './nx-welcome.component';
-import { RouterModule } from '@angular/router';
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { NxWelcomeComponent } from './nx-welcome.component';
 
 @Component({
   standalone: true,
   imports: [NxWelcomeComponent, RouterModule],
-  selector: 'ng-mono-root',
+  selector: 'net-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
