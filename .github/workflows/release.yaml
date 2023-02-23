@@ -1,0 +1,26 @@
+name: Release
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-deploy-production:
+    runs-on: ubuntu-latest
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: nx-cache
+      # - run: npx nx affected --target=build --parallel=3
+      - run: npx nx run-many --target=build --parallel=3
+      # - run: npx nx affected --target=deploy --parallel=3
+      - run: npx nx run-many --target=deploy --parallel=3 -- --prod

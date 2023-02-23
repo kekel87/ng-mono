@@ -1,0 +1,120 @@
+name: Check and Previews
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install:
+    name: 🚧 Install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: nx-cache
+
+  lint:
+    name: 👮 Lint
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: nx-cache
+      - run: npx nx format:check --verbose
+      # - run: npx nx affected --target=lint --parallel=3
+      - run: npx nx run-many --target=lint --parallel=3
+
+  test:
+    name: ✔ Unit tests
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: nx-cache
+      # - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
+      - run: npx nx run-many --target=test --parallel=3 --ci --code-coverage
+
+  e2e:
+    name: 🐵 E2E tests
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: nx-cache
+      # - run: npx nx affected --target=build --parallel=3
+      - run: npx nx run-many --target=e2e --parallel=3
+
+  build:
+    name: 🛠️ Build
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: nx-cache
+      # - run: npx nx affected --target=build --parallel=3
+      - run: npx nx run-many --target=build --parallel=3
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+
+  deploy-previews:
+    name: 🚀 Deploy Previews
+    runs-on: ubuntu-latest
+    needs: [lint, test, e2e, build]
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: nx-cache
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      # - run: npx nx affected --target=deploy --parallel=3
+      - run: npx nx run-many --target=deploy --parallel=3
+
+  draft-release:
+    name: 📜 Draft release
+    runs-on: ubuntu-latest
+    needs: [lint, test, e2e, build]
+    permissions:
+      contents: write
+    steps:
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

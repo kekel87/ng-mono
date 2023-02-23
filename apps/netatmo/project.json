@@ -84,6 +84,12 @@
           "codeCoverage": true
         }
       }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "netlify deploy --site c4ecaf62-311b-4189-8303-fee917451d56 --dir dist/apps/netatmo"
+      }
     }
   },
   "tags": []
