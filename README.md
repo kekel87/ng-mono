@@ -25,8 +25,8 @@ npm run ng [CMD]
 **Runnning**
 
 ```bash
-npm start # netatmo default
-npm start [app-name]
+nx serve # netatmo default
+nx serve [app-name]
 ```
 
 **Code formating**

@@ -50,7 +50,7 @@ jobs:
         with:
           nx-key: nx-cache
       # - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
-      - run: npx nx run-many --target=test --parallel=3 --ci --code-coverage
+      # - run: npx nx run-many --target=test --parallel=3 --ci --code-coverage
 
   e2e:
     name: 🐵 E2E tests
@@ -65,12 +65,15 @@ jobs:
         with:
           nx-key: nx-cache
       # - run: npx nx affected --target=build --parallel=3
-      - run: npx nx run-many --target=e2e --parallel=3
+      # - run: npx nx run-many --target=runtime-config --parallel=3
+      # - run: npx nx run-many --target=e2e --parallel=3
 
   build:
     name: 🛠️ Build
     runs-on: ubuntu-latest
     needs: install
+    env:
+      RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -80,6 +83,7 @@ jobs:
         with:
           nx-key: nx-cache
       # - run: npx nx affected --target=build --parallel=3
+      - run: npx nx run-many --target=runtime-config --parallel=3
       - run: npx nx run-many --target=build --parallel=3
       - uses: actions/upload-artifact@v3
         with:

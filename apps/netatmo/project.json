@@ -85,10 +85,20 @@
         }
       }
     },
+    "runtime-config": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo $RUNTIME_CONFIG_NETATMO_JSON | base64 -d > apps/netatmo/src/assets/runtime-config.json"
+      }
+    },
     "deploy": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "netlify deploy --site c4ecaf62-311b-4189-8303-fee917451d56 --dir dist/apps/netatmo"
+        "commands": [
+          "echo '/* /index.html 200' > dist/apps/netatmo/_redirects",
+          "netlify deploy --site c4ecaf62-311b-4189-8303-fee917451d56 --dir dist/apps/netatmo"
+        ],
+        "parallel": false
       }
     }
   },
