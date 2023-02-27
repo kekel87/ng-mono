@@ -1,5 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
 import { provideOAuthClient, AuthConfig } from 'angular-oauth2-oidc';
 
@@ -32,6 +34,7 @@ async function loadConfig(): Promise<RuntimeConfig> {
           sendAccessToken: true,
         },
       }),
+      importProvidersFrom(BrowserAnimationsModule),
     ],
   }).catch((err) => console.error(err));
 })();

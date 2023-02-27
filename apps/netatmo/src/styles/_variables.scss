@@ -1,0 +1,64 @@
+@use '@angular/material' as mat;
+
+$light-primary-text: #ffffff;
+$dark-primary-text: #11151f;
+
+$primary: (
+  main: #f39611,
+  lighter: #ffae00,
+  darker: #db6114,
+  contrast: (
+    main: $dark-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
+);
+$palette-primary: mat.define-palette($primary, main, lighter, darker);
+
+$accent: (
+  main: #4078f8,
+  lighter: #c6d7fd,
+  darker: #2a5bf5,
+  contrast: (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
+);
+$palette-accent: mat.define-palette($accent, main, lighter, darker);
+
+$warn: (
+  main: #ff0000,
+  lighter: #ffb3b3,
+  darker: #ff0000,
+  contrast: (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
+);
+$palette-warn: mat.define-palette($warn, main, lighter, darker);
+
+$typography: mat.define-typography-config();
+
+$theme-light: mat.define-light-theme(
+  (
+    color: (
+      primary: $palette-primary,
+      accent: $palette-accent,
+      warn: $palette-warn,
+    ),
+    typography: $typography,
+  )
+);
+
+$theme-dark: mat.define-dark-theme(
+  (
+    color: (
+      primary: $palette-primary,
+      accent: $palette-accent,
+      warn: $palette-warn,
+    ),
+    typography: $typography,
+  )
+);

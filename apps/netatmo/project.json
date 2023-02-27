@@ -16,7 +16,10 @@
         "tsConfig": "apps/netatmo/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/netatmo/src/favicon.ico", "apps/netatmo/src/assets"],
-        "styles": ["apps/netatmo/src/styles.scss"],
+        "styles": ["apps/netatmo/src/styles/theming.scss", "apps/netatmo/src/styles/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/netatmo/src/styles"]
+        },
         "scripts": []
       },
       "configurations": {
