@@ -1,0 +1,16 @@
+export enum RoomType {
+  Bathroom = 'bathroom',
+  Bedroom = 'bedroom',
+  Corridor = 'corridor',
+  Custom = 'custom',
+  DiningRoom = 'dining_room',
+  ElectricalCabinet = 'electrical_cabinet',
+  Garage = 'garage',
+  HomeOffice = 'home_office',
+  Kitchen = 'kitchen',
+  Livingroom = 'livingroom',
+  Lobby = 'lobby',
+  Outdoor = 'outdoor',
+  Stairs = 'stairs',
+  Toilets = 'toilets',
+}
