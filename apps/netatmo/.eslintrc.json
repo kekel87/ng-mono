@@ -20,7 +20,8 @@
             "prefix": "net",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@typescript-eslint/naming-convention": 0
       }
     }
   ]

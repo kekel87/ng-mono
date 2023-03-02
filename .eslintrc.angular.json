@@ -17,10 +17,7 @@
     },
     {
       "files": ["*.html"],
-      "extends": [
-        "plugin:@nrwl/nx/angular-template",
-        "plugin:prettier/recommended"
-      ],
+      "extends": ["plugin:@nrwl/nx/angular-template", "plugin:prettier/recommended"],
       "rules": {
         "prettier/prettier": [
           "error",

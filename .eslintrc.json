@@ -60,12 +60,7 @@
         "import/order": [
           "error",
           {
-            "groups": [
-              ["external", "builtin", "type"],
-              ["internal"],
-              ["index", "parent", "sibling"],
-              ["object"]
-            ],
+            "groups": [["external", "builtin", "type"], ["internal"], ["index", "parent", "sibling"], ["object"]],
             "newlines-between": "always",
             "alphabetize": {
               "order": "asc"
