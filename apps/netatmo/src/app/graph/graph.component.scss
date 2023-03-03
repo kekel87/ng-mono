@@ -1,0 +1,10 @@
+:host {
+  height: 100%;
+  display: block;
+}
+
+div {
+  width: 100%;
+  height: calc(100% - 1px);
+  overflow: hidden;
+}
