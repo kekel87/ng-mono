@@ -10,6 +10,7 @@ import { provideOAuthClient, AuthConfig } from 'angular-oauth2-oidc';
 
 import { AppComponent } from './app/app.component';
 import { appRoutes } from './app/app.routes';
+import { layoutFeature } from './app/layout/store/layout.reducer';
 import { RuntimeConfig } from './app/shared/models/runtime-config';
 
 async function loadConfig(): Promise<RuntimeConfig> {
@@ -34,6 +35,7 @@ async function loadConfig(): Promise<RuntimeConfig> {
       provideStore(
         {
           router: routerReducer,
+          [layoutFeature.name]: layoutFeature.reducer,
         },
         { runtimeChecks: runtimeConfig.ngrx.runtimeChecks }
       ),

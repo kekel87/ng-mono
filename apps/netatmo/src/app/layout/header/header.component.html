@@ -1,0 +1,13 @@
+<header>
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <h1>Netatmo</h1>
+
+    <span class="spacer"></span>
+
+    <mat-icon *ngIf="accessToken">account_circle</mat-icon>
+  </mat-toolbar>
+</header>

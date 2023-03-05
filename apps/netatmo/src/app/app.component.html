@@ -1,16 +1,8 @@
-<mat-toolbar color="primary">
-  <h1>Netatmo</h1>
+<net-header />
 
-  <span class="spacer"></span>
+<net-sidenav>
+  <net-filter sidenav />
+  <router-outlet main></router-outlet>
+</net-sidenav>
 
-  <mat-icon *ngIf="accessToken">account_circle</mat-icon>
-</mat-toolbar>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
-
-<footer>
-  <a href="https://dev.netatmo.com/apidocumentation" target="_blank">Netatmo API</a>
-  <a href="https://echarts.apache.org/en/index.html" target="_blank">Echarts</a>
-</footer>
+<net-footer></net-footer>
