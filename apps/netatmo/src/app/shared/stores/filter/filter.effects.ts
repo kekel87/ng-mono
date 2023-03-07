@@ -7,6 +7,7 @@ import { filterActions } from './filter.actions';
 import { MeasureType } from '../../api/enums/measure-type';
 import { ModuleMesureType } from '../../models/module-measure-type';
 import { homeActions } from '../home/home.actions';
+import { measureActions } from '../measure/measure.actions';
 import { selectModulesWithMeasureType } from '../selectors';
 
 @Injectable()
@@ -25,6 +26,13 @@ export class FilterEffects {
         )
       ),
       map((moduleMeasureTypes) => filterActions.enableManyModuleMeasure({ moduleMeasureTypes }))
+    );
+  });
+
+  getMeasureOnEnableManyModuleMeasure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(filterActions.enableManyModuleMeasure),
+      map(() => measureActions.fetchMany())
     );
   });
 }

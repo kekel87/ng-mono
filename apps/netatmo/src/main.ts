@@ -17,6 +17,8 @@ import { FilterEffects } from './app/shared/stores/filter/filter.effects';
 import { filterFeature } from './app/shared/stores/filter/filter.reducer';
 import { HomeEffects } from './app/shared/stores/home/home.effects';
 import { homeFeature } from './app/shared/stores/home/home.reducer';
+import { MeasureEffects } from './app/shared/stores/measure/measure.effects';
+import { measureFeature } from './app/shared/stores/measure/measure.reducer';
 
 async function loadConfig(): Promise<RuntimeConfig> {
   const response = await fetch('/assets/runtime-config.json');
@@ -43,12 +45,13 @@ async function loadConfig(): Promise<RuntimeConfig> {
           [layoutFeature.name]: layoutFeature.reducer,
           [homeFeature.name]: homeFeature.reducer,
           [filterFeature.name]: filterFeature.reducer,
+          [measureFeature.name]: measureFeature.reducer,
         },
         { runtimeChecks: runtimeConfig.ngrx.runtimeChecks }
       ),
       provideStoreDevtools(runtimeConfig.ngrx.devtoolsOptions),
       provideRouterStore(),
-      provideEffects(HomeEffects, FilterEffects),
+      provideEffects(HomeEffects, FilterEffects, MeasureEffects),
       provideOAuthClient({
         resourceServer: {
           allowedUrls: ['https://api.netatmo.com/api'],
