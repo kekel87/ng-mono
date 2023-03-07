@@ -3,6 +3,7 @@ import { importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
+import { provideEffects } from '@ngrx/effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -12,6 +13,10 @@ import { AppComponent } from './app/app.component';
 import { appRoutes } from './app/app.routes';
 import { layoutFeature } from './app/layout/store/layout.reducer';
 import { RuntimeConfig } from './app/shared/models/runtime-config';
+import { FilterEffects } from './app/shared/stores/filter/filter.effects';
+import { filterFeature } from './app/shared/stores/filter/filter.reducer';
+import { HomeEffects } from './app/shared/stores/home/home.effects';
+import { homeFeature } from './app/shared/stores/home/home.reducer';
 
 async function loadConfig(): Promise<RuntimeConfig> {
   const response = await fetch('/assets/runtime-config.json');
@@ -36,11 +41,14 @@ async function loadConfig(): Promise<RuntimeConfig> {
         {
           router: routerReducer,
           [layoutFeature.name]: layoutFeature.reducer,
+          [homeFeature.name]: homeFeature.reducer,
+          [filterFeature.name]: filterFeature.reducer,
         },
         { runtimeChecks: runtimeConfig.ngrx.runtimeChecks }
       ),
       provideStoreDevtools(runtimeConfig.ngrx.devtoolsOptions),
       provideRouterStore(),
+      provideEffects(HomeEffects, FilterEffects),
       provideOAuthClient({
         resourceServer: {
           allowedUrls: ['https://api.netatmo.com/api'],

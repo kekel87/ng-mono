@@ -8,6 +8,6 @@ export const MEASURE_TYPE_BY_MODULE_TYPE: Record<ModuleType, MeasureType[]> = {
   [ModuleType.AnemometerModule]: [MeasureType.WindStrength],
   [ModuleType.RainGaugeModule]: [MeasureType.Rain],
   [ModuleType.ThermostatRelay]: [],
-  [ModuleType.Thermostat]: [MeasureType.SumBoilerOn, MeasureType.SumBoilerOff, MeasureType.Temperature],
+  [ModuleType.Thermostat]: [MeasureType.SumBoilerOn, MeasureType.Temperature],
   [ModuleType.Valves]: [MeasureType.Temperature],
 };

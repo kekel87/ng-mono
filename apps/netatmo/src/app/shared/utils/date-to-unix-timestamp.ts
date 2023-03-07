@@ -1,3 +1,3 @@
-export function dateToUnixTimestamp(date: Date): number {
-  return Math.floor(date.getTime() / 1000);
+export function dateToUnixTimestamp(isoStr: string): number {
+  return Math.floor(new Date(isoStr).getTime() / 1000);
 }

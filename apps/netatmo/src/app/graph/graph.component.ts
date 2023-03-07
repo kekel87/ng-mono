@@ -1,20 +1,20 @@
 import { HostListener, Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { init, ECharts } from 'echarts';
-import { Observable, forkJoin } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { MeasureType } from '../shared/api/enums/measure-type';
 import { Measure } from '../shared/api/models/measure';
-import { Room } from '../shared/api/models/room';
 import { NetatmoService } from '../shared/api/servives/netatmo.service';
-import { MEASURE_TYPE_BY_MODULE_TYPE } from '../shared/constants/measure-type-by-module-type';
-import { Interval } from '../shared/enums/interval';
+import { IntervalType } from '../shared/enums/interval-type';
 import { ModuleWithRoom } from '../shared/models/module-with-room';
+import { homeActions } from '../shared/stores/home/home.actions';
+import { selectModules } from '../shared/stores/selectors';
 import { getInterval } from '../shared/utils/date-interval';
 import { dateToUnixTimestamp } from '../shared/utils/date-to-unix-timestamp';
-import { hasRoom } from '../shared/utils/has-room';
 
-type DateSetSource = { timestamp: string; temperature: number; name: string; roomId: string };
+type DateSetSource = { timestamp: string; temperature: number; name: string; id: string };
 
 // interface RoomWithModule extends Room {
 //   modules: Module[];
@@ -31,29 +31,35 @@ export class GraphComponent implements OnInit {
   @ViewChild('chart', { static: true }) chartDiv!: ElementRef;
 
   private chart!: ECharts;
-  private interval = getInterval(Interval.Day);
+  private interval = getInterval(IntervalType.Day);
 
-  constructor(private netamoService: NetatmoService) {}
+  constructor(private netamoService: NetatmoService, private store: Store) {}
 
   ngOnInit(): void {
-    this.netamoService
-      .getHomesData()
-      .pipe(
-        map(({ body }) => body.homes[0]),
-        tap(({ rooms }) => this.initChart(rooms)),
-        switchMap(({ modules }) =>
-          forkJoin(
-            modules
-              .filter(hasRoom)
-              .filter((module) => MEASURE_TYPE_BY_MODULE_TYPE[module.type].includes(MeasureType.Temperature))
-              .map((module) => this.getModuleMeasureDataSetSource(module))
-          )
-        ),
-        map((dataSetSources) => dataSetSources.flat())
-      )
-      .subscribe((dataSetSource) => {
-        this.updateChart(dataSetSource);
-      });
+    this.chart = init(this.chartDiv.nativeElement);
+
+    this.store.dispatch(homeActions.fetch());
+
+    this.store.select(selectModules).subscribe((modules) => this.setOptions(modules));
+
+    // this.netamoService
+    //   .getHomesData()
+    //   .pipe(
+    //     map(({ body }) => body.homes[0]),
+    //     tap(({ rooms }) => this.initChart(rooms)),
+    //     switchMap(({ modules }) =>
+    //       forkJoin(
+    //         modules
+    //           .filter(hasRoom)
+    //           .filter((module) => MEASURE_TYPE_BY_MODULE_TYPE[module.type].includes(MeasureType.Temperature))
+    //           .map((module) => this.getModuleMeasureDataSetSource(module))
+    //       )
+    //     ),
+    //     map((dataSetSources) => dataSetSources.flat())
+    //   )
+    //   .subscribe((dataSetSource) => {
+    //     this.updateChart(dataSetSource);
+    //   });
   }
 
   private getModuleMeasureDataSetSource({ id, bridge, name, room_id }: ModuleWithRoom): Observable<DateSetSource[]> {
@@ -75,7 +81,7 @@ export class GraphComponent implements OnInit {
   //   return home.rooms.map((room) => ({ ...room, modules: room.module_ids.map((id) => modules[id]) }));
   // }
 
-  private toDataSetSource(name: string, roomId: string, measures: Measure[]): DateSetSource[] {
+  private toDataSetSource(name: string, id: string, measures: Measure[]): DateSetSource[] {
     return measures.reduce<DateSetSource[]>(
       (acc, { beg_time, step_time, value }) => [
         ...acc,
@@ -84,7 +90,7 @@ export class GraphComponent implements OnInit {
             timestamp: new Date((beg_time + index * (step_time ?? 1)) * 1000).toISOString(),
             temperature,
             name,
-            roomId,
+            id,
           })
         ),
       ],
@@ -92,9 +98,7 @@ export class GraphComponent implements OnInit {
     );
   }
 
-  private initChart(rooms: Room[]): void {
-    this.chart = init(this.chartDiv.nativeElement);
-
+  private setOptions(modules: ModuleWithRoom[]): void {
     // https://echarts.apache.org/examples/en/editor.html?c=line-marker
     const option = {
       tooltip: {
@@ -104,15 +108,15 @@ export class GraphComponent implements OnInit {
       dataset: [
         {
           id: 'raw',
-          dimensions: ['temperature', 'roomId', 'timestamp', 'name'],
+          dimensions: ['temperature', 'id', 'timestamp', 'name'],
           source: [],
         },
-        ...rooms.map(({ id }) => ({
+        ...modules.map(({ id }) => ({
           id: id,
           fromDatasetId: 'raw',
           transform: {
             type: 'filter',
-            config: { dimension: 'roomId', '=': id },
+            config: { dimension: 'id', '=': id },
           },
         })),
       ],
@@ -132,7 +136,7 @@ export class GraphComponent implements OnInit {
         max: (value: { max: number }): number => Math.floor(value.max + 2),
         min: (value: { min: number }): number => Math.floor(value.min - 2),
       },
-      series: rooms.map(({ name, id }) => ({
+      series: modules.map(({ name, id }) => ({
         name,
         type: 'line',
         encode: {
@@ -153,8 +157,8 @@ export class GraphComponent implements OnInit {
     this.chart.setOption({
       dataset: [{ source }],
       xAxis: {
-        min: this.interval.begin.toISOString(),
-        max: this.interval.end.toISOString(),
+        min: this.interval.begin,
+        max: this.interval.end,
       },
     });
   }

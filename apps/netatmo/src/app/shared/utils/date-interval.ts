@@ -1,26 +1,28 @@
-import { Interval } from '../enums/interval';
+import { IntervalType } from '../enums/interval-type';
+import { Interval } from '../models/interval';
 
-export function getInterval(interval: Interval) {
-  let begin, end;
+export function getInterval(interval: IntervalType): Interval {
+  let begin, end, scale;
 
   switch (interval) {
-    case Interval.Year: {
+    case IntervalType.Year: {
       const currentYear = new Date().getFullYear();
       begin = new Date(currentYear, 0, 1, 0, 0, 0, 0);
       end = new Date(currentYear, 11, 31, 23, 59, 59, 999);
-
-      return { begin, end, scale: '1week' };
+      scale = '1week';
+      break;
     }
 
-    case Interval.Month: {
+    case IntervalType.Month: {
       const now = new Date();
       begin = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
       end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+      scale = '1day';
 
-      return { begin, end, scale: '1day' };
+      break;
     }
 
-    case Interval.Week: {
+    case IntervalType.Week: {
       const today = new Date();
       const weekStartsOn = 1;
       const day = today.getDay();
@@ -31,10 +33,11 @@ export function getInterval(interval: Interval) {
       end = new Date(today.setDate(today.getDate() + 6));
       end.setHours(23, 59, 59, 999);
 
-      return { begin, end, scale: '3hours' };
+      scale = '3hours';
+      break;
     }
 
-    case Interval.Day:
+    case IntervalType.Day:
     default:
       begin = new Date();
       begin.setHours(0, 0, 0, 0);
@@ -42,6 +45,13 @@ export function getInterval(interval: Interval) {
       end = new Date();
       end.setHours(23, 59, 59, 999);
 
-      return { begin, end, scale: '30min' };
+      scale = '30min';
+      break;
   }
+
+  return {
+    begin: begin.toISOString(),
+    end: end.toISOString(),
+    scale,
+  };
 }

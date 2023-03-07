@@ -8,6 +8,14 @@
 
     <span class="spacer"></span>
 
+    <mat-select [value]="selectedHome$ | async" (valueChange)="selectHome($event)">
+      <mat-option *ngFor="let home of homes$ | async" [value]="home.id">
+        {{ home.name }}
+      </mat-option>
+    </mat-select>
+
+    <span class="spacer"></span>
+
     <mat-icon *ngIf="accessToken">account_circle</mat-icon>
   </mat-toolbar>
 </header>

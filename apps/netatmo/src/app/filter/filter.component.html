@@ -1,1 +1,30 @@
-<p>filter works!</p>
+<mat-accordion
+  displayMode="flat"
+  multi
+  *ngIf="{ rooms: rooms$ | async, modules: modules$ | async, enabled: enabledModulesType$ | async } as vm"
+>
+  <mat-expansion-panel *ngFor="let room of vm.rooms" expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{ room.name }}</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-list role="list">
+      <mat-list-item *ngFor="let id of room.module_ids" role="listitem">
+        <ng-container *ngIf="vm.modules![id] as module">
+          {{ module?.name }}
+
+          <div class="spacer"></div>
+
+          <button
+            mat-icon-button
+            *ngFor="let measureType of module.measureType"
+            [class.enabled]="vm.enabled![id + measureType]"
+            (click)="toggleEnabled(id, measureType, !vm.enabled![id + measureType])"
+          >
+            <mat-icon>{{ MEASURE_TYPE_ICONS[measureType] }}</mat-icon>
+          </button>
+        </ng-container>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>
