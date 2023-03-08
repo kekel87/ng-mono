@@ -1,12 +1,14 @@
 import { HostListener, Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { init, ECharts } from 'echarts';
+import { map } from 'rxjs/operators';
 
+import { MeasureType } from '../shared/api/enums/measure-type';
 import { ModuleWithRoom } from '../shared/models/module-with-room';
 import { filterFeature } from '../shared/stores/filter/filter.reducer';
 import { homeActions } from '../shared/stores/home/home.actions';
 import { measureFeature } from '../shared/stores/measure/measure.reducer';
-import { selectModules } from '../shared/stores/selectors';
+import { selectModules, selectModuleWithEnabledMeasureType } from '../shared/stores/selectors';
 
 @Component({
   standalone: true,
@@ -37,6 +39,47 @@ export class GraphComponent implements OnInit {
       })
     );
     this.store.select(measureFeature.selectAll).subscribe((source) => this.chart.setOption({ dataset: [{ source }] }));
+    this.store
+      .select(selectModuleWithEnabledMeasureType)
+      .pipe(
+        map((modules) => {
+          return modules.reduce((acc: any[], curr) => {
+            return [
+              ...acc,
+              ...curr.enabledMeasureTypes.map((type) => ({
+                id: `${curr.id}-${type}`,
+                type: 'line',
+                // colorBy: 'data',
+                name: curr.name,
+                encode: {
+                  x: 'timestamp',
+                  y: type,
+                },
+                datasetId: curr.id,
+                markLine: {
+                  data: [{ type: 'average', name: 'Avg' }],
+                },
+              })),
+            ];
+          }, []);
+        })
+      )
+      .subscribe((series) => {
+        console.log('series', series);
+        this.chart.setOption({ series }, { replaceMerge: ['series'] });
+      });
+
+    /*
+     name,
+        type: 'line',
+        encode: {
+          x: 'timestamp',
+          y: 'temperature',
+        },
+        datasetId: id,
+        markLine: {
+          data: [{ type: 'average', name: 'Avg' }],
+        },*/
   }
 
   private setOptions(modules: ModuleWithRoom[]): void {
@@ -49,7 +92,7 @@ export class GraphComponent implements OnInit {
       dataset: [
         {
           id: 'raw',
-          dimensions: ['id', 'timestamp', 'temperature'],
+          dimensions: ['id', 'timestamp', ...Object.values(MeasureType)],
           source: [],
         },
         ...modules.map(({ id }) => ({
@@ -77,18 +120,7 @@ export class GraphComponent implements OnInit {
         max: (value: { max: number }): number => Math.floor(value.max + 2),
         min: (value: { min: number }): number => Math.floor(value.min - 2),
       },
-      series: modules.map(({ name, id }) => ({
-        name,
-        type: 'line',
-        encode: {
-          x: 'timestamp',
-          y: 'temperature',
-        },
-        datasetId: id,
-        markLine: {
-          data: [{ type: 'average', name: 'Avg' }],
-        },
-      })),
+      series: [],
     };
 
     this.chart.setOption(option);

@@ -29,6 +29,13 @@ export class FilterEffects {
     );
   });
 
+  getMeasureOnEnableModuleMeasure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(filterActions.enableModuleMeasure),
+      map(({ moduleMeasureType }) => measureActions.fetch({ moduleMeasureType }))
+    );
+  });
+
   getMeasureOnEnableManyModuleMeasure$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(filterActions.enableManyModuleMeasure),
