@@ -1,8 +1,11 @@
 import { HostListener, Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
+import { Store, ActionsSubject } from '@ngrx/store';
 import { init, ECharts } from 'echarts';
-import { map } from 'rxjs/operators';
+import { interval } from 'rxjs';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 
+import { layoutActions } from '../layout/store/layout.actions';
 import { MeasureType } from '../shared/api/enums/measure-type';
 import { ModuleWithRoom } from '../shared/models/module-with-room';
 import { filterFeature } from '../shared/stores/filter/filter.reducer';
@@ -22,7 +25,16 @@ export class GraphComponent implements OnInit {
 
   private chart!: ECharts;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private action$: ActionsSubject) {
+    this.action$
+      .pipe(
+        ofType(layoutActions.sidenavStartAnimated),
+        switchMap(() => interval(20).pipe(takeUntil(this.action$.pipe(ofType(layoutActions.sidenavEndAnimated)))))
+      )
+      .subscribe(() => {
+        this.onResize();
+      });
+  }
 
   ngOnInit(): void {
     this.chart = init(this.chartDiv.nativeElement);
@@ -55,6 +67,7 @@ export class GraphComponent implements OnInit {
                   x: 'timestamp',
                   y: type,
                 },
+                yAxisId: type,
                 datasetId: curr.id,
                 markLine: {
                   data: [{ type: 'average', name: 'Avg' }],
@@ -112,14 +125,68 @@ export class GraphComponent implements OnInit {
         //   },
         // },
       },
-      yAxis: {
-        type: 'value',
-        axisLabel: {
-          formatter: '{value} °C',
+      yAxis: [
+        {
+          id: MeasureType.Temperature,
+          name: MeasureType.Temperature,
+          type: 'value',
+          axisLabel: {
+            formatter: '{value} °C',
+          },
+          max: (value: { max: number }): number => Math.floor(value.max + 2),
+          min: (value: { min: number }): number => Math.floor(value.min - 2),
         },
-        max: (value: { max: number }): number => Math.floor(value.max + 2),
-        min: (value: { min: number }): number => Math.floor(value.min - 2),
-      },
+        {
+          id: MeasureType.Humidity,
+          name: MeasureType.Humidity,
+          type: 'value',
+          position: 'right',
+          offset: 0,
+          axisLine: {
+            show: true,
+          },
+          axisLabel: {
+            formatter: '{value} %',
+          },
+          max: 100,
+          min: 0,
+        },
+        {
+          id: MeasureType.CO2,
+          name: MeasureType.CO2,
+          position: 'right',
+          offset: 40,
+          type: 'value',
+          axisLine: {
+            show: true,
+          },
+          axisLabel: {
+            formatter: '{value} ppm',
+          },
+        },
+        {
+          id: MeasureType.Pressure,
+          name: MeasureType.Pressure,
+          type: 'value',
+          position: 'right',
+          offset: 80,
+          axisLabel: {
+            formatter: '{value} mb',
+          },
+          max: (value: { max: number }): number => Math.floor(value.max + 100),
+          min: (value: { min: number }): number => Math.floor(value.min - 100),
+        },
+        {
+          id: MeasureType.Noise,
+          name: MeasureType.Noise,
+          type: 'value',
+          position: 'right',
+          offset: 80,
+          axisLabel: {
+            formatter: '{value} db',
+          },
+        },
+      ],
       series: [],
     };
 

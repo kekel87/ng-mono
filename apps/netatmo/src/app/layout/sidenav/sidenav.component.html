@@ -1,5 +1,12 @@
 <mat-sidenav-container (backdropClick)="close()">
-  <mat-sidenav [opened]="open$ | async" [mode]="(isMobile$ | async) ? 'over' : 'side'" [fixedInViewport]="isMobile$ | async">
+  <mat-sidenav
+    [opened]="open$ | async"
+    [mode]="(isMobile$ | async) ? 'over' : 'side'"
+    [fixedInViewport]="isMobile$ | async"
+    (openedStart)="startAnimated()"
+    (closedStart)="startAnimated()"
+    (openedChange)="endAnimated()"
+  >
     <ng-content select="[sidenav]"></ng-content>
   </mat-sidenav>
 

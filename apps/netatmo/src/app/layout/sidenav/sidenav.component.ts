@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, first } from 'rxjs/operators';
+import { delay, first, map } from 'rxjs/operators';
 
 import { layoutActions } from '../store/layout.actions';
 import { layoutFeature } from '../store/layout.reducer';
@@ -24,10 +24,18 @@ export class SidenavComponent {
     .pipe(map((state: BreakpointState) => state.matches));
 
   constructor(private store: Store, private breakpointObserver: BreakpointObserver) {
-    this.isMobile$.pipe(first()).subscribe((isMobile) => this.store.dispatch(layoutActions.setSidenav({ opened: !isMobile })));
+    this.isMobile$.pipe(first(), delay(200)).subscribe((isMobile) => this.store.dispatch(layoutActions.setSidenav({ opened: !isMobile })));
   }
 
   close(): void {
     this.store.dispatch(layoutActions.toggleSidenav());
+  }
+
+  startAnimated(): void {
+    this.store.dispatch(layoutActions.sidenavStartAnimated());
+  }
+
+  endAnimated(): void {
+    this.store.dispatch(layoutActions.sidenavEndAnimated());
   }
 }
