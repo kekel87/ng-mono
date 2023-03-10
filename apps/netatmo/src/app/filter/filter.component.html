@@ -19,6 +19,7 @@
             mat-icon-button
             *ngFor="let measureType of module.measureType"
             [class.enabled]="vm.enabled![id + measureType]"
+            [style.color]="module.measureTypeColors[measureType]"
             (click)="toggleEnabled(id, measureType, !vm.enabled![id + measureType])"
           >
             <mat-icon>{{ MEASURE_TYPE_ICONS[measureType] }}</mat-icon>

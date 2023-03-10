@@ -1,14 +1,8 @@
-@use 'sass:map';
-@use '@angular/material' as mat;
-@import 'variables';
-
 mat-list-item ::ng-deep .mat-mdc-list-item-unscoped-content {
   display: flex;
   align-items: center;
 }
 
 button:not(.enabled) {
-  $color: map.get($theme-light, 'color');
-  $background: map.get($color, 'background');
-  color: map.get($background, 'selected-disabled-button');
+  opacity: 0.4;
 }

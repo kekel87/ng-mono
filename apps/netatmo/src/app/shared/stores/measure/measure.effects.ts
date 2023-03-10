@@ -9,7 +9,7 @@ import { Measure } from '../../api/models/measure';
 import { NetatmoService } from '../../api/servives/netatmo.service';
 import { Interval } from '../../models/interval';
 import { MeasureSource } from '../../models/measure-source';
-import { ModuleWithEnabledMeasureTypes } from '../../models/module-with-enabled-measure-types copy';
+import { ModuleWithEnabledMeasureTypes } from '../../models/module-with-enabled-measure-types';
 import { dateToUnixTimestamp } from '../../utils/date-to-unix-timestamp';
 import { filterFeature } from '../filter/filter.reducer';
 import { selectModuleWithEnabledMeasureType } from '../selectors';

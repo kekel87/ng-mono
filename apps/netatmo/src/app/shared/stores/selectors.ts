@@ -7,10 +7,12 @@ import { MeasureType } from '../api/enums/measure-type';
 import { Home } from '../api/models/home';
 import { Room } from '../api/models/room';
 import { MEASURE_TYPE_BY_MODULE_TYPE } from '../constants/measure-type-by-module-type';
+import { MEASURE_TYPE_PALETTES } from '../constants/measure-type-palettes';
 import { ModuleMesureType } from '../models/module-measure-type';
-import { ModuleWithEnabledMeasureTypes } from '../models/module-with-enabled-measure-types copy';
+import { ModuleWithEnabledMeasureTypes } from '../models/module-with-enabled-measure-types';
 import { ModuleWithMeasureTypes } from '../models/module-with-measure-types';
 import { ModuleWithRoom } from '../models/module-with-room';
+import { getElementAt } from '../utils/get-element-at';
 import { hasRoom } from '../utils/has-room';
 
 export const selectRooms = createSelector(homeFeature.selectHome, (home: Home | undefined): Room[] => home?.rooms ?? []);
@@ -23,7 +25,17 @@ export const selectModules = createSelector(homeFeature.selectHome, (home: Home 
 });
 
 export const selectModulesWithMeasureType = createSelector(selectModules, (modules: ModuleWithRoom[]): ModuleWithMeasureTypes[] => {
-  return modules.map((m) => ({ ...m, measureType: MEASURE_TYPE_BY_MODULE_TYPE[m.type] }));
+  return modules.map((module, index) => ({
+    ...module,
+    measureType: MEASURE_TYPE_BY_MODULE_TYPE[module.type],
+    measureTypeColors: MEASURE_TYPE_BY_MODULE_TYPE[module.type].reduce(
+      (acc, type) => ({
+        ...acc,
+        [type]: getElementAt(MEASURE_TYPE_PALETTES[type], index),
+      }),
+      {}
+    ),
+  }));
 });
 
 export const selectModulesEntities = createSelector(
@@ -42,8 +54,8 @@ export const selectEnabledModuleMeasureTypesByModule = createSelector(
 
 export const selectModuleWithEnabledMeasureType = createSelector(
   selectEnabledModuleMeasureTypesByModule,
-  selectModules,
-  (enabled: Dictionary<MeasureType[]>, modules: ModuleWithRoom[]): ModuleWithEnabledMeasureTypes[] => {
+  selectModulesWithMeasureType,
+  (enabled: Dictionary<MeasureType[]>, modules: ModuleWithMeasureTypes[]): ModuleWithEnabledMeasureTypes[] => {
     return modules.map((m) => ({ ...m, enabledMeasureTypes: enabled[m.id] ?? [] }));
   }
 );

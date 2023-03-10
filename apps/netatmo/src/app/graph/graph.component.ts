@@ -7,6 +7,7 @@ import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { layoutActions } from '../layout/store/layout.actions';
 import { MeasureType } from '../shared/api/enums/measure-type';
+import { ModuleWithMeasureTypes } from '../shared/models/module-with-measure-types';
 import { ModuleWithRoom } from '../shared/models/module-with-room';
 import { filterFeature } from '../shared/stores/filter/filter.reducer';
 import { homeActions } from '../shared/stores/home/home.actions';
@@ -56,43 +57,110 @@ export class GraphComponent implements OnInit {
       .pipe(
         map((modules) => {
           return modules.reduce((acc: any[], curr) => {
-            return [
-              ...acc,
-              ...curr.enabledMeasureTypes.map((type) => ({
-                id: `${curr.id}-${type}`,
-                type: 'line',
-                // colorBy: 'data',
-                name: curr.name,
-                encode: {
-                  x: 'timestamp',
-                  y: type,
-                },
-                yAxisId: type,
-                datasetId: curr.id,
-                markLine: {
-                  data: [{ type: 'average', name: 'Avg' }],
-                },
-              })),
-            ];
+            return [...acc, ...curr.enabledMeasureTypes.map((type) => this.toSerie(type, curr))];
           }, []);
         })
       )
-      .subscribe((series) => {
-        console.log('series', series);
-        this.chart.setOption({ series }, { replaceMerge: ['series'] });
-      });
+      .subscribe((series) => this.chart.setOption({ series }, { replaceMerge: ['series'] }));
+  }
 
-    /*
-     name,
-        type: 'line',
-        encode: {
-          x: 'timestamp',
-          y: 'temperature',
-        },
-        datasetId: id,
-        markLine: {
-          data: [{ type: 'average', name: 'Avg' }],
-        },*/
+  private toSerie(type: MeasureType, module: ModuleWithMeasureTypes) {
+    switch (type) {
+      case MeasureType.Temperature:
+        return this.toTemperatureSerie(module);
+      case MeasureType.CO2:
+        return this.toCo2Serie(module);
+      case MeasureType.Pressure:
+        return this.toPressureSerie(module);
+      case MeasureType.Humidity:
+        return this.toHumiditySerie(module);
+      case MeasureType.Noise:
+        return this.toNoiseSerie(module);
+      default:
+        throw new Error('Measure type not supported');
+    }
+  }
+
+  private toTemperatureSerie(module: ModuleWithMeasureTypes) {
+    return {
+      id: `${module.id}-${MeasureType.Temperature}`,
+      type: 'line',
+      yAxisId: MeasureType.Temperature,
+      datasetId: module.id,
+      name: module.name,
+      color: module.measureTypeColors[MeasureType.Temperature],
+      encode: {
+        x: 'timestamp',
+        y: MeasureType.Temperature,
+      },
+      // markLine: {
+      //   data: [{ type: 'average', name: 'Avg' }],
+      // },
+    };
+  }
+
+  private toCo2Serie(module: ModuleWithMeasureTypes) {
+    return {
+      id: `${module.id}-${MeasureType.CO2}`,
+      type: 'line',
+      yAxisId: MeasureType.CO2,
+      datasetId: module.id,
+      name: module.name,
+      color: module.measureTypeColors[MeasureType.CO2],
+      encode: {
+        x: 'timestamp',
+        y: MeasureType.CO2,
+      },
+    };
+  }
+
+  private toPressureSerie(module: ModuleWithMeasureTypes) {
+    return {
+      id: `${module.id}-${MeasureType.Pressure}`,
+      type: 'line',
+      yAxisId: MeasureType.Pressure,
+      datasetId: module.id,
+      name: module.name,
+      color: module.measureTypeColors[MeasureType.Pressure],
+      encode: {
+        x: 'timestamp',
+        y: MeasureType.Pressure,
+      },
+    };
+  }
+
+  private toHumiditySerie(module: ModuleWithMeasureTypes) {
+    return {
+      id: `${module.id}-${MeasureType.Humidity}`,
+      type: 'line',
+      yAxisId: MeasureType.Humidity,
+      datasetId: module.id,
+      name: module.name,
+      color: module.measureTypeColors[MeasureType.Humidity],
+      encode: {
+        x: 'timestamp',
+        y: MeasureType.Humidity,
+      },
+      areaStyle: {
+        color: module.measureTypeColors[MeasureType.Humidity],
+        opacity: 0.2,
+      },
+    };
+  }
+
+  private toNoiseSerie(module: ModuleWithMeasureTypes) {
+    return {
+      id: `${module.id}-${MeasureType.Noise}`,
+      type: 'line',
+      yAxisId: MeasureType.Noise,
+      datasetId: module.id,
+      color: module.measureTypeColors[MeasureType.Noise],
+      name: module.name,
+      encode: {
+        x: 'timestamp',
+        y: MeasureType.Noise,
+      },
+    };
   }
 
   private setOptions(modules: ModuleWithRoom[]): void {
@@ -101,7 +169,9 @@ export class GraphComponent implements OnInit {
       tooltip: {
         trigger: 'axis',
       },
-      legend: {},
+      legend: {
+        show: false,
+      },
       dataset: [
         {
           id: 'raw',
