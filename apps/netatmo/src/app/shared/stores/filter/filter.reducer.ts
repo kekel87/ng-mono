@@ -25,6 +25,13 @@ export const filterFeature = createFeature({
   reducer: createReducer(
     initialState,
     on(
+      filterActions.changeIntervalType,
+      (state, { intervalType }): State => ({
+        ...state,
+        interval: getInterval(intervalType),
+      })
+    ),
+    on(
       filterActions.enableModuleMeasure,
       (state, { moduleMeasureType }): State => ({
         ...state,

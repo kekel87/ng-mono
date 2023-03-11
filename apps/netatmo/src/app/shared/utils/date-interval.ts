@@ -50,6 +50,7 @@ export function getInterval(interval: IntervalType): Interval {
   }
 
   return {
+    type: interval,
     begin: begin.toISOString(),
     end: end.toISOString(),
     scale,

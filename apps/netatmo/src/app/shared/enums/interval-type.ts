@@ -1,6 +1,6 @@
 export enum IntervalType {
-  Year = 'year',
-  Month = 'month',
-  Week = 'week',
   Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year',
 }

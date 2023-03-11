@@ -1,3 +1,14 @@
+<div *ngIf="interval$ | async as interval" [ngSwitch]="interval.type">
+  <div *ngSwitchCase="IntervalType.Day">{{ interval.begin | date : 'mediumDate' }}</div>
+  <div *ngSwitchCase="IntervalType.Week">{{ interval.begin | date : 'd' }}-{{ interval.end | date : 'd MMMM yyyy' }}</div>
+  <div *ngSwitchCase="IntervalType.Month">{{ interval.begin | date : 'MMMM yyyy' }}</div>
+  <div *ngSwitchCase="IntervalType.Year">{{ interval.begin | date : 'yyyy' }}</div>
+
+  <mat-button-toggle-group name="intervalType" [value]="interval.type" (change)="changeIntervalType($event.value)">
+    <mat-button-toggle *ngFor="let kv of IntervalType | keyvalue : unsorted" [value]="kv.value">{{ kv.key }}</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
 <mat-accordion
   displayMode="flat"
   multi

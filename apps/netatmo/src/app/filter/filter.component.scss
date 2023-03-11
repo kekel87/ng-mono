@@ -6,3 +6,12 @@ mat-list-item ::ng-deep .mat-mdc-list-item-unscoped-content {
 button:not(.enabled) {
   opacity: 0.4;
 }
+
+:host>div:first-of-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+}

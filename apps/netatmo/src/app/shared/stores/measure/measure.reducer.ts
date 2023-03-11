@@ -21,7 +21,8 @@ export const measureFeature = createFeature({
   name: 'measure',
   reducer: createReducer(
     initialState,
-    on(measureActions.fetch, measureActions.fetchMany, (state): State => ({ ...state, requestState: RequestState.Loading })),
+    on(measureActions.fetch, (state): State => ({ ...state, requestState: RequestState.Loading })),
+    on(measureActions.fetchMany, (state): State => adapter.removeAll({ ...state, requestState: RequestState.Loading })),
     on(
       measureActions.fetchSuccess,
       (state, { measures }): State => adapter.upsertMany(measures, { ...state, requestState: RequestState.Success })
