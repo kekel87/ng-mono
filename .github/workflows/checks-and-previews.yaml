@@ -50,7 +50,7 @@ jobs:
         with:
           nx-key: nx-cache
       # - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
-      # - run: npx nx run-many --target=test --parallel=3 --ci --code-coverage
+      - run: npx nx run-many --target=test --parallel=3 --ci --code-coverage
 
   e2e:
     name: 🐵 E2E tests
