@@ -12,7 +12,7 @@ import { selectModulesWithMeasureType } from '../selectors';
 
 @Injectable()
 export class FilterEffects {
-  constructor(private actions$: Actions, private store: Store) { }
+  constructor(private actions$: Actions, private store: Store) {}
 
   initTemperatureMeasureByDefault$ = createEffect(() => {
     return this.actions$.pipe(
@@ -38,7 +38,12 @@ export class FilterEffects {
 
   triggerFetchManyMeasures$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(filterActions.enableManyModuleMeasure, filterActions.changeIntervalType),
+      ofType(
+        filterActions.enableManyModuleMeasure,
+        filterActions.changeIntervalType,
+        filterActions.nextInterval,
+        filterActions.previousInterval
+      ),
       map(() => measureActions.fetchMany())
     );
   });

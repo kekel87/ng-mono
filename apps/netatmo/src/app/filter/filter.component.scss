@@ -3,15 +3,36 @@ mat-list-item ::ng-deep .mat-mdc-list-item-unscoped-content {
   align-items: center;
 }
 
+mat-list,
+mat-list-item {
+  padding: 0;
+}
+
+.mat-expansion-panel-header {
+  padding: 0 16px 0 8px;
+}
+
+mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
+  padding: 0 8px 8px;
+}
+
 button:not(.enabled) {
   opacity: 0.4;
 }
 
-:host>div:first-of-type {
+:host > div:first-of-type {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
   padding: 12px;
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
 }

@@ -5,7 +5,7 @@ import { filterActions } from './filter.actions';
 import { IntervalType } from '../../enums/interval-type';
 import { Interval } from '../../models/interval';
 import { ModuleMesureType } from '../../models/module-measure-type';
-import { getInterval } from '../../utils/date-interval';
+import { build, next, previous } from '../../utils/date-interval';
 
 const selectId = (m: ModuleMesureType): string => `${m.id}${m.type}`;
 const adapter: EntityAdapter<ModuleMesureType> = createEntityAdapter<ModuleMesureType>({ selectId });
@@ -16,7 +16,7 @@ export interface State {
 }
 
 const initialState: State = {
-  interval: getInterval(IntervalType.Day),
+  interval: build(IntervalType.Day),
   enabledModuleMeasureType: adapter.getInitialState(),
 };
 
@@ -28,9 +28,11 @@ export const filterFeature = createFeature({
       filterActions.changeIntervalType,
       (state, { intervalType }): State => ({
         ...state,
-        interval: getInterval(intervalType),
+        interval: build(intervalType),
       })
     ),
+    on(filterActions.nextInterval, (state): State => ({ ...state, interval: next(state.interval) })),
+    on(filterActions.previousInterval, (state): State => ({ ...state, interval: previous(state.interval) })),
     on(
       filterActions.enableModuleMeasure,
       (state, { moduleMeasureType }): State => ({
