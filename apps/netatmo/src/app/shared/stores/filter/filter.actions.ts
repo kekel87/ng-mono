@@ -7,6 +7,8 @@ export const filterActions = createActionGroup({
   source: 'filter',
   events: {
     'Change interval type': props<{ intervalType: IntervalType }>(),
+    'Next interval': emptyProps(),
+    'Previous interval': emptyProps(),
     'Enable many module measure': props<{ moduleMeasureTypes: ModuleMesureType[] }>(),
     'Enable module measure': props<{ moduleMeasureType: ModuleMesureType }>(),
     'Disable module measure': props<{ moduleMeasureType: ModuleMesureType }>(),

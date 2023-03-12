@@ -2,6 +2,7 @@
 export default {
   displayName: 'netatmo',
   preset: '../../jest.preset.js',
+  globalSetup: '<rootDir>/src/global-test-setup.ts',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
