@@ -7,6 +7,7 @@ import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { layoutActions } from '../layout/store/layout.actions';
 import { MeasureType } from '../shared/api/enums/measure-type';
+import { MEASURE_TYPE_UNIT } from '../shared/constants/measure-type-unit';
 import { ModuleWithMeasureTypes } from '../shared/models/module-with-measure-types';
 import { ModuleWithRoom } from '../shared/models/module-with-room';
 import { filterFeature } from '../shared/stores/filter/filter.reducer';
@@ -168,6 +169,17 @@ export class GraphComponent implements OnInit {
     const option = {
       tooltip: {
         trigger: 'axis',
+        formatter: (params: any) => {
+          return params.reduce((acc: string, curr: any) => {
+            const measureType = curr.dimensionNames[curr.encode.y[0]] as MeasureType;
+            return `${acc}
+            <div style="display: flex; align-items: center; gap: 4px">
+              ${curr.marker}
+              <span>${curr.seriesName}</span>
+              <span style="margin-left: auto">${curr.value[measureType]} ${MEASURE_TYPE_UNIT[measureType]}</span>
+            </div>`;
+          }, `<b>${params[0].axisValueLabel}</b><br/>`);
+        },
       },
       legend: {
         show: false,
