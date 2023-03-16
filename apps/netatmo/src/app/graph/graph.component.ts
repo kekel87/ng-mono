@@ -172,6 +172,13 @@ export class GraphComponent implements OnInit {
       legend: {
         show: false,
       },
+      grid: {
+        left: 20,
+        top: 60,
+        right: 40,
+        bottom: 20,
+        containLabel: true,
+      },
       dataset: [
         {
           id: 'raw',
@@ -189,17 +196,13 @@ export class GraphComponent implements OnInit {
       ],
       xAxis: {
         type: 'time',
-        // axisLabel: {
-        //   formatter: (value) => {
-        //     return echarts.format.formatTime("hh:mm", value);
-        //   },
-        // },
       },
       yAxis: [
         {
           id: MeasureType.Temperature,
           name: MeasureType.Temperature,
           type: 'value',
+          position: 'left',
           axisLabel: {
             formatter: '{value} °C',
           },
@@ -211,10 +214,6 @@ export class GraphComponent implements OnInit {
           name: MeasureType.Humidity,
           type: 'value',
           position: 'right',
-          offset: 0,
-          axisLine: {
-            show: true,
-          },
           axisLabel: {
             formatter: '{value} %',
           },
@@ -224,25 +223,14 @@ export class GraphComponent implements OnInit {
         {
           id: MeasureType.CO2,
           name: MeasureType.CO2,
-          position: 'right',
-          offset: 40,
           type: 'value',
-          axisLine: {
-            show: true,
-          },
-          axisLabel: {
-            formatter: '{value} ppm',
-          },
+          show: false,
         },
         {
           id: MeasureType.Pressure,
           name: MeasureType.Pressure,
           type: 'value',
-          position: 'right',
-          offset: 80,
-          axisLabel: {
-            formatter: '{value} mb',
-          },
+          show: false,
           max: (value: { max: number }): number => Math.floor(value.max + 100),
           min: (value: { min: number }): number => Math.floor(value.min - 100),
         },
