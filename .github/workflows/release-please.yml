@@ -16,7 +16,6 @@ jobs:
         with:
           release-type: node
           pull-request-title-pattern: 'release: ${version}'
-          release-as: '2023.0.0'
           changelog-types: |
             [
               {"type":"feat","section":"✨ Features","hidden":false},

@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    tags-ignore:
+      - '**'
 
 concurrency:
   group: ${{ github.ref }}
@@ -33,9 +35,7 @@ jobs:
       - uses: ng-easy/npm-setup@v3
         with:
           nx-key: nx-cache
-      - run: npx nx format:check --verbose
-      # - run: npx nx affected --target=lint --parallel=3
-      - run: npx nx run-many --target=lint --parallel=3
+      - run: npx nx affected --target=lint --parallel=3
 
   test:
     name: ✔ Unit tests
@@ -49,8 +49,7 @@ jobs:
       - uses: ng-easy/npm-setup@v3
         with:
           nx-key: nx-cache
-      # - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
-      - run: npx nx run-many --target=test --parallel=3 --ci --code-coverage
+      - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
 
   e2e:
     name: 🐵 E2E tests
@@ -82,9 +81,7 @@ jobs:
       - uses: ng-easy/npm-setup@v3
         with:
           nx-key: nx-cache
-      # - run: npx nx affected --target=build --parallel=3
-      - run: npx nx run-many --target=runtime-config --parallel=3
-      - run: npx nx run-many --target=build --parallel=3
+      - run: npx nx affected --target=build --parallel=3
       - uses: actions/upload-artifact@v3
         with:
           name: dist
@@ -109,5 +106,4 @@ jobs:
         with:
           name: dist
           path: dist
-      # - run: npx nx affected --target=deploy --parallel=3
-      - run: npx nx run-many --target=deploy --parallel=3
+      - run: npx nx affected --target=deploy --parallel=3
