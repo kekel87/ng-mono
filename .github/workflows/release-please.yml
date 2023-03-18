@@ -1,0 +1,32 @@
+name: 📜 Release please
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: node
+          package-name: release-please-action
+          pull-request-title-pattern: 'release: ${version}'
+          release-as: '2023.0.0'
+          changelog-types: |
+            [
+              {"type":"feat","section":"✨ Features","hidden":false,"order": 1},
+              {"type":"fix","section":"🐛 Bug Fixes","hidden":false,"order": 2},
+              {"type":"perf","section":"⚡️ Polish","hidden":false,"order": 3},
+              {"type":"refactor","section":"🛠️ Polish","hidden":false,"order": 4},
+              {"type":"style","section":"✨ Style","hidden":false,"order": 5},
+              {"type":"chore","section":"⚙️ Global","hidden":false,"order": 6},
+              {"type":"ci","section":"🧰 CI","hidden":false,"order": 7},
+              {"type":"test","section":"🧪 Tests","hidden":false,"order": 8},
+              {"type":"docs","section":"📝 Documentation","hidden":false,"order": 9}
+            ]

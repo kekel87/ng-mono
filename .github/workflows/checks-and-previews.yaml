@@ -1,4 +1,4 @@
-name: Check and Previews
+name: 👮🔍 Check and Previews
 on:
   push:
     branches:
@@ -111,14 +111,3 @@ jobs:
           path: dist
       # - run: npx nx affected --target=deploy --parallel=3
       - run: npx nx run-many --target=deploy --parallel=3
-
-  draft-release:
-    name: 📜 Draft release
-    runs-on: ubuntu-latest
-    needs: [lint, test, e2e, build]
-    permissions:
-      contents: write
-    steps:
-      - uses: release-drafter/release-drafter@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
