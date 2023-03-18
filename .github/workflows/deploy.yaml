@@ -1,4 +1,4 @@
-name: Release
+name: 🚀 Deploy
 on:
   release:
     types: [published]
