@@ -2,7 +2,9 @@
   "name": "ng-mono",
   "version": "2023.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "nx": "nx"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~15.1.0",
