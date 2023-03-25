@@ -5,9 +5,11 @@ export default {
   globalSetup: '<rootDir>/src/global-test-setup.ts',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {},
-    'ts-jest': {
+  collectCoverage: true,
   coverageDirectory: '../../coverage/apps/netatmo',
+  coverageReporters: ['lcov', 'text-summary'],
   collectCoverageFrom: ['./src/**'],
+  coveragePathIgnorePatterns: ['index.html', 'main.ts'],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
