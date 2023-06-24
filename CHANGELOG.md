@@ -1,5 +1,22 @@
 # Changelog
 
+## [2023.1.0](https://github.com/kekel87/ng-mono/compare/v2023.0.0...v2023.1.0) (2023-06-24)
+
+
+### 📝 Documentation
+
+* update README (s) ([7400e4f](https://github.com/kekel87/ng-mono/commit/7400e4f29608033b9af39bc80d44a74337df9b9a))
+
+
+### ⚙️ Global
+
+* update repo and dependencies ([b9c7181](https://github.com/kekel87/ng-mono/commit/b9c7181386ec39fe6270d130668cceb1de2c5b94))
+
+
+### ✨ Features
+
+* **collections:** import from gitlab ([8953cd1](https://github.com/kekel87/ng-mono/commit/8953cd1b48c085ccb6ab188b161e5221c309038e))
+
 ## 2023.0.0 (2023-03-18)
 
 
