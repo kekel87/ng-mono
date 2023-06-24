@@ -1,0 +1,34 @@
+{
+  "extends": [
+    "../../.eslintrc.angular.json"
+  ],
+  "ignorePatterns": [
+    "!**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "col",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "col",
+            "style": "kebab-case"
+          }
+        ],
+        "@typescript-eslint/naming-convention": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+h1 {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+mat-toolbar > mat-icon {
+  padding: 8px;
+}

@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Entrez votre url</h2>
+<ng-container *ngIf="requestState$ | async as requestState">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input colAutofocus matInput ngModel (ngModelChange)="urlChange$.next($event)" placeholder="Url" />
+    </mat-form-field>
+
+    <div class="img-wrapper" *ngIf="url$ | async as url">
+      <col-loader *ngIf="requestState === RequestState.Loading"></col-loader>
+      <mat-error *ngIf="requestState === RequestState.Error">Image non trouvée</mat-error>
+      <img [src]="url" alt="" (load)="requestState$.next(RequestState.Success)" (error)="requestState$.next(RequestState.Error)" />
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button color="primary" [disabled]="requestState !== RequestState.Success" [mat-dialog-close]="url$ | async">
+      Valider
+    </button>
+  </mat-dialog-actions>
+</ng-container>

@@ -1,0 +1,21 @@
+.mat-dialog-title {
+  margin: 0;
+}
+
+mat-dialog-content {
+  overflow: inherit;
+
+  .inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    mat-form-field {
+      width: 100px;
+    }
+  }
+}
+
+mat-dialog-actions {
+  justify-content: space-between;
+}

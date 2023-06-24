@@ -51,6 +51,9 @@
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "port": 4201
+      },
       "configurations": {
         "production": {
           "browserTarget": "netatmo:build:production"
@@ -60,12 +63,6 @@
         }
       },
       "defaultConfiguration": "development"
-    },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "netatmo:build"
-      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -88,18 +85,13 @@
         }
       }
     },
+    "runtime-config": {
+      "command": "echo $RUNTIME_CONFIG_NETATMO_JSON | base64 -d > apps/netatmo/src/assets/runtime-config.json"
+    },
     "deploy": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          {
-            "command": "mkdir -p dist/apps/netatmo/assets",
-            "forwardAllArgs": false
-          },
-          {
-            "command": "echo $RUNTIME_CONFIG_NETATMO_JSON | base64 -d > dist/apps/netatmo/assets/runtime-config.json",
-            "forwardAllArgs": false
-          },
           {
             "command": "echo '/* /index.html 200' > dist/apps/netatmo/_redirects",
             "forwardAllArgs": false

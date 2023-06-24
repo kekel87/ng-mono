@@ -1,0 +1,32 @@
+<col-loader *ngIf="loading$ | async"></col-loader>
+
+<form *ngIf="form" [formGroup]="form">
+  <mat-form-field class="title">
+    <input matInput placeholder="Titre" formControlName="title" required />
+  </mat-form-field>
+
+  <col-images-selector
+    class="image"
+    formControlName="cover"
+    [searchTerm]="[form.controls.title.value, form.controls.console.value, 'cover']"
+    [path]="collection + '/' + item.id"
+  ></col-images-selector>
+
+  <mat-slide-toggle color="primary" formControlName="acquired">Acquis</mat-slide-toggle>
+  <mat-form-field class="max-price">
+    <input matInput type="number" placeholder="Prix max." formControlName="maxPrice" />
+    <span matSuffix>€&nbsp;</span>
+  </mat-form-field>
+
+  <mat-form-field class="field">
+    <mat-select placeholder="Console" formControlName="console" required>
+      <mat-option *ngFor="let console of itemRelation$ | async" [value]="console.id">
+        {{ console.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="comment">
+    <textarea matInput placeholder="Commentaire" rows="4" formControlName="comment"></textarea>
+  </mat-form-field>
+</form>

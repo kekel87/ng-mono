@@ -1,0 +1,18 @@
+<div class="content" [ngSwitch]="uploadState">
+  <div *ngSwitchCase="RequestState.Loading" class="upload">
+    <col-loader [diameter]="80"></col-loader>
+    <mat-icon>cloud_upload</mat-icon>
+  </div>
+  <mat-error *ngSwitchCase="RequestState.Error">Error durant l'upload</mat-error>
+  <img *ngIf="current && (uploadState === RequestState.Success || uploadState === RequestState.Initial)" [src]="current" />
+</div>
+
+<div class="actions">
+  <button mat-mini-fab (click)="onTouched(); openImagesChooser()">
+    <mat-icon>photo_library</mat-icon>
+  </button>
+
+  <button mat-mini-fab (click)="onTouched(); addUrl()">
+    <mat-icon>add_photo_alternate</mat-icon>
+  </button>
+</div>

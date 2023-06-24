@@ -1,0 +1,30 @@
+.mat-dialog-title {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.img-wrapper {
+  position: relative;
+
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  min-height: 100px;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  mat-error {
+    flex: 0 0 100%;
+
+    text-align: center;
+  }
+}

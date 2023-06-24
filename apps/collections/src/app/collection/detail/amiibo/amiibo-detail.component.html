@@ -1,0 +1,23 @@
+<col-loader *ngIf="loading$ | async"></col-loader>
+
+<form *ngIf="form" [formGroup]="form">
+  <mat-form-field class="title">
+    <input matInput placeholder="Personnage" formControlName="character" required />
+  </mat-form-field>
+
+  <col-images-selector
+    class="image"
+    formControlName="image"
+    [searchTerm]="[form.controls.character.value, 'amiibo']"
+    [path]="collection + '/' + item.id"
+  ></col-images-selector>
+
+  <mat-slide-toggle color="primary" formControlName="acquired">Acquis</mat-slide-toggle>
+  <mat-form-field class="field">
+    <input matInput placeholder="Série" formControlName="serie" />
+  </mat-form-field>
+
+  <mat-form-field class="comment">
+    <textarea matInput placeholder="Commentaire" rows="4" formControlName="comment"></textarea>
+  </mat-form-field>
+</form>

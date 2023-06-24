@@ -4,7 +4,7 @@ on:
     branches:
       - main
     tags-ignore:
-      - '**'
+      - "**"
 
 concurrency:
   group: ${{ github.ref }}
@@ -41,6 +41,8 @@ jobs:
     name: ✔ Unit tests
     runs-on: ubuntu-latest
     needs: install
+    env:
+      TZ: "Europe/Paris"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -55,6 +57,9 @@ jobs:
     name: 🐵 E2E tests
     runs-on: ubuntu-latest
     needs: install
+    env:
+      RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
+      RUNTIME_CONFIG_COLLECTIONS_JSON: ${{ secrets.RUNTIME_CONFIG_COLLECTIONS_QA_JSON }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -63,9 +68,8 @@ jobs:
       - uses: ng-easy/npm-setup@v3
         with:
           nx-key: nx-cache
-      # - run: npx nx affected --target=build --parallel=3
-      # - run: npx nx run-many --target=runtime-config --parallel=3
-      # - run: npx nx run-many --target=e2e --parallel=3
+      - run: npx nx run-many --target=runtime-config --parallel=3
+      - run: npx nx run-many --target=e2e --parallel=3
 
   build:
     name: 🛠️ Build
@@ -73,6 +77,7 @@ jobs:
     needs: install
     env:
       RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
+      RUNTIME_CONFIG_COLLECTIONS_JSON: ${{ secrets.RUNTIME_CONFIG_COLLECTIONS_DEV_JSON }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -81,6 +86,7 @@ jobs:
       - uses: ng-easy/npm-setup@v3
         with:
           nx-key: nx-cache
+      - run: npx nx affected --target=runtime-config --parallel=3
       - run: npx nx affected --target=build --parallel=3
       - uses: actions/upload-artifact@v3
         with:

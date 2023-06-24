@@ -1,0 +1,22 @@
+<cdk-virtual-scroll-viewport itemSize="48" (scrolledIndexChange)="saveCurrentIndex($event)">
+  <mat-list dense>
+    <ng-container *cdkVirtualFor="let item of items$ | async; trackBy: titleTrackFn">
+      <mat-list-item [routerLink]="[item.id]">
+        <img matListAvatar [src]="item.image" />
+
+        <h3 matLine>{{ item.title }}</h3>
+        <p matLine>{{ item.subTitle }}</p>
+
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="toggleAcquired($event, item.id)"
+          [checked]="item.acquired"
+          color="primary"
+        >
+        </mat-checkbox>
+
+        <div class="handleClick"></div>
+      </mat-list-item>
+    </ng-container>
+  </mat-list>
+</cdk-virtual-scroll-viewport>

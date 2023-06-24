@@ -40,3 +40,4 @@ Thumbs.db
 
 .angular
 runtime-config.json
+runtime-config.*.json

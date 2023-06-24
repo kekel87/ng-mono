@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" *ngIf="config$ | async as config">
+  <button mat-icon-button (click)="toggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1>{{ config.title }}</h1>
+
+  <span class="spacer"></span>
+
+  <ng-template ngFor let-action [ngForOf]="config.actions">
+    <button *ngIf="action.onAction" [style.color]="action.color" mat-icon-button (click)="clickOnAction(action.onAction)">
+      <mat-icon>{{ action.icon }}</mat-icon>
+    </button>
+    <mat-icon *ngIf="!action.onAction" [style.color]="action.color">{{ action.icon }}</mat-icon>
+  </ng-template>
+</mat-toolbar>

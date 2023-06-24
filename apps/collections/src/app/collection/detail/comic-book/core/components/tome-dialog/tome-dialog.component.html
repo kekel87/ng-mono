@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Tome - {{ title }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="inline">
+      <mat-form-field>
+        <input matInput type="number" placeholder="Numéro" formControlName="number" required />
+      </mat-form-field>
+      <mat-slide-toggle color="primary" formControlName="acquired">Acquis</mat-slide-toggle>
+    </div>
+
+    <col-images-selector
+      formControlName="cover"
+      [searchTerm]="[title, 'cover', 'tome', form.controls.number.value.toString()]"
+      [path]="'tomes/' + id + '/' + form.controls.number.value"
+    ></col-images-selector>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="true">
+    <mat-icon>delete_forever</mat-icon>
+  </button>
+</mat-dialog-actions>

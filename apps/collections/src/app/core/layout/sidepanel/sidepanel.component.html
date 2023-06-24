@@ -1,0 +1,45 @@
+<mat-sidenav-container (backdropClick)="close()">
+  <mat-sidenav [opened]="open$ | async" [mode]="(isMobile$ | async) ? 'over' : 'side'" [fixedInViewport]="isMobile$ | async">
+    <!-- https://stackoverflow.com/a/42443947 -->
+    <a mat-button style="height: 0; position: absolute"></a>
+
+    <div *ngIf="user$ | async as user" class="user">
+      <img [src]="user.photoURL" class="mat-elevation-z3" />
+      <div class="info">
+        <span class="name">{{ user.displayName }}</span>
+        <span class="email">{{ user.email }}</span>
+      </div>
+      <button mat-icon-button (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+    </div>
+
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="['/', routeName.Dashboard]" routerLinkActive="active" (click)="close()">
+        <mat-icon mat-list-icon>dashboard</mat-icon>
+        Tableau de bord
+      </a>
+
+      <a
+        *ngFor="let meta of metas | keyvalue : originalOrder"
+        mat-list-item
+        [routerLink]="['/', meta.key]"
+        routerLinkActive="active"
+        (click)="close()"
+      >
+        <mat-icon mat-list-icon>{{ meta.value.icon }}</mat-icon>
+        {{ meta.value.title }}
+      </a>
+    </mat-nav-list>
+
+    <div class="footer">
+      <span>By <a href="https://github.com/kekel87" target="_blank">kekel87</a></span>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <main>
+      <ng-content></ng-content>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

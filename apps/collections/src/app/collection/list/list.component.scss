@@ -1,0 +1,60 @@
+:host {
+  display: block;
+  height: calc(100vh - 64px);
+
+  @media screen and (max-width: 600px) {
+    height: calc(100vh - 56px);
+  }
+}
+
+cdk-virtual-scroll-viewport {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+mat-list {
+  mat-list-item {
+    border-bottom: 1px #ece8e8 solid;
+    cursor: pointer;
+
+    p.mat-line {
+      color: grey;
+    }
+  }
+
+  mat-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 40px;
+  }
+}
+
+:host ::ng-deep {
+  .mat-list[dense] {
+    padding-top: 0;
+
+    .mat-list-item {
+      width: 100vw;
+
+      .mat-list-item-content {
+        padding: 0 10px;
+
+        .mat-list-text:not(:nth-child(2)) {
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+
+  .mat-list-base[dense] .mat-list-item .mat-list-avatar {
+    object-fit: scale-down;
+
+    border-radius: 0;
+  }
+
+  .mat-list-item.mat-2-line.mat-list-item-with-avatar {
+    height: 48px;
+  }
+}

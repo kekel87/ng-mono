@@ -1,0 +1,20 @@
+<div>
+  <button mat-raised-button color="warn" (click)="signInWithGoogle()">
+    Connexion
+    <span class="google">G</span>
+  </button>
+
+  <div *ngIf="displayLoginField" class="dev-auth">
+    <h3>Only for DEV</h3>
+    <label for="email">Email:</label>
+    <input id="email" type="text" name="email" [(ngModel)]="email" />
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" [(ngModel)]="password" />
+    <button mat-raised-button color="warn" (click)="signInWithEmailAndPassword(email, password)">
+      Connexion
+      <span class="google">G</span>
+    </button>
+  </div>
+</div>
+
+<col-loader *ngIf="loading$ | async"></col-loader>

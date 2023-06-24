@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
+      RUNTIME_CONFIG_COLLECTIONS_JSON: ${{ secrets.RUNTIME_CONFIG_COLLECTIONS_PROD_JSON }}
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
     steps:
       - uses: actions/checkout@v3
@@ -23,5 +24,6 @@ jobs:
       - uses: ng-easy/npm-setup@v3
         with:
           nx-key: nx-cache
+      - run: npx nx run-many --target=runtime-config --parallel=3
       - run: npx nx run-many --target=build --parallel=3
       - run: npx nx run-many --target=deploy --parallel=3 -- --prod --message \"Version ${{ github.ref_name }}\"

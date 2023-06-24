@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Ajouter plusieurs tomes</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input matInput type="number" placeholder="Du tome" formControlName="from" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" placeholder="au tome" formControlName="to" required />
+    </mat-form-field>
+
+    <mat-error *ngIf="form.hasError('rangeError') && (form.touched || form.dirty)">Saisie invalide</mat-error>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <button mat-raised-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="form.value">
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-dialog-actions>

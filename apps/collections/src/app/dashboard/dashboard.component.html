@@ -1,0 +1,10 @@
+<mat-card *ngFor="let meta of metas | keyvalue : originalOrder" [routerLink]="['/', meta.key]">
+  <col-loader *ngIf="loading$ | async"></col-loader>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>{{ meta.value.icon }}</mat-icon>
+    <mat-card-title>{{ meta.value.title }}</mat-card-title>
+    <mat-card-subtitle *ngIf="counters$ | async as counter">
+      {{ counter[meta.key] ? counter[meta.key]!.count : 0 }}
+    </mat-card-subtitle>
+  </mat-card-header>
+</mat-card>

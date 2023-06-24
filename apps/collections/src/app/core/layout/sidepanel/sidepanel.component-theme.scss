@@ -1,0 +1,27 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+// https://material.angular.io/guide/theming-your-components
+
+@mixin color($theme) {
+  $color-config: mat.get-color-config($theme);
+  $primary: map.get($color-config, 'primary');
+
+  .user {
+    color: mat.get-color-from-palette($primary, default-contrast);
+
+    background-color: mat.get-color-from-palette($primary);
+
+    .email {
+      color: mat.get-color-from-palette(mat.$gray-palette, 300);
+    }
+  }
+}
+
+@mixin theme($theme) {
+  $color-config: mat.get-color-config($theme);
+
+  @if $color-config {
+    @include color($theme);
+  }
+}

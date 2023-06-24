@@ -1,0 +1,4 @@
+<col-search-bar *ngIf="showSearchBar$ | async; else toolbar"></col-search-bar>
+<ng-template #toolbar>
+  <col-toolbar></col-toolbar>
+</ng-template>

@@ -1,0 +1,105 @@
+{
+  "name": "collections",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/collections/src",
+  "prefix": "ng-mono",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/collections",
+        "index": "apps/collections/src/index.html",
+        "main": "apps/collections/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/collections/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/collections/src/favicon.ico", "apps/collections/src/assets", "apps/collections/src/manifest.webmanifest"],
+        "styles": ["apps/collections/src/styles/theme.scss", "apps/collections/src/styles/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/collections/src/styles"]
+        },
+        "scripts": [],
+        "serviceWorker": true,
+        "ngswConfigPath": "apps/collections/ngsw-config.json"
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "1.3mb",
+              "maximumError": "1.5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "collections:build:production"
+        },
+        "development": {
+          "browserTarget": "collections:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/collections/**/*.ts", "apps/collections/**/*.html"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/collections/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "runtime-config": {
+      "command": "echo $RUNTIME_CONFIG_COLLECTIONS_JSON > apps/collections/src/assets/runtime-config.json"
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "echo '/* /index.html 200' > dist/apps/collections/_redirects",
+            "forwardAllArgs": false
+          },
+          "netlify deploy --site abe8d931-a0da-4bb3-b6c8-00b0712f7c60 --dir dist/apps/collections"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}

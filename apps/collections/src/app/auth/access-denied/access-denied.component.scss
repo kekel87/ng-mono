@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+mat-icon {
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: auto;
+
+  font-size: 100px;
+}

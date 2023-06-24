@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Choisir une image</h2>
+
+<mat-dialog-content>
+  <col-loader *ngIf="loading"></col-loader>
+
+  <ul>
+    <li *ngFor="let image of images" [class.selected]="image === selected" (click)="selectImage(image)">
+      <img [src]="image.thumbnail.url" />
+    </li>
+  </ul>
+
+  <button #button mat-raised-button *ngIf="!loading" (click)="getMore()">
+    <col-loader [diameter]="20" *ngIf="loadingMore"></col-loader>
+    Afficher plus
+  </button>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="selected?.url" [disabled]="!selected">Choisir</button>
+</mat-dialog-actions>

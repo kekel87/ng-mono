@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>
+  <mat-icon color="warn">warning</mat-icon>
+  <span>{{ config.title }}</span>
+</h2>
+<mat-dialog-content>
+  <p>{{ config.content }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button [mat-dialog-close]="false">{{ config.cancelText }}</button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="true">{{ config.confirmText }}</button>
+</mat-dialog-actions>

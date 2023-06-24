@@ -1,0 +1,62 @@
+<col-loader *ngIf="loading$ | async"></col-loader>
+
+<form *ngIf="form" [formGroup]="form">
+  <mat-form-field class="title">
+    <input matInput placeholder="Titre" formControlName="title" required />
+  </mat-form-field>
+
+  <col-images-selector
+    class="image"
+    formControlName="image"
+    [searchTerm]="[form.get('title')!.value, form.get('authors')!.value[0], 'cover']"
+    [path]="collection + '/' + item.id"
+  ></col-images-selector>
+
+  <!-- <mat-slide-toggle color="primary" formControlName="acquired">Acquis</mat-slide-toggle> -->
+
+  <div formArrayName="authors" class="max-price">
+    <div class="author" *ngFor="let _ of form.controls.authors.controls; let i = index">
+      <button mat-icon-button (click)="addAuthor()" *ngIf="i === 0">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <button mat-icon-button (click)="deleteAuthor(i)" *ngIf="i > 0">
+        <mat-icon>remove</mat-icon>
+      </button>
+
+      <mat-form-field>
+        <input [formControlName]="i" matInput placeholder="Auteur" required />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-form-field class="field">
+    <input matInput placeholder="Editeur" formControlName="publisher" />
+  </mat-form-field>
+
+  <div class="comment">
+    <mat-checkbox [checked]="isOneShot" (change)="isOneShot = $event.checked">One shot</mat-checkbox>
+
+    <ng-container *ngIf="!isOneShot">
+      <h3>Tomes :</h3>
+      <div formArrayName="tomes" class="tomes">
+        <div class="mat-elevation-z3">
+          <button mat-icon-button (click)="addNewTome()">
+            <mat-icon [inline]="true">add</mat-icon>
+          </button>
+          <button mat-icon-button (click)="addManyTomes()">
+            <mat-icon [inline]="true">add</mat-icon>
+            <mat-icon [inline]="true">add</mat-icon>
+          </button>
+        </div>
+        <div class="mat-elevation-z3" *ngFor="let tomeControl of form.controls.tomes.controls; let i = index" [formGroupName]="i">
+          <mat-checkbox formControlName="acquired"></mat-checkbox>
+          <img [src]="tomeControl.get('cover')!.value" alt="Tome cover" (click)="editTome(i)" />
+          <span *ngIf="tomeControl.get('cover')!.value === 'assets/75x118.png'" (click)="editTome(i)">
+            {{ tomeControl.get('number')!.value }}
+          </span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</form>
