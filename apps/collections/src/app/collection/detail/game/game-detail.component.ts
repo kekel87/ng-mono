@@ -10,7 +10,6 @@ import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/materia
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
-import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { LoaderComponent } from '~shared/components/loader/loader.component';
 import { Collection } from '~shared/enums/collection';
@@ -32,7 +31,6 @@ type GameForm = FormGroup<{
   comment: FormControl<string | undefined>;
 }>;
 
-@UntilDestroy()
 @Component({
   standalone: true,
   selector: 'col-game-detail',

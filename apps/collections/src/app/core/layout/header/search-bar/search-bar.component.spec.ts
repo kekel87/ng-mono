@@ -1,7 +1,7 @@
 import { tick, fakeAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
+import { MockBuilder, MockRender, MockedComponentFixture, NG_MOCKS_ROOT_PROVIDERS, ngMocks } from 'ng-mocks';
 
 import { layoutActions } from '~app/core/layout/layout.actions';
 
@@ -15,6 +15,7 @@ describe('SearchBarComponent', () => {
   beforeEach(async () => {
     await MockBuilder(SearchBarComponent)
       .keep(FormsModule)
+      .keep(NG_MOCKS_ROOT_PROVIDERS)
       .provide(
         provideMockStore({
           selectors: [{ selector: layoutSelectors.selectSearchPredicate, value: null }],
@@ -31,8 +32,8 @@ describe('SearchBarComponent', () => {
     expect(fixture).toBeTruthy();
   });
 
-  xit('should dispatch search action', fakeAsync(() => {
-    ngMocks.change('input', 'toto');
+  it('should dispatch search action', fakeAsync(() => {
+    ngMocks.output('input', 'ngModelChange').emit('toto');
     fixture.detectChanges();
     tick(200);
 
