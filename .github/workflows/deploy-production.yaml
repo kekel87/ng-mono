@@ -1,16 +1,11 @@
-name: 🚀 Deploy
+name: 🚀 Deploy production
 on:
   release:
     types: [released]
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   build-deploy-production:
-    name: 🛠️ Build & 🚀 Deploy in Production
+    name: 🛠️ Build & 🚀 Deploy production
     runs-on: ubuntu-latest
     env:
       RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
@@ -23,7 +18,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v3
       - uses: ng-easy/npm-setup@v3
         with:
-          nx-key: nx-cache
-      - run: npx nx run-many --target=runtime-config --parallel=3
-      - run: npx nx run-many --target=build --parallel=3
-      - run: npx nx run-many --target=deploy --parallel=3 -- --prod --message \"Version ${{ github.ref_name }}\"
+          nx-key: cache
+      - run: npx nx run-many --target=runtime-config
+      - run: npx nx run-many --target=build
+      - run: npx nx run-many --target=deploy -- --prod --message \"Version ${{ github.ref_name }}\"

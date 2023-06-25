@@ -1,5 +1,10 @@
 # 🅰️ ng-mono
 
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+![Production](https://github.com/kekel87/ng-mono/actions/workflows/deploy-production.yaml/badge.svg)
+
+
 > NX Mono repo containing my Angular projects
 
 ```
@@ -16,7 +21,7 @@
 
 An application using the Netatmo API to display all measures in one place
 
-## Collection (Soon ...)
+## [Collections](/apps/collections/README.md)
 
 Application for tracking collections (games, books, manga, amiibo & vinyl).
 

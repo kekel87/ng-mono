@@ -14,8 +14,9 @@ jobs:
     steps:
       - uses: google-github-actions/release-please-action@v3
         with:
+          token: ${{ secrets.NG_MONO_CI_TOKEN }}
           release-type: node
-          pull-request-title-pattern: 'release: ${version}'
+          pull-request-title-pattern: "release: ${version}"
           changelog-types: |
             [
               {"type":"feat","section":"✨ Features","hidden":false},

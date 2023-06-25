@@ -1,0 +1,26 @@
+name: 🔍 Deploy preview
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  build-deploy-preview:
+    name: 🛠️ Build & 🚀 Deploy preview
+    runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == '🔍 preview' }}
+    env:
+      RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
+      RUNTIME_CONFIG_COLLECTIONS_JSON: ${{ secrets.RUNTIME_CONFIG_COLLECTIONS_DEV_JSON }}
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: cache
+      - run: npx nx run-many --target=runtime-config
+      - run: npx nx run-many --target=build
+      - run: npx nx run-many --target=deploy
