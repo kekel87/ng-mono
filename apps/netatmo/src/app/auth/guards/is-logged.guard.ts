@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, UrlTree } from '@angular/router';
+import { UrlTree } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 @Injectable({ providedIn: 'root' })
-export class IsLoggedGuard implements CanActivate {
+export class IsLoggedGuard {
   constructor(private oauthService: OAuthService) {}
 
   canActivate(): boolean | UrlTree {

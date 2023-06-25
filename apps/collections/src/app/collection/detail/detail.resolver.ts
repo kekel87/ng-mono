@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
@@ -23,7 +23,7 @@ interface ItemCollection {
 @Injectable({
   providedIn: 'root',
 })
-export class DetailResolver implements Resolve<ItemCollection> {
+export class DetailResolver {
   constructor(private store: Store, private service: FirestoreService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ItemCollection> {
