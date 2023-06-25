@@ -1,12 +1,14 @@
 name: 🚀 Deploy production
 on:
   release:
-    types: [released]
+    types:
+      - released
 
 jobs:
   build-deploy-production:
     name: 🛠️ Build & 🚀 Deploy production
     runs-on: ubuntu-latest
+    environment: production
     env:
       RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
       RUNTIME_CONFIG_COLLECTIONS_JSON: ${{ secrets.RUNTIME_CONFIG_COLLECTIONS_PROD_JSON }}

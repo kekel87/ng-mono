@@ -2,13 +2,17 @@ name: 🔍 Deploy preview
 
 on:
   pull_request:
-    types: [labeled]
+    types:
+      - labeled
+    branches-ignore:
+      - "release-*"
 
 jobs:
   build-deploy-preview:
     name: 🛠️ Build & 🚀 Deploy preview
     runs-on: ubuntu-latest
     if: ${{ github.event.label.name == '🔍 preview' }}
+    environment: preview
     env:
       RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
       RUNTIME_CONFIG_COLLECTIONS_JSON: ${{ secrets.RUNTIME_CONFIG_COLLECTIONS_DEV_JSON }}
