@@ -1,13 +1,13 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx"],
+  "plugins": ["@nx"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["eslint:recommended"],
       "rules": {
-        "@nrwl/nx/enforce-module-boundaries": [
+        "@nx/enforce-module-boundaries": [
           "error",
           {
             "enforceBuildableLibDependency": true,
@@ -20,7 +20,12 @@
             ]
           }
         ],
-        "no-console": ["warn", { "allow": ["error"] }]
+        "no-console": [
+          "warn",
+          {
+            "allow": ["error"]
+          }
+        ]
       }
     },
     {
@@ -30,7 +35,7 @@
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@nrwl/nx/typescript",
+        "plugin:@nx/typescript",
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended",
         "plugin:import/recommended",
@@ -71,7 +76,7 @@
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
+      "extends": ["plugin:@nx/javascript"],
       "rules": {}
     },
     {

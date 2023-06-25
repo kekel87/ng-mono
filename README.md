@@ -4,7 +4,6 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 ![Production](https://github.com/kekel87/ng-mono/actions/workflows/deploy-production.yaml/badge.svg)
 
-
 > NX Mono repo containing my Angular projects
 
 ```
@@ -102,7 +101,7 @@ nx workspace-lint
 
 ```
 nx list
-nx g @nrwl/angular:component [name] --standalone
+nx g @nx/angular:component [name] --standalone
 ```
 
 </details>

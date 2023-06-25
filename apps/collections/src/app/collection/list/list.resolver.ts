@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { InitUtils } from '../share/utils/init.utils';
 @Injectable({
   providedIn: 'root',
 })
-export class ListResolver implements Resolve<Collection> {
+export class ListResolver {
   constructor(private store: Store) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Collection> {
