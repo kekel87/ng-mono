@@ -1,6 +1,8 @@
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,7 +14,7 @@ import { layoutFeature } from '../store/layout.reducer';
 @Component({
   selector: 'net-sidenav',
   standalone: true,
-  imports: [AsyncPipe, MatSidenavModule],
+  imports: [AsyncPipe, NgIf, MatSidenavModule, MatButtonModule, MatIconModule],
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
 })

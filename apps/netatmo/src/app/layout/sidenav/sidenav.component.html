@@ -6,7 +6,9 @@
     (openedStart)="startAnimated()"
     (closedStart)="startAnimated()"
     (openedChange)="endAnimated()"
+    autoFocus="false"
   >
+    <button mat-icon-button *ngIf="isMobile$ | async" (click)="close()"><mat-icon>close</mat-icon></button>
     <ng-content select="[sidenav]"></ng-content>
   </mat-sidenav>
 
