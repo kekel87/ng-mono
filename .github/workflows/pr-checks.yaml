@@ -13,7 +13,7 @@ concurrency:
 jobs:
   install:
     name: 🚧 Install
-    if: ${{ startsWith(github.head_ref, "release") }}
+    if: ${{ !startsWith(github.head_ref, 'release-please') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
