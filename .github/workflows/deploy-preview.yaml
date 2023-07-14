@@ -4,8 +4,6 @@ on:
   pull_request:
     types:
       - labeled
-    branches-ignore:
-      - "release-*"
 
 jobs:
   build-deploy-preview:
