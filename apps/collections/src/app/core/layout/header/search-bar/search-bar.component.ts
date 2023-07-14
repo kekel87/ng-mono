@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -15,7 +15,6 @@ import { AutoFocusDirective } from '~shared/directives/auto-focus/auto-focus.dir
 import { layoutActions } from '../../layout.actions';
 import * as layoutSelectors from '../../layout.selectors';
 
-@UntilDestroy()
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MatToolbarModule, MatInputModule, AutoFocusDirective],
@@ -29,7 +28,7 @@ export class SearchBarComponent {
   searchChange$: Subject<string> = new Subject<string>();
 
   constructor(private store: Store) {
-    this.searchChange$.pipe(untilDestroyed(this), debounceTime(200), distinctUntilChanged()).subscribe((search) => {
+    this.searchChange$.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe((search) => {
       this.store.dispatch(layoutActions.search({ search }));
     });
   }

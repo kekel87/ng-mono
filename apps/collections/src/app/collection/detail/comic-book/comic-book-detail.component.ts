@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
@@ -9,7 +10,6 @@ import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/lega
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime } from 'rxjs/operators';
 
 import { LoaderComponent } from '~shared/components/loader/loader.component';
@@ -35,7 +35,6 @@ type ComicBookForm = FormGroup<{
   tomes: FormArray<TomeForm>;
 }>;
 
-@UntilDestroy()
 @Component({
   standalone: true,
   selector: 'col-comic-book-detail',
@@ -86,16 +85,18 @@ export class ComicBookDetailComponent extends DetailComponent<Book, ComicBookFor
       tomes: this.formBuilder.array(book.tomes.map((t) => this.toTomeFormGroup(t))),
     });
 
-    this.form.controls.tomes.valueChanges.pipe(debounceTime(200), untilDestroyed(this)).subscribe((value: Partial<Tome>[]) => {
-      const imageFormControl = this.form.controls.image;
-      if (imageFormControl && imageFormControl.value === 'assets/400x200.png') {
-        const firstTome = value.find((tome: Partial<Tome>) => tome.number === 1 && tome.cover !== 'assets/75x118.png');
-        if (firstTome && firstTome.cover) {
-          imageFormControl.patchValue(firstTome.cover);
-          this.changeDetectorRef.markForCheck();
+    this.form.controls.tomes.valueChanges
+      .pipe(debounceTime(200), takeUntilDestroyed(this.destroyRef))
+      .subscribe((value: Partial<Tome>[]) => {
+        const imageFormControl = this.form.controls.image;
+        if (imageFormControl && imageFormControl.value === 'assets/400x200.png') {
+          const firstTome = value.find((tome: Partial<Tome>) => tome.number === 1 && tome.cover !== 'assets/75x118.png');
+          if (firstTome && firstTome.cover) {
+            imageFormControl.patchValue(firstTome.cover);
+            this.changeDetectorRef.markForCheck();
+          }
         }
-      }
-    });
+      });
 
     return book.title;
   }

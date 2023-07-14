@@ -9,7 +9,6 @@ import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/lega
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
-import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { LoaderComponent } from '~shared/components/loader/loader.component';
 import { Vinyle } from '~shared/models/vinyle';
@@ -27,7 +26,6 @@ type VinyleForm = FormGroup<{
   comment: FormControl<string | undefined>;
 }>;
 
-@UntilDestroy()
 @Component({
   standalone: true,
   selector: 'col-vinyle-detail',

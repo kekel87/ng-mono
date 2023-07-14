@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { LoaderComponent } from '~shared/components/loader/loader.component';
 import { Collection } from '~shared/enums/collection';
@@ -32,7 +31,6 @@ type GameForm = FormGroup<{
   comment: FormControl<string | undefined>;
 }>;
 
-@UntilDestroy()
 @Component({
   standalone: true,
   selector: 'col-game-detail',

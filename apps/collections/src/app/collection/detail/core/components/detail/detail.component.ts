@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, NgZone, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
@@ -18,7 +18,6 @@ import { collectionDetailActions } from '../../store/detail.actions';
 import * as detailSelectors from '../../store/detail.selectors';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
-@UntilDestroy()
 @Component({ template: '' })
 export abstract class DetailComponent<T extends Item, F extends FormGroup> {
   item!: T;
@@ -30,6 +29,7 @@ export abstract class DetailComponent<T extends Item, F extends FormGroup> {
   readonly Collections = Collection;
 
   abstract get titleControl(): FormControl<string>;
+  protected destroyRef = inject(DestroyRef);
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +43,7 @@ export abstract class DetailComponent<T extends Item, F extends FormGroup> {
     this.route.data
       .pipe(
         map((data) => data['itemCollection']),
-        untilDestroyed(this)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ collection, item }: { collection: Collection; item: T }) => {
         this.collection = collection;
@@ -51,7 +51,7 @@ export abstract class DetailComponent<T extends Item, F extends FormGroup> {
         this.init();
       });
 
-    this.action$.pipe(ofType(collectionDetailActions.openDeletePopup), untilDestroyed(this)).subscribe(() => this.delete());
+    this.action$.pipe(ofType(collectionDetailActions.openDeletePopup), takeUntilDestroyed(this.destroyRef)).subscribe(() => this.delete());
   }
 
   abstract initForm(): string;
@@ -60,7 +60,7 @@ export abstract class DetailComponent<T extends Item, F extends FormGroup> {
     const title = this.initForm();
 
     combineLatest([this.titleControl.valueChanges.pipe(debounceTime(200), startWith(title)), this.saveState$])
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([value, saveState]) => {
         let icon = 'cloud';
         switch (saveState) {
@@ -94,7 +94,7 @@ export abstract class DetailComponent<T extends Item, F extends FormGroup> {
     this.form.valueChanges
       .pipe(
         debounceTime(200),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         tap(() => {
           this.ngZone.run(() => {
             this.store.dispatch(collectionDetailActions.setSaveState({ saveState: SaveState.NotSave }));
