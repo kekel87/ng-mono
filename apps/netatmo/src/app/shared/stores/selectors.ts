@@ -6,14 +6,17 @@ import { homeFeature } from './home/home.reducer';
 import { MeasureType } from '../api/enums/measure-type';
 import { Home } from '../api/models/home';
 import { Room } from '../api/models/room';
+import { WeatherParams } from '../api/models/weather-params';
 import { MEASURE_TYPE_BY_MODULE_TYPE } from '../constants/measure-type-by-module-type';
 import { MEASURE_TYPE_PALETTES } from '../constants/measure-type-palettes';
+import { Interval } from '../models/interval';
 import { ModuleMesureType } from '../models/module-measure-type';
 import { ModuleWithEnabledMeasureTypes } from '../models/module-with-enabled-measure-types';
 import { ModuleWithMeasureTypes } from '../models/module-with-measure-types';
 import { ModuleWithRoom } from '../models/module-with-room';
 import { getElementAt } from '../utils/get-element-at';
 import { hasRoom } from '../utils/has-room';
+import { weatherEndDate } from '../utils/weather-end-date';
 
 export const selectRooms = createSelector(homeFeature.selectHome, (home: Home | undefined): Room[] => home?.rooms ?? []);
 export const selectModules = createSelector(homeFeature.selectHome, (home: Home | undefined): ModuleWithRoom[] => {
@@ -57,5 +60,34 @@ export const selectModuleWithEnabledMeasureType = createSelector(
   selectModulesWithMeasureType,
   (enabled: Dictionary<MeasureType[]>, modules: ModuleWithMeasureTypes[]): ModuleWithEnabledMeasureTypes[] => {
     return modules.map((m) => ({ ...m, enabledMeasureTypes: enabled[m.id] ?? [] }));
+  }
+);
+
+export const selectWheaterParams = createSelector(
+  homeFeature.selectHome,
+  filterFeature.selectInterval,
+  filterFeature.selectTemparatureForecast,
+  filterFeature.selectHumidityForecast,
+  (home: Home | undefined, interval: Interval, temparatureForecast: boolean, humidityForecast: boolean): WeatherParams | undefined => {
+    if (!home || (!temparatureForecast && !humidityForecast)) {
+      return undefined;
+    }
+
+    const hourly = [];
+    if (temparatureForecast) {
+      hourly.push('temperature_2m');
+    }
+
+    if (humidityForecast) {
+      hourly.push('relativehumidity_2m');
+    }
+
+    return {
+      longitude: home.coordinates[0],
+      latitude: home.coordinates[1],
+      hourly: hourly.join(','),
+      start_date: interval.begin.split('T')[0],
+      end_date: weatherEndDate(interval.end),
+    };
   }
 );

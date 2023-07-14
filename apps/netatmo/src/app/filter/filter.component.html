@@ -1,58 +1,80 @@
-<div *ngIf="interval$ | async as interval" [ngSwitch]="interval.type">
+<ng-container
+  *ngIf="{
+    rooms: rooms$ | async,
+    modules: modules$ | async,
+    enabled: enabledModulesType$ | async,
+    autoRefresh: autoRefresh$ | async,
+    temparatureForecast: temparatureForecast$ | async,
+    humidityForecast: humidityForecast$ | async
+  } as vm"
+>
+  <div *ngIf="interval$ | async as interval" [ngSwitch]="interval.type">
+    <div class="row">
+      <button mat-icon-button (click)="previous()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <div *ngSwitchCase="IntervalType.Day">{{ interval.begin | date: 'mediumDate' }}</div>
+      <div *ngSwitchCase="IntervalType.Week">{{ interval.begin | date: 'd' }}-{{ interval.end | date: 'd MMMM yyyy' }}</div>
+      <div *ngSwitchCase="IntervalType.Month">{{ interval.begin | date: 'MMMM yyyy' }}</div>
+      <div *ngSwitchCase="IntervalType.Year">{{ interval.begin | date: 'yyyy' }}</div>
+      <button mat-icon-button [disabled]="(asNext$ | async) === false" (click)="next()">
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+    </div>
+
+    <mat-button-toggle-group name="intervalType" [value]="interval.type" (change)="changeIntervalType($event.value)">
+      <mat-button-toggle *ngFor="let kv of IntervalType | keyvalue: unsorted" [value]="kv.value">{{ kv.key }}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
   <div class="row">
-    <button mat-icon-button (click)="previous()">
-      <mat-icon>arrow_back_ios</mat-icon>
+    <button mat-icon-button class="enabled" (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
     </button>
-    <div *ngSwitchCase="IntervalType.Day">{{ interval.begin | date: 'mediumDate' }}</div>
-    <div *ngSwitchCase="IntervalType.Week">{{ interval.begin | date: 'd' }}-{{ interval.end | date: 'd MMMM yyyy' }}</div>
-    <div *ngSwitchCase="IntervalType.Month">{{ interval.begin | date: 'MMMM yyyy' }}</div>
-    <div *ngSwitchCase="IntervalType.Year">{{ interval.begin | date: 'yyyy' }}</div>
-    <button mat-icon-button [disabled]="(asNext$ | async) === false" (click)="next()">
-      <mat-icon>arrow_forward_ios</mat-icon>
+
+    <button mat-icon-button [class.enabled]="vm.autoRefresh" color="primary" (click)="changeAutoRefresh(!vm.autoRefresh)">
+      <mat-icon>autorenew</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      [class.enabled]="vm.temparatureForecast"
+      color="primary"
+      (click)="toggleTemperatureForecast(!vm.temparatureForecast)"
+    >
+      <mat-icon>thermostat</mat-icon>
+    </button>
+
+    <button mat-icon-button [class.enabled]="vm.humidityForecast" color="primary" (click)="toggleHumidityForecast(!vm.humidityForecast)">
+      <mat-icon>water_drop</mat-icon>
     </button>
   </div>
 
-  <mat-button-toggle-group name="intervalType" [value]="interval.type" (change)="changeIntervalType($event.value)">
-    <mat-button-toggle *ngFor="let kv of IntervalType | keyvalue: unsorted" [value]="kv.value">{{ kv.key }}</mat-button-toggle>
-  </mat-button-toggle-group>
-</div>
+  <mat-accordion displayMode="flat" multi>
+    <mat-expansion-panel *ngFor="let room of vm.rooms" expanded>
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ room.name }}</mat-panel-title>
+      </mat-expansion-panel-header>
 
-<div class="row">
-  <button mat-icon-button (click)="refresh()" color="accent">
-    <mat-icon>refresh</mat-icon>
-  </button>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let id of room.module_ids" role="listitem">
+          <ng-container *ngIf="vm.modules![id] as module">
+            {{ module?.name }}
 
-  <mat-slide-toggle [checked]="autoRefresh$ | async" (change)="changeAutoRefresh($event.checked)">Auto refresh</mat-slide-toggle>
-</div>
+            <div class="spacer"></div>
 
-<mat-accordion
-  displayMode="flat"
-  multi
-  *ngIf="{ rooms: rooms$ | async, modules: modules$ | async, enabled: enabledModulesType$ | async } as vm"
->
-  <mat-expansion-panel *ngFor="let room of vm.rooms" expanded>
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{ room.name }}</mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-list role="list">
-      <mat-list-item *ngFor="let id of room.module_ids" role="listitem">
-        <ng-container *ngIf="vm.modules![id] as module">
-          {{ module?.name }}
-
-          <div class="spacer"></div>
-
-          <button
-            mat-icon-button
-            *ngFor="let measureType of module.measureType"
-            [class.enabled]="vm.enabled![id + measureType]"
-            [style.color]="module.measureTypeColors[measureType]"
-            (click)="toggleEnabled(id, measureType, !vm.enabled![id + measureType])"
-          >
-            <mat-icon>{{ MEASURE_TYPE_ICONS[measureType] }}</mat-icon>
-          </button>
-        </ng-container>
-      </mat-list-item>
-    </mat-list>
-  </mat-expansion-panel>
-</mat-accordion>
+            <button
+              mat-icon-button
+              *ngFor="let measureType of module.measureType"
+              [class.enabled]="vm.enabled![id + measureType]"
+              [style.color]="module.measureTypeColors[measureType]"
+              (click)="toggleEnabled(id, measureType, !vm.enabled![id + measureType])"
+            >
+              <mat-icon>{{ MEASURE_TYPE_ICONS[measureType] }}</mat-icon>
+            </button>
+          </ng-container>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+  </mat-accordion>
+</ng-container>

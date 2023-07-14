@@ -9,6 +9,7 @@ export const measureActions = createActionGroup({
     fetch: props<{ moduleMeasureType: ModuleMesureType }>(),
     'Fetch many': emptyProps(),
     'Fetch success': props<{ measures: MeasureSource[] }>(),
+    upsertMany: props<{ measures: MeasureSource[] }>(),
     'Fetch error': emptyProps(),
   },
 });

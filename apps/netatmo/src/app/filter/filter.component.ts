@@ -5,7 +5,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
@@ -33,7 +32,6 @@ import { asNext } from '../shared/utils/date-interval';
     MatListModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatSlideToggleModule,
   ],
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
@@ -43,6 +41,8 @@ export class FilterComponent {
   readonly IntervalType = IntervalType;
 
   autoRefresh$ = this.store.select(filterFeature.selectAutoRefresh);
+  temparatureForecast$ = this.store.select(filterFeature.selectTemparatureForecast);
+  humidityForecast$ = this.store.select(filterFeature.selectHumidityForecast);
   interval$ = this.store.select(filterFeature.selectInterval);
   asNext$ = this.interval$.pipe(map((interval) => asNext(interval)));
   rooms$ = this.store.select(selectRooms);
@@ -77,6 +77,14 @@ export class FilterComponent {
 
   changeAutoRefresh(autoRefresh: boolean): void {
     this.store.dispatch(filterActions.changeAutoRefresh({ autoRefresh }));
+  }
+
+  toggleTemperatureForecast(temparatureForecast: boolean): void {
+    this.store.dispatch(filterActions.toggleTemperatureForecast({ temparatureForecast }));
+  }
+
+  toggleHumidityForecast(humidityForecast: boolean): void {
+    this.store.dispatch(filterActions.toggleHumidityForecast({ humidityForecast }));
   }
 
   unsorted() {
