@@ -11,11 +11,13 @@ const selectId = (m: ModuleMesureType): string => `${m.id}${m.type}`;
 const adapter: EntityAdapter<ModuleMesureType> = createEntityAdapter<ModuleMesureType>({ selectId });
 
 export interface State {
+  autoRefresh: boolean;
   interval: Interval;
   enabledModuleMeasureType: EntityState<ModuleMesureType>;
 }
 
 const initialState: State = {
+  autoRefresh: true,
   interval: build(IntervalType.Day),
   enabledModuleMeasureType: adapter.getInitialState(),
 };
@@ -24,6 +26,7 @@ export const filterFeature = createFeature({
   name: 'filter',
   reducer: createReducer(
     initialState,
+    on(filterActions.changeAutoRefresh, (state, { autoRefresh }): State => ({ ...state, autoRefresh })),
     on(
       filterActions.changeIntervalType,
       (state, { intervalType }): State => ({

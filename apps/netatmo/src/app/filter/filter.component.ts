@@ -5,6 +5,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
@@ -32,6 +33,7 @@ import { asNext } from '../shared/utils/date-interval';
     MatListModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatSlideToggleModule,
   ],
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
@@ -40,6 +42,7 @@ export class FilterComponent {
   readonly MEASURE_TYPE_ICONS = MEASURE_TYPE_ICONS;
   readonly IntervalType = IntervalType;
 
+  autoRefresh$ = this.store.select(filterFeature.selectAutoRefresh);
   interval$ = this.store.select(filterFeature.selectInterval);
   asNext$ = this.interval$.pipe(map((interval) => asNext(interval)));
   rooms$ = this.store.select(selectRooms);
@@ -66,6 +69,14 @@ export class FilterComponent {
 
   previous(): void {
     this.store.dispatch(filterActions.previousInterval());
+  }
+
+  refresh(): void {
+    this.store.dispatch(filterActions.refresh());
+  }
+
+  changeAutoRefresh(autoRefresh: boolean): void {
+    this.store.dispatch(filterActions.changeAutoRefresh({ autoRefresh }));
   }
 
   unsorted() {
