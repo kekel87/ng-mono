@@ -1,5 +1,28 @@
 # Changelog
 
+## [2023.2.0](https://github.com/kekel87/ng-mono/compare/v2023.1.0...v2023.2.0) (2023-07-15)
+
+
+### ⚙️ Global
+
+* ⬆️ update repo and dependencies ([#13](https://github.com/kekel87/ng-mono/issues/13)) ([46f0818](https://github.com/kekel87/ng-mono/commit/46f081809234849045ebb712b4569abc1014d07f))
+
+
+### 🛠️ Refactorings
+
+* migrate to natif takeUntilDestroyed ([#15](https://github.com/kekel87/ng-mono/issues/15)) ([63eb6fa](https://github.com/kekel87/ng-mono/commit/63eb6faa9c363c7ffa1b7a89698f416dac6e95b2)), closes [#11](https://github.com/kekel87/ng-mono/issues/11)
+
+
+### 🐛 Bug Fixes
+
+* **netatmo:** close button on sidepanel ([13fb042](https://github.com/kekel87/ng-mono/commit/13fb04282b988979fe6c8105b1e1123b251950ae)), closes [#8](https://github.com/kekel87/ng-mono/issues/8)
+
+
+### ✨ Features
+
+* **netatmo:** auto refresh token ([#19](https://github.com/kekel87/ng-mono/issues/19)) ([0d00ea0](https://github.com/kekel87/ng-mono/commit/0d00ea05b34b0552d6159d924c0b1b15d3dbb434))
+* **netatmo:** refresh and auto refresh ([#18](https://github.com/kekel87/ng-mono/issues/18)) ([6407a5b](https://github.com/kekel87/ng-mono/commit/6407a5bfa03035cbbca1dbf4951584fa74661684))
+
 ## [2023.1.0](https://github.com/kekel87/ng-mono/compare/v2023.0.0...v2023.1.0) (2023-06-24)
 
 
