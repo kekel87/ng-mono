@@ -1,5 +1,5 @@
 <div *ngIf="interval$ | async as interval" [ngSwitch]="interval.type">
-  <div>
+  <div class="row">
     <button mat-icon-button (click)="previous()">
       <mat-icon>arrow_back_ios</mat-icon>
     </button>
@@ -15,6 +15,14 @@
   <mat-button-toggle-group name="intervalType" [value]="interval.type" (change)="changeIntervalType($event.value)">
     <mat-button-toggle *ngFor="let kv of IntervalType | keyvalue : unsorted" [value]="kv.value">{{ kv.key }}</mat-button-toggle>
   </mat-button-toggle-group>
+</div>
+
+<div class="row">
+  <button mat-icon-button (click)="refresh()" color="accent">
+    <mat-icon>refresh</mat-icon>
+  </button>
+
+  <mat-slide-toggle [checked]="autoRefresh$ | async" (change)="changeAutoRefresh($event.checked)">Auto refresh</mat-slide-toggle>
 </div>
 
 <mat-accordion

@@ -20,19 +20,19 @@ button:not(.enabled) {
   opacity: 0.4;
 }
 
-:host > div:first-of-type {
+:host>div:first-of-type {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
   padding: 12px;
+}
 
-  & > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-  }
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }

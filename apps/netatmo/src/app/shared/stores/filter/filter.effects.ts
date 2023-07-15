@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { timer } from 'rxjs';
+import { filter, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { filterActions } from './filter.actions';
 import { MeasureType } from '../../api/enums/measure-type';
@@ -12,6 +13,8 @@ import { selectModulesWithMeasureType } from '../selectors';
 
 @Injectable()
 export class FilterEffects {
+  readonly AUTO_REFRESH_DELAY = 600000;
+
   constructor(private actions$: Actions, private store: Store) {}
 
   initTemperatureMeasureByDefault$ = createEffect(() => {
@@ -42,9 +45,28 @@ export class FilterEffects {
         filterActions.enableManyModuleMeasure,
         filterActions.changeIntervalType,
         filterActions.nextInterval,
-        filterActions.previousInterval
+        filterActions.previousInterval,
+        filterActions.refresh
       ),
       map(() => measureActions.fetchMany())
+    );
+  });
+
+  autoRefresh$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(filterActions.changeAutoRefresh),
+      startWith({ autoRefresh: true }),
+      switchMap(() =>
+        timer(0, this.AUTO_REFRESH_DELAY).pipe(
+          map(() => measureActions.fetchMany()),
+          takeUntil(
+            this.actions$.pipe(
+              ofType(filterActions.changeAutoRefresh),
+              filter(({ autoRefresh }) => !autoRefresh)
+            )
+          )
+        )
+      )
     );
   });
 }
