@@ -1,0 +1,22 @@
+name: 💽 Maintain cache
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install:
+    name: 🚧 Install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: ng-easy/npm-setup@v3
+        with:
+          nx-key: cache
