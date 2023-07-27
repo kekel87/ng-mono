@@ -15,7 +15,10 @@ import { selectModulesWithMeasureType } from '../selectors';
 export class FilterEffects {
   readonly AUTO_REFRESH_DELAY = 600000;
 
-  constructor(private actions$: Actions, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store
+  ) {}
 
   initTemperatureMeasureByDefault$ = createEffect(() => {
     return this.actions$.pipe(

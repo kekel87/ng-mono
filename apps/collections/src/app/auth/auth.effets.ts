@@ -13,7 +13,11 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private authService: AuthService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private store: Store
+  ) {}
 
   login$ = createEffect(
     () => {

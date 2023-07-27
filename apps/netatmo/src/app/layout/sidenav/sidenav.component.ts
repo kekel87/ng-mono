@@ -25,7 +25,10 @@ export class SidenavComponent {
     .observe(Breakpoints.Handset)
     .pipe(map((state: BreakpointState) => state.matches));
 
-  constructor(private store: Store, private breakpointObserver: BreakpointObserver) {
+  constructor(
+    private store: Store,
+    private breakpointObserver: BreakpointObserver
+  ) {
     this.isMobile$.pipe(first(), delay(200)).subscribe((isMobile) => this.store.dispatch(layoutActions.setSidenav({ opened: !isMobile })));
   }
 

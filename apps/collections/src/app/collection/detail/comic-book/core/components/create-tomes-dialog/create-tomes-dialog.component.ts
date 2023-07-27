@@ -20,7 +20,10 @@ export class CreateTomesDialogComponent {
     to: FormControl<number>;
   }>;
 
-  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) data: { start: number }) {
+  constructor(
+    private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) data: { start: number }
+  ) {
     this.form = this.formBuilder.nonNullable.group(
       {
         from: [data.start],

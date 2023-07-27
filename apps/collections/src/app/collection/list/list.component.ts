@@ -37,7 +37,10 @@ export class ListComponent implements OnInit, AfterViewInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true })
   viewport!: CdkVirtualScrollViewport;
 
-  constructor(private route: ActivatedRoute, private store: Store) {}
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store
+  ) {}
 
   ngOnInit(): void {
     this.store

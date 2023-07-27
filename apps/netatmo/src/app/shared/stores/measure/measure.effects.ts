@@ -16,7 +16,11 @@ import { selectModuleWithEnabledMeasureType } from '../selectors';
 
 @Injectable()
 export class MeasureEffects {
-  constructor(private actions$: Actions, private store: Store, private netamoService: NetatmoService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private netamoService: NetatmoService
+  ) {}
 
   fetchMany$ = createEffect(() => {
     return this.actions$.pipe(

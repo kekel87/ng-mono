@@ -24,7 +24,11 @@ export class ImageFinderDialogComponent implements OnInit {
 
   selected: GoogleImage | undefined;
 
-  constructor(@Inject(MAT_DIALOG_DATA) searchTerm: string[], private imageService: ImageService, private cd: ChangeDetectorRef) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) searchTerm: string[],
+    private imageService: ImageService,
+    private cd: ChangeDetectorRef
+  ) {
     this.searchTerm = searchTerm;
   }
 

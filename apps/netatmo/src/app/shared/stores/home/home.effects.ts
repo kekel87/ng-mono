@@ -8,7 +8,10 @@ import { NetatmoService } from '../../api/servives/netatmo.service';
 
 @Injectable()
 export class HomeEffects {
-  constructor(private actions$: Actions, private netatmoService: NetatmoService) {}
+  constructor(
+    private actions$: Actions,
+    private netatmoService: NetatmoService
+  ) {}
 
   fetch$ = createEffect(() => {
     return this.actions$.pipe(

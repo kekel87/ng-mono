@@ -47,7 +47,11 @@ export class CounterEffects implements OnInitEffects {
     );
   });
 
-  constructor(private actions$: Actions, private service: FirestoreService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private service: FirestoreService,
+    private store: Store
+  ) {}
 
   ngrxOnInitEffects(): Action {
     return counterActions.init();
