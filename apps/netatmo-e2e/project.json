@@ -21,7 +21,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/netatmo-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/netatmo-e2e/**/*.{js,ts}"],
+        "cache": true,
+        "cacheLocation": ".cache/eslint",
+        "cacheStrategy": "content"
       }
     }
   },

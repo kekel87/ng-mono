@@ -1,0 +1,25 @@
+name: Install
+description: Setup nx and cache and install dependencies
+
+runs:
+  using: composite
+  steps:
+    - uses: nrwl/nx-set-shas@v3
+
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.npm
+          node_modules
+          .cache/nx
+          .cache/angular
+          /home/runner/.cache/Cypress
+        key: ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}-${{ github.run_id }}
+          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}
+          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}
+          ${{ runner.os }}-package
+
+    - run: npm i --no-audit --no-fund
+      shell: bash
