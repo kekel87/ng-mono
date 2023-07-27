@@ -5,7 +5,8 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "cacheDirectory": ".cache/nx"
       }
     }
   },
@@ -15,13 +16,37 @@
       "inputs": ["production", "^production"]
     },
     "test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/jest.angular.config.angular.ts",
+        "{workspaceRoot}/jest.config.angular.ts",
+        "{workspaceRoot}/jest.preset.js"
+      ]
     },
     "e2e": {
-      "inputs": ["default", "^production"]
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/tsconfig.cypress.json"
+      ]
     },
     "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintignore",
+        "{workspaceRoot}/.eslintrc.angular.json",
+        "{workspaceRoot}/.eslintrc.cypress.json",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/.prettierignore",
+        "{workspaceRoot}/.prettierrc"
+      ]
+    },
+    "runtime-config": {
+      "inputs": ["default"]
+    },
+    "deploy": {
+      "inputs": ["default"]
     }
   },
   "namedInputs": {
@@ -33,7 +58,9 @@
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/.eslintrc.json"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": [
+      "{workspaceRoot}/tsconfig.angular.json"
+    ]
   },
   "generators": {
     "@nx/angular:application": {
@@ -48,6 +75,13 @@
     },
     "@nx/angular:component": {
       "style": "scss"
+    }
+  },
+  "cli": {
+    "cache": {
+      "enabled": true,
+      "environment": "all",
+      "path": ".cache/angular"
     }
   },
   "defaultProject": "netatmo"

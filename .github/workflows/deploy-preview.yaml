@@ -19,10 +19,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v3
-      - uses: ng-easy/npm-setup@v3
-        with:
-          nx-key: cache
+      - uses: ./.github/actions/install
       - run: npx nx run-many --target=runtime-config
       - run: npx nx run-many --target=build
       - run: npx nx run-many --target=deploy
