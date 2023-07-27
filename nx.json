@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "ng-mono",
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",
@@ -25,11 +24,7 @@
       ]
     },
     "e2e": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/tsconfig.cypress.json"
-      ]
+      "inputs": ["default", "^production", "{workspaceRoot}/tsconfig.cypress.json"]
     },
     "lint": {
       "inputs": [
@@ -56,11 +51,10 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/.eslintrc.json"
     ],
-    "sharedGlobals": [
-      "{workspaceRoot}/tsconfig.angular.json"
-    ]
+    "sharedGlobals": ["{workspaceRoot}/tsconfig.angular.json"]
   },
   "generators": {
     "@nx/angular:application": {
