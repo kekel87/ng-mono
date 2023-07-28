@@ -8,7 +8,11 @@ import { routerActions } from './router.actions';
 
 @Injectable()
 export class RouterEffects {
-  constructor(private actions$: Actions, private router: Router, private ngZone: NgZone) {}
+  constructor(
+    private actions$: Actions,
+    private router: Router,
+    private ngZone: NgZone
+  ) {}
 
   navigate$ = createEffect(
     () => {

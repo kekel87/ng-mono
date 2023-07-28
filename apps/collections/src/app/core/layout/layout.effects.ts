@@ -10,7 +10,10 @@ import * as layoutSelectors from './layout.selectors';
 
 @Injectable()
 export class LayoutEffects {
-  constructor(private actions$: Actions, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store
+  ) {}
 
   resetToolbar$ = createEffect(() => {
     return this.actions$.pipe(

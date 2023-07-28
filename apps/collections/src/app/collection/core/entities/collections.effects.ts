@@ -15,7 +15,11 @@ import * as collectionsSelectors from './collections.selectors';
 
 @Injectable()
 export class CollectionsEffects {
-  constructor(private actions$: Actions, private firestoreService: FirestoreService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private firestoreService: FirestoreService,
+    private store: Store
+  ) {}
 
   initDataChange$ = createEffect(
     () => {

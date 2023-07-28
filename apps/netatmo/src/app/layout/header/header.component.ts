@@ -23,7 +23,10 @@ export class HeaderComponent {
   homes$ = this.store.select(homeFeature.selectAll);
   selectedHome$ = this.store.select(homeFeature.selectSelected);
 
-  constructor(private store: Store, private oauthService: OAuthService) {}
+  constructor(
+    private store: Store,
+    private oauthService: OAuthService
+  ) {}
 
   get accessToken(): string {
     return this.oauthService.getAccessToken();

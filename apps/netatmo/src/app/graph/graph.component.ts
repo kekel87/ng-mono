@@ -27,7 +27,10 @@ export class GraphComponent implements OnInit {
 
   private chart!: ECharts;
 
-  constructor(private store: Store, private action$: ActionsSubject) {
+  constructor(
+    private store: Store,
+    private action$: ActionsSubject
+  ) {
     this.action$
       .pipe(
         ofType(layoutActions.sidenavStartAnimated),

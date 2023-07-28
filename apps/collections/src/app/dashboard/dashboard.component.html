@@ -1,4 +1,4 @@
-<mat-card *ngFor="let meta of metas | keyvalue : originalOrder" [routerLink]="['/', meta.key]">
+<mat-card *ngFor="let meta of metas | keyvalue: originalOrder" [routerLink]="['/', meta.key]">
   <col-loader *ngIf="loading$ | async"></col-loader>
   <mat-card-header>
     <mat-icon mat-card-avatar>{{ meta.value.icon }}</mat-icon>

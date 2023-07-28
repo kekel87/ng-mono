@@ -5,7 +5,10 @@ import { from, map, Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class RedirectGuard {
-  constructor(private oauthService: OAuthService, private router: Router) {}
+  constructor(
+    private oauthService: OAuthService,
+    private router: Router
+  ) {}
 
   canActivate(): Observable<UrlTree> {
     return from(this.oauthService.tryLogin()).pipe(

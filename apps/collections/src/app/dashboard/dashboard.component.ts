@@ -20,5 +20,8 @@ export class DashboardComponent {
   readonly metas = metas;
   readonly originalOrder = OrderUtils.original;
 
-  constructor(private store: Store, public update: UpdateService) {}
+  constructor(
+    private store: Store,
+    public update: UpdateService
+  ) {}
 }

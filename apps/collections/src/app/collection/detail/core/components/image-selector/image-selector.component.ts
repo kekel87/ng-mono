@@ -54,7 +54,11 @@ export class ImageSelectorComponent implements ControlValueAccessor {
 
   readonly RequestState = RequestState;
 
-  constructor(private dialog: MatDialog, private imageService: ImageService, private cd: ChangeDetectorRef) {}
+  constructor(
+    private dialog: MatDialog,
+    private imageService: ImageService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   onChange: (url: string) => void = () => {
     /* This is fine */

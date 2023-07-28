@@ -27,7 +27,10 @@ export class LoginComponent implements OnInit {
 
   protected readonly displayLoginField: boolean;
 
-  constructor(private store: Store, @Inject(RUNTIME_CONFIG) { isQa }: RuntimeConfig) {
+  constructor(
+    private store: Store,
+    @Inject(RUNTIME_CONFIG) { isQa }: RuntimeConfig
+  ) {
     this.loading$ = this.store.select(authSelectors.selectLoading);
     this.displayLoginField = isQa;
   }

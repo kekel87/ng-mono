@@ -20,7 +20,10 @@ import * as authSelectors from '~app/auth/auth.selectors';
   providedIn: 'root',
 })
 export class FirestoreService {
-  constructor(private firestore: Firestore, private store: Store) {}
+  constructor(
+    private firestore: Firestore,
+    private store: Store
+  ) {}
 
   createId(): string {
     return doc(collection(this.firestore, '_')).id;

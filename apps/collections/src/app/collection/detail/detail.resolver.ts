@@ -24,7 +24,10 @@ interface ItemCollection {
   providedIn: 'root',
 })
 export class DetailResolver {
-  constructor(private store: Store, private service: FirestoreService) {}
+  constructor(
+    private store: Store,
+    private service: FirestoreService
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ItemCollection> {
     const collection = route.data['collection'] as Collection;
