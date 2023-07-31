@@ -1,0 +1,130 @@
+{
+  "name": "travel-log",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/travel-log/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/travel-log",
+        "index": "apps/travel-log/src/index.html",
+        "main": "apps/travel-log/src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "apps/travel-log/tsconfig.app.json",
+        "assets": [
+          "apps/travel-log/src/favicon.ico",
+          "apps/travel-log/src/assets"
+        ],
+        "styles": [
+          "./node_modules/leaflet/dist/leaflet.css",
+          "apps/travel-log/src/styles.scss"
+        ],
+        "scripts": [],
+        "allowedCommonJsDependencies": [
+          "leaflet",
+          "leaflet-gpx"
+       ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "port": 4202
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "travel-log:build:production"
+        },
+        "development": {
+          "browserTarget": "travel-log:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "travel-log:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/travel-log/**/*.ts",
+          "apps/travel-log/**/*.html"
+        ],
+        "cache": true,
+        "cacheLocation": ".cache/eslint",
+        "cacheStrategy": "content"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/travel-log/jest.config.ts",
+        "cacheDirectory": "../../.cache/jest/netatmo",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "echo '/* /index.html 200' > dist/apps/travel-log/_redirects",
+            "forwardAllArgs": false
+          },
+          "netlify deploy --site fa4a9f07-2f1f-4ebc-9f71-fe647e544a74 --dir dist/apps/travel-log"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}

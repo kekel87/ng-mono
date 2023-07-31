@@ -9,7 +9,7 @@
       ],
       "parserOptions": {
         "project": [
-          "apps/netatmo/tsconfig.*?.json"
+          "apps/travel-log/tsconfig.*?.json"
         ]
       },
       "rules": {
@@ -17,7 +17,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "net",
+            "prefix": "log",
             "style": "camelCase"
           }
         ],
@@ -25,7 +25,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "net",
+            "prefix": "log",
             "style": "kebab-case"
           }
         ],
