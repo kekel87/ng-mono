@@ -25,8 +25,12 @@
         ],
         "styles": [
           "./node_modules/leaflet/dist/leaflet.css",
-          "apps/travel-log/src/styles.scss"
+          "apps/travel-log/src/styles/theming.scss",
+          "apps/travel-log/src/styles/styles.scss"
         ],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/travel-log/src/styles"]
+        },
         "scripts": [],
         "allowedCommonJsDependencies": [
           "leaflet",
@@ -112,6 +116,9 @@
           "codeCoverage": true
         }
       }
+    },
+    "runtime-config": {
+      "command": "echo $RUNTIME_CONFIG_TRAVEL_JSON | base64 -d > apps/travel-log/src/assets/runtime-config.json"
     },
     "deploy": {
       "executor": "nx:run-commands",

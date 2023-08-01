@@ -1,0 +1,17 @@
+<mat-sidenav-container (backdropClick)="close()">
+  <mat-sidenav
+    [opened]="open$ | async"
+    [mode]="(isMobile$ | async) ? 'over' : 'side'"
+    [fixedInViewport]="isMobile$ | async"
+    autoFocus="false"
+  >
+    <button mat-icon-button *ngIf="isMobile$ | async" (click)="close()"><mat-icon>close</mat-icon></button>
+    <ng-content select="[sidenav]"></ng-content>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <main>
+      <ng-content select="[main]"></ng-content>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

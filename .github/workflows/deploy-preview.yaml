@@ -12,6 +12,7 @@ jobs:
     if: ${{ github.event.label.name == '🔍 preview' }}
     environment: preview
     env:
+      RUNTIME_CONFIG_TRAVEL_JSON: ${{ secrets.RUNTIME_CONFIG_TRAVEL_JSON }}
       RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
       RUNTIME_CONFIG_COLLECTIONS_JSON: ${{ secrets.RUNTIME_CONFIG_COLLECTIONS_DEV_JSON }}
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}

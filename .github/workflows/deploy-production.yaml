@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
+      RUNTIME_CONFIG_TRAVEL_JSON: ${{ secrets.RUNTIME_CONFIG_TRAVEL_JSON }}
       RUNTIME_CONFIG_NETATMO_JSON: ${{ secrets.RUNTIME_CONFIG_NETATMO_JSON }}
       RUNTIME_CONFIG_COLLECTIONS_JSON: ${{ secrets.RUNTIME_CONFIG_COLLECTIONS_PROD_JSON }}
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
