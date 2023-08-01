@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+log-map {
+  flex: 1 1 auto;
+}
