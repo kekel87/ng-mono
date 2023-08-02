@@ -24,7 +24,7 @@
         "stylePreprocessorOptions": {
           "includePaths": ["apps/travel-log/src/styles"]
         },
-        "scripts": [],
+        "scripts": ["node_modules/geojson2svg/dist/geojson2svg.min.js"],
         "allowedCommonJsDependencies": ["leaflet", "leaflet-gpx"]
       },
       "configurations": {
