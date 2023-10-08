@@ -4,25 +4,15 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ],
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
         "cacheDirectory": ".cache/nx"
       }
     }
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
     "test": {
       "inputs": [
@@ -34,11 +24,7 @@
       ]
     },
     "e2e": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/tsconfig.cypress.json"
-      ]
+      "inputs": ["default", "^production", "{workspaceRoot}/tsconfig.cypress.json"]
     },
     "lint": {
       "inputs": [
@@ -52,21 +38,14 @@
       ]
     },
     "runtime-config": {
-      "inputs": [
-        "default"
-      ]
+      "inputs": ["default"]
     },
     "deploy": {
-      "inputs": [
-        "default"
-      ]
+      "inputs": ["default"]
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
@@ -75,9 +54,7 @@
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/.eslintrc.json"
     ],
-    "sharedGlobals": [
-      "{workspaceRoot}/tsconfig.angular.json"
-    ]
+    "sharedGlobals": ["{workspaceRoot}/tsconfig.angular.json"]
   },
   "generators": {
     "@nx/angular:application": {

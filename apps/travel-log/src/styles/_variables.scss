@@ -7,7 +7,8 @@ $primary: (
   main: #1a1a1a,
   lighter: #bababa,
   darker: #0f0f0f,
-  contrast: (main: $light-primary-text,
+  contrast: (
+    main: $light-primary-text,
     lighter: $light-primary-text,
     darker: $dark-primary-text,
   ),
@@ -18,7 +19,8 @@ $accent: (
   main: #1976d2,
   lighter: #bad6f2,
   darker: #0e59c1,
-  contrast: (main: $light-primary-text,
+  contrast: (
+    main: $light-primary-text,
     lighter: $light-primary-text,
     darker: $dark-primary-text,
   ),
@@ -29,7 +31,8 @@ $warn: (
   main: #ed7e00,
   lighter: #fad8b3,
   darker: #e56100,
-  contrast: (main: $light-primary-text,
+  contrast: (
+    main: $light-primary-text,
     lighter: $light-primary-text,
     darker: $dark-primary-text,
   ),
@@ -38,16 +41,24 @@ $palette-warn: mat.define-palette($warn, main, lighter, darker);
 
 $typography: mat.define-typography-config();
 
-$theme-light: mat.define-light-theme((color: (primary: $palette-primary,
-        accent: $palette-accent,
-        warn: $palette-warn,
-      ),
-      typography: $typography,
-    ));
+$theme-light: mat.define-light-theme(
+  (
+    color: (
+      primary: $palette-primary,
+      accent: $palette-accent,
+      warn: $palette-warn,
+    ),
+    typography: $typography,
+  )
+);
 
-$theme-dark: mat.define-dark-theme((color: (primary: $palette-primary,
-        accent: $palette-accent,
-        warn: $palette-warn,
-      ),
-      typography: $typography,
-    ));
+$theme-dark: mat.define-dark-theme(
+  (
+    color: (
+      primary: $palette-primary,
+      accent: $palette-accent,
+      warn: $palette-warn,
+    ),
+    typography: $typography,
+  )
+);

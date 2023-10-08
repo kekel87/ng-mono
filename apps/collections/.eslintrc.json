@@ -1,16 +1,10 @@
 {
-  "extends": [
-    "../../.eslintrc.angular.json"
-  ],
+  "extends": ["../../.eslintrc.angular.json"],
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "apps/collections/tsconfig.*?.json"
-        ]
+        "project": ["apps/collections/tsconfig.*?.json"]
       },
       "rules": {
         "@angular-eslint/directive-selector": [

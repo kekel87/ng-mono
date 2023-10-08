@@ -34,7 +34,7 @@ export class FirestoreService {
     return docData(docRef).pipe(map((doc) => (doc === undefined ? undefined : Object.assign({}, doc as T, { id }))));
   }
 
-  onChange<T>(col: string): Observable<T[]> {
+  onChange<T extends { id: string }>(col: string): Observable<T[]> {
     const colRef = collection(this.firestore, col) as CollectionReference<T>;
     return collectionData(colRef, { idField: 'id' }).pipe(takeUntil(this.store.select(authSelectors.selectUser).pipe(filter((u) => !u))));
   }

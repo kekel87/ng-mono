@@ -1,11 +1,7 @@
 {
   "extends": "../../tsconfig.cypress.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "outDir": "../../dist/out-tsc"
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js",
-    "cypress.config.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.js", "cypress.config.ts"]
 }

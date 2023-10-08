@@ -2,15 +2,9 @@
   "extends": "../../tsconfig.angular.json",
   "compilerOptions": {
     "paths": {
-      "~shared/*": [
-        "apps/collections/src/app/shared/*"
-      ],
-      "~app/*": [
-        "apps/collections/src/app/*"
-      ],
-      "~tests/*": [
-        "apps/collections/src/tests/*"
-      ]
+      "~shared/*": ["apps/collections/src/app/shared/*"],
+      "~app/*": ["apps/collections/src/app/*"],
+      "~tests/*": ["apps/collections/src/tests/*"]
     }
   },
   "files": [],

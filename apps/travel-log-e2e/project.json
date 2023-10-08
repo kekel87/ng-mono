@@ -22,18 +22,12 @@
     },
     "lint": {
       "executor": "@nx/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/travel-log-e2e/**/*.{js,ts}"
-        ]
+        "lintFilePatterns": ["apps/travel-log-e2e/**/*.{js,ts}"]
       }
     }
   },
   "tags": [],
-  "implicitDependencies": [
-    "travel-log"
-  ]
+  "implicitDependencies": ["travel-log"]
 }
