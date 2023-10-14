@@ -3,6 +3,9 @@
     [opened]="open$ | async"
     [mode]="(isMobile$ | async) ? 'over' : 'side'"
     [fixedInViewport]="isMobile$ | async"
+    (openedStart)="startAnimated()"
+    (closedStart)="startAnimated()"
+    (openedChange)="endAnimated()"
     autoFocus="false"
   >
     <button mat-icon-button *ngIf="isMobile$ | async" (click)="close()"><mat-icon>close</mat-icon></button>

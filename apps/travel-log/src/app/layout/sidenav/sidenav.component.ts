@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { delay, first, map } from 'rxjs/operators';
 
 import { layoutActions } from '../store/layout.actions';
-import { layoutFeature } from '../store/layout.reducer';
+import { layoutFeature } from '../store/layout.feature';
 
 @Component({
   selector: 'log-sidenav',
@@ -34,5 +34,13 @@ export class SidenavComponent {
 
   close(): void {
     this.store.dispatch(layoutActions.toggleSidenav());
+  }
+
+  startAnimated(): void {
+    this.store.dispatch(layoutActions.sidenavStartAnimated());
+  }
+
+  endAnimated(): void {
+    this.store.dispatch(layoutActions.sidenavEndAnimated());
   }
 }

@@ -5,5 +5,7 @@ export const layoutActions = createActionGroup({
   events: {
     'Toggle Sidenav': emptyProps(),
     'Set Sidenav': props<{ opened: boolean }>(),
+    'Sidenav start animated': emptyProps(),
+    'Sidenav end animated': emptyProps(),
   },
 });

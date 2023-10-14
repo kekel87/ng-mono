@@ -14,9 +14,6 @@
       "configurations": {
         "production": {
           "devServerTarget": "travel-log:serve:production"
-        },
-        "ci": {
-          "devServerTarget": "travel-log:serve-static"
         }
       }
     },
@@ -24,7 +21,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/travel-log-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/travel-log-e2e/**/*.{js,ts}"],
+        "cache": true,
+        "cacheLocation": ".cache/eslint",
+        "cacheStrategy": "content"
       }
     }
   },

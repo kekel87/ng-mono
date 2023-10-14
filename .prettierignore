@@ -3,5 +3,3 @@
 /dist
 /coverage
 /.cache
-
-.cache/angular
