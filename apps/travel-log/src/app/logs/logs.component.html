@@ -5,7 +5,7 @@
         <svg mat-card-avatar *ngIf="log.geoJson" [logFromGeoJson]="log.geoJson"></svg>
         <mat-card-title>{{ log.title }}</mat-card-title>
         <mat-card-subtitle>{{ log.startDate | date }}</mat-card-subtitle>
-        <mat-card-subtitle>{{ log.distance / 1000 | number: '1.0-1' }}km</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="log.distance">{{ log.distance / 1000 | number: '1.0-1' }}km</mat-card-subtitle>
       </mat-card-header>
     </ng-container>
 
@@ -16,17 +16,20 @@
           <mat-card-title>{{ log.title }}</mat-card-title>
 
           <mat-card-subtitle>{{ log.startDate | date }} - {{ log.endDate | date }}</mat-card-subtitle>
-          <mat-card-subtitle>{{ log.distance / 1000 | number: '1.0-1' }}km</mat-card-subtitle>
+          <mat-card-subtitle *ngIf="log.distance">{{ log.distance / 1000 | number: '1.0-1' }}km</mat-card-subtitle>
         </mat-card-header>
       </mat-expansion-panel-header>
 
       <ng-template matExpansionPanelContent>
         <mat-card-content>
-          <mat-list dense role="list">
+          <mat-list dense role="list" *ngIf="vm.logEntryEntities">
             <ng-container *ngFor="let entryId of log.entries">
               <mat-list-item role="listitem" *ngIf="vm.logEntryEntities[entryId] as entry">
                 <svg matListItemIcon *ngIf="entry.geoJson" [logFromGeoJson]="entry.geoJson" [size]="30"></svg>
-                <div matListItemTitle>{{ entry.title }} ({{ entry.distance / 1000 | number: '1.0-1' }}km)</div>
+                <div matListItemTitle>
+                  {{ entry.title }}
+                  <span *ngIf="entry.distance">({{ entry.distance / 1000 | number: '1.0-1' }}km)</span>
+                </div>
                 <div matListItemLine class="metrics">
                   <mat-icon>speed</mat-icon>
                   {{ entry.averageMovingSpeed | number: '1.0-1' }} km/h
