@@ -2,8 +2,9 @@
   "name": "collections",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/collections/src",
   "prefix": "ng-mono",
+  "sourceRoot": "apps/collections/src",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
@@ -55,16 +56,16 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "collections:build:production"
+          "buildTarget": "collections:build:production"
         },
         "development": {
-          "browserTarget": "collections:build:development"
+          "buildTarget": "collections:build:development"
         }
       },
       "defaultConfiguration": "development"
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/collections/**/*.ts", "apps/collections/**/*.html"],
@@ -78,14 +79,7 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/collections/jest.config.ts",
-        "cacheDirectory": "../../.cache/jest/collections",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "cacheDirectory": "../../.cache/jest/collections"
       }
     },
     "runtime-config": {
@@ -104,6 +98,5 @@
         "parallel": false
       }
     }
-  },
-  "tags": []
+  }
 }
