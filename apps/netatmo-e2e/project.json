@@ -1,20 +1,12 @@
 {
   "name": "netatmo-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/netatmo-e2e/src",
-  "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/netatmo-e2e"],
       "options": {
-        "cypressConfig": "apps/netatmo-e2e/cypress.config.ts",
-        "devServerTarget": "netatmo:serve:development",
-        "testingType": "e2e"
-      },
-      "configurations": {
-        "production": {
-          "devServerTarget": "netatmo:serve:production"
-        }
+        "config": "apps/netatmo-e2e/playwright.config.ts"
       }
     },
     "lint": {

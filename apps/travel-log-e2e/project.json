@@ -1,20 +1,12 @@
 {
   "name": "travel-log-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/travel-log-e2e/src",
-  "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/travel-log-e2e"],
       "options": {
-        "cypressConfig": "apps/travel-log-e2e/cypress.config.ts",
-        "devServerTarget": "travel-log:serve:development",
-        "testingType": "e2e"
-      },
-      "configurations": {
-        "production": {
-          "devServerTarget": "travel-log:serve:production"
-        }
+        "config": "apps/travel-log-e2e/playwright.config.ts"
       }
     },
     "lint": {

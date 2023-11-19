@@ -1,20 +1,12 @@
 {
   "name": "collections-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/collections-e2e/src",
-  "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/collections-e2e"],
       "options": {
-        "cypressConfig": "apps/collections-e2e/cypress.config.ts",
-        "devServerTarget": "collections:serve:development",
-        "testingType": "e2e"
-      },
-      "configurations": {
-        "production": {
-          "devServerTarget": "collections:serve:production"
-        }
+        "config": "apps/collections-e2e/playwright.config.ts"
       }
     },
     "lint": {

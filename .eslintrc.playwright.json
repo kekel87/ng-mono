@@ -4,7 +4,7 @@
   "overrides": [
     {
       "files": ["*.ts"],
-      "extends": ["plugin:cypress/recommended"]
+      "extends": ["plugin:playwright/recommended"]
     }
   ]
 }
