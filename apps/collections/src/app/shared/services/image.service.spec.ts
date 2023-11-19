@@ -11,6 +11,8 @@ import { MockRuntimeConfig } from '~tests/mocks/runtime-config';
 
 import { ImageService } from './image.service';
 
+jest.mock('@angular/fire/storage');
+
 describe('ImageService', () => {
   let service: ImageService;
   let httpMock: HttpTestingController;

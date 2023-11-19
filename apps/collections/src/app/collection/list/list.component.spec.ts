@@ -109,19 +109,19 @@ describe('ListComponent', () => {
       });
 
       it('should display a list of games ordered', () => {
-        expect(ngMocks.findAll('mat-list-item').length).toBe(2);
+        expect(ngMocks.findAll('li').length).toBe(2);
 
-        expect(ngMocks.find('mat-list-item:nth-of-type(1)[ng-reflect-router-link="uid1"]')).not.toBeNull();
-        expect(ngMocks.find('mat-list-item:nth-of-type(1) img').properties['src']).toContain(MockCollection.game1.cover);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(1) h3'))).toContain(MockCollection.game1.title);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(1) p'))).toContain(MockCollection.gameBoys.name);
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.game1.acquired);
+        expect(ngMocks.find('li:nth-of-type(1)[ng-reflect-router-link="uid1"]')).not.toBeNull();
+        expect(ngMocks.input('li:nth-of-type(1) img', 'ngSrc')).toContain(MockCollection.game1.cover);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) h3'))).toContain(MockCollection.game1.title);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) p'))).toContain(MockCollection.gameBoys.name);
+        expect(ngMocks.findInstance('li:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.game1.acquired);
 
-        expect(ngMocks.find('mat-list-item:nth-of-type(2)[ng-reflect-router-link="uid2"]')).not.toBeNull();
-        expect(ngMocks.find('mat-list-item:nth-of-type(2) img').properties['src']).toContain(MockCollection.game2.cover);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(2) h3'))).toContain(MockCollection.game2.title);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(2) p'))).toContain(MockCollection.gameBoys.name);
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(2) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.game2.acquired);
+        expect(ngMocks.find('li:nth-of-type(2)[ng-reflect-router-link="uid2"]')).not.toBeNull();
+        expect(ngMocks.input('li:nth-of-type(2) img', 'ngSrc')).toContain(MockCollection.game2.cover);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(2) h3'))).toContain(MockCollection.game2.title);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(2) p'))).toContain(MockCollection.gameBoys.name);
+        expect(ngMocks.findInstance('li:nth-of-type(2) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.game2.acquired);
       });
 
       it('should display game from search', () => {
@@ -129,7 +129,7 @@ describe('ListComponent', () => {
         store.refreshState();
         fixture.detectChanges();
 
-        expect(ngMocks.findAll('mat-list-item').length).toBe(1);
+        expect(ngMocks.findAll('li').length).toBe(1);
       });
 
       it('should save game when toggle acquired', () => {
@@ -187,23 +187,19 @@ describe('ListComponent', () => {
       });
 
       it('should display a list of amiibos ordered', () => {
-        expect(ngMocks.findAll('mat-list-item').length).toBe(2);
+        expect(ngMocks.findAll('li').length).toBe(2);
 
-        expect(ngMocks.find('mat-list-item:nth-of-type(1)[ng-reflect-router-link="uid1"]')).not.toBeNull();
-        expect(ngMocks.find('mat-list-item:nth-of-type(1) img').properties['src']).toContain(MockCollection.amiibo1.image);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(1) h3'))).toContain(MockCollection.amiibo1.character);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(1) p'))).toContain(MockCollection.amiibo1.serie);
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(
-          MockCollection.amiibo1.acquired
-        );
+        expect(ngMocks.find('li:nth-of-type(1)[ng-reflect-router-link="uid1"]')).not.toBeNull();
+        expect(ngMocks.input('li:nth-of-type(1) img', 'ngSrc')).toContain(MockCollection.amiibo1.image);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) h3'))).toContain(MockCollection.amiibo1.character);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) p'))).toContain(MockCollection.amiibo1.serie);
+        expect(ngMocks.findInstance('li:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.amiibo1.acquired);
 
-        expect(ngMocks.find('mat-list-item:nth-of-type(2)[ng-reflect-router-link="uid2"]')).not.toBeNull();
-        expect(ngMocks.find('mat-list-item:nth-of-type(2) img').properties['src']).toContain(MockCollection.amiibo2.image);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(2) h3'))).toContain(MockCollection.amiibo2.character);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(2) p'))).toContain(MockCollection.amiibo2.serie);
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(2) mat-checkbox', MatCheckbox).checked).toBe(
-          MockCollection.amiibo2.acquired
-        );
+        expect(ngMocks.find('li:nth-of-type(2)[ng-reflect-router-link="uid2"]')).not.toBeNull();
+        expect(ngMocks.input('li:nth-of-type(2) img', 'ngSrc')).toContain(MockCollection.amiibo2.image);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(2) h3'))).toContain(MockCollection.amiibo2.character);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(2) p'))).toContain(MockCollection.amiibo2.serie);
+        expect(ngMocks.findInstance('li:nth-of-type(2) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.amiibo2.acquired);
       });
 
       it('should save amiibo when toggle acquired', () => {
@@ -261,23 +257,19 @@ describe('ListComponent', () => {
       });
 
       it('should display a list of vinyles ordered', () => {
-        expect(ngMocks.findAll('mat-list-item').length).toBe(2);
+        expect(ngMocks.findAll('li').length).toBe(2);
 
-        expect(ngMocks.find('mat-list-item:nth-of-type(1)[ng-reflect-router-link="uid1"]')).not.toBeNull();
-        expect(ngMocks.find('mat-list-item:nth-of-type(1) img').properties['src']).toContain(MockCollection.vinyle1.cover);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(1) h3'))).toContain(MockCollection.vinyle1.title);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(1) p'))).toContain(MockCollection.vinyle1.artist);
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(
-          MockCollection.vinyle1.acquired
-        );
+        expect(ngMocks.find('li:nth-of-type(1)[ng-reflect-router-link="uid1"]')).not.toBeNull();
+        expect(ngMocks.input('li:nth-of-type(1) img', 'ngSrc')).toContain(MockCollection.vinyle1.cover);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) h3'))).toContain(MockCollection.vinyle1.title);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) p'))).toContain(MockCollection.vinyle1.artist);
+        expect(ngMocks.findInstance('li:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.vinyle1.acquired);
 
-        expect(ngMocks.find('mat-list-item:nth-of-type(2)[ng-reflect-router-link="uid2"]')).not.toBeNull();
-        expect(ngMocks.find('mat-list-item:nth-of-type(2) img').properties['src']).toContain(MockCollection.vinyle2.cover);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(2) h3'))).toContain(MockCollection.vinyle2.title);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(2) p'))).toContain(MockCollection.vinyle1.artist);
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(2) mat-checkbox', MatCheckbox).checked).toBe(
-          MockCollection.vinyle2.acquired
-        );
+        expect(ngMocks.find('li:nth-of-type(2)[ng-reflect-router-link="uid2"]')).not.toBeNull();
+        expect(ngMocks.input('li:nth-of-type(2) img', 'ngSrc')).toContain(MockCollection.vinyle2.cover);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(2) h3'))).toContain(MockCollection.vinyle2.title);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(2) p'))).toContain(MockCollection.vinyle1.artist);
+        expect(ngMocks.findInstance('li:nth-of-type(2) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.vinyle2.acquired);
       });
 
       it('should save vinyles when toggle acquired', () => {
@@ -335,23 +327,23 @@ describe('ListComponent', () => {
       });
 
       it('should display a list of books ordered', () => {
-        expect(ngMocks.findAll('mat-list-item').length).toBe(2);
+        expect(ngMocks.findAll('li').length).toBe(2);
 
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(1)', RouterLink).routerLink).toEqual([MockCollection.book1.id]);
-        expect(ngMocks.find('mat-list-item:nth-of-type(1) img').properties['src']).toContain(MockCollection.book1.image);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(1) h3'))).toContain(MockCollection.book1.title);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(1) p'))).toContain(
+        expect(ngMocks.findInstance('li:nth-of-type(1)', RouterLink).routerLink).toEqual([MockCollection.book1.id]);
+        expect(ngMocks.input('li:nth-of-type(1) img', 'ngSrc')).toContain(MockCollection.book1.image);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) h3'))).toContain(MockCollection.book1.title);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) p'))).toContain(
           `${MockCollection.book1.publisher} - ${MockCollection.book1.authors}`
         );
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.book1.acquired);
+        expect(ngMocks.findInstance('li:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.book1.acquired);
 
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(2)', RouterLink).routerLink).toEqual([MockCollection.book2.id]);
-        expect(ngMocks.find('mat-list-item:nth-of-type(2) img').properties['src']).toContain(MockCollection.book2.image);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(2) h3'))).toContain(MockCollection.book2.title);
-        expect(ngMocks.formatText(ngMocks.find('mat-list-item:nth-of-type(2) p'))).toContain(
+        expect(ngMocks.findInstance('li:nth-of-type(2)', RouterLink).routerLink).toEqual([MockCollection.book2.id]);
+        expect(ngMocks.input('li:nth-of-type(2) img', 'ngSrc')).toContain(MockCollection.book2.image);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(2) h3'))).toContain(MockCollection.book2.title);
+        expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(2) p'))).toContain(
           `${MockCollection.book2.publisher} - ${MockCollection.book2.authors.join(', ')}`
         );
-        expect(ngMocks.findInstance('mat-list-item:nth-of-type(2) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.book2.acquired);
+        expect(ngMocks.findInstance('li:nth-of-type(2) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.book2.acquired);
       });
 
       it('should display book from search', () => {
@@ -359,7 +351,7 @@ describe('ListComponent', () => {
         store.refreshState();
         fixture.detectChanges();
 
-        expect(ngMocks.findAll('mat-list-item').length).toBe(1);
+        expect(ngMocks.findAll('li').length).toBe(1);
       });
 
       it('should save books when toggle acquired', () => {

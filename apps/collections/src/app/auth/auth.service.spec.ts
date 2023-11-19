@@ -8,6 +8,8 @@ import { mockUser } from '~tests/mocks/user';
 
 import { AuthService } from './auth.service';
 
+jest.mock('@angular/fire/auth');
+
 describe('AuthService', () => {
   let authService: AuthService;
   const auth = jest.fn();
