@@ -1,5 +1,5 @@
 import { fakeAsync, tick } from '@angular/core/testing';
-import { MatLegacyButton as MatButton } from '@angular/material/legacy-button';
+import { MatButton } from '@angular/material/button';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
 
 import { CustomUrlDialogComponent } from './custom-url-dialog.component';

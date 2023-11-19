@@ -1,6 +1,6 @@
 import { FormControlName, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyButton as MatButton } from '@angular/material/legacy-button';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatButton } from '@angular/material/button';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks, NG_MOCKS_ROOT_PROVIDERS } from 'ng-mocks';
 
 import { CreateTomesDialogComponent } from './create-tomes-dialog.component';

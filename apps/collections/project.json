@@ -17,7 +17,7 @@
         "tsConfig": "apps/collections/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/collections/src/favicon.ico", "apps/collections/src/assets", "apps/collections/src/manifest.webmanifest"],
-        "styles": ["apps/collections/src/styles/theme.scss", "apps/collections/src/styles/styles.scss"],
+        "styles": ["apps/collections/src/styles/theming.scss", "apps/collections/src/styles/styles.scss"],
         "stylePreprocessorOptions": {
           "includePaths": ["apps/collections/src/styles"]
         },

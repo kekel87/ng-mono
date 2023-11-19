@@ -1,5 +1,5 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';

@@ -1,3 +1,8 @@
+@use '@angular/material' as mat;
+
+
+@include mat.list-density(-5);
+
 :host {
   display: block;
   height: calc(100vh - 64px);
@@ -5,6 +10,11 @@
   @media screen and (max-width: 600px) {
     height: calc(100vh - 56px);
   }
+
+  --mdc-list-list-item-label-text-size: 12px;
+  --mdc-list-list-item-supporting-text-size: 12px;
+  --mdc-list-list-item-supporting-text-line-height: 12px;
+  --mdc-list-list-item-leading-avatar-shape: 0px;
 }
 
 cdk-virtual-scroll-viewport {
@@ -12,49 +22,41 @@ cdk-virtual-scroll-viewport {
   overflow-x: hidden;
 }
 
-mat-list {
-  mat-list-item {
-    border-bottom: 1px #ece8e8 solid;
-    cursor: pointer;
+ul {
+  margin: 0;
+  padding: 0;
+}
 
-    p.mat-line {
-      color: grey;
-    }
-  }
+li {
+  list-style: none;
+  display: flex;
+  align-items: center;
 
-  mat-checkbox {
+  border-bottom: 1px #ece8e8 solid;
+  cursor: pointer;
+  padding: 0 8px;
+
+  div {
+    flex: 1;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    width: 60px;
-    height: 40px;
   }
 }
 
-:host ::ng-deep {
-  .mat-list[dense] {
-    padding-top: 0;
-
-    .mat-list-item {
-      width: 100vw;
-
-      .mat-list-item-content {
-        padding: 0 10px;
-
-        .mat-list-text:not(:nth-child(2)) {
-          padding-left: 10px;
-        }
-      }
-    }
-  }
-
-  .mat-list-base[dense] .mat-list-item .mat-list-avatar {
-    object-fit: scale-down;
-
-    border-radius: 0;
-  }
-
-  .mat-list-item.mat-2-line.mat-list-item-with-avatar {
-    height: 48px;
-  }
+h3 {
+  font-size: 12px;
+  margin: 0;
 }
+
+p {
+  margin: 0;
+  font-size: 12px;
+  color: grey;
+}
+
+img {
+  object-fit: scale-down;
+  margin: 8px;
+}
+

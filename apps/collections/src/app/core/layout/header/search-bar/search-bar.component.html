@@ -1,7 +1,7 @@
 <mat-toolbar color="accent">
   <mat-icon class="search-icon">search</mat-icon>
 
-  <mat-form-field floatLabel="never">
+  <mat-form-field>
     <input colAutofocus matInput [ngModel]="search$ | async" (ngModelChange)="searchChange$.next($event)" />
   </mat-form-field>
 

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, DestroyRef, NgZone, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, Store } from '@ngrx/store';
