@@ -7,16 +7,17 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/travel-log",
         "index": "apps/travel-log/src/index.html",
-        "main": "apps/travel-log/src/main.ts",
+        "browser": "apps/travel-log/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/travel-log/tsconfig.app.json",
         "assets": ["apps/travel-log/src/favicon.ico", "apps/travel-log/src/assets"],
         "styles": [
+          "./node_modules/normalize.css/normalize.css",
           "./node_modules/leaflet/dist/leaflet.css",
           "apps/travel-log/src/styles/theming.scss",
           "apps/travel-log/src/styles/styles.scss"
@@ -44,9 +45,7 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true

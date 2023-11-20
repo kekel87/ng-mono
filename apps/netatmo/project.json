@@ -7,17 +7,21 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/netatmo",
         "index": "apps/netatmo/src/index.html",
-        "main": "apps/netatmo/src/main.ts",
+        "browser": "apps/netatmo/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/netatmo/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/netatmo/src/favicon.ico", "apps/netatmo/src/assets"],
-        "styles": ["apps/netatmo/src/styles/theming.scss", "apps/netatmo/src/styles/styles.scss"],
+        "styles": [
+          "./node_modules/normalize.css/normalize.css",
+          "apps/netatmo/src/styles/theming.scss",
+          "apps/netatmo/src/styles/styles.scss"
+        ],
         "stylePreprocessorOptions": {
           "includePaths": ["apps/netatmo/src/styles"]
         },
@@ -40,9 +44,7 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true

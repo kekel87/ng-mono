@@ -7,23 +7,26 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/collections",
         "index": "apps/collections/src/index.html",
-        "main": "apps/collections/src/main.ts",
+        "browser": "apps/collections/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/collections/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/collections/src/favicon.ico", "apps/collections/src/assets", "apps/collections/src/manifest.webmanifest"],
-        "styles": ["apps/collections/src/styles/theming.scss", "apps/collections/src/styles/styles.scss"],
+        "styles": [
+          "./node_modules/normalize.css/normalize.css",
+          "apps/collections/src/styles/theming.scss",
+          "apps/collections/src/styles/styles.scss"
+        ],
         "stylePreprocessorOptions": {
           "includePaths": ["apps/collections/src/styles"]
         },
         "scripts": [],
-        "serviceWorker": true,
-        "ngswConfigPath": "apps/collections/ngsw-config.json"
+        "serviceWorker": "apps/collections/ngsw-config.json"
       },
       "configurations": {
         "production": {
@@ -42,9 +45,7 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
