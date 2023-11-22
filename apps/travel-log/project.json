@@ -7,16 +7,17 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/travel-log",
         "index": "apps/travel-log/src/index.html",
-        "main": "apps/travel-log/src/main.ts",
+        "browser": "apps/travel-log/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/travel-log/tsconfig.app.json",
         "assets": ["apps/travel-log/src/favicon.ico", "apps/travel-log/src/assets"],
         "styles": [
+          "./node_modules/normalize.css/normalize.css",
           "./node_modules/leaflet/dist/leaflet.css",
           "apps/travel-log/src/styles/theming.scss",
           "apps/travel-log/src/styles/styles.scss"
@@ -44,9 +45,7 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
@@ -61,22 +60,16 @@
       },
       "configurations": {
         "production": {
-          "browserTarget": "travel-log:build:production"
+          "buildTarget": "travel-log:build:production"
         },
         "development": {
-          "browserTarget": "travel-log:build:development"
+          "buildTarget": "travel-log:build:development"
         }
       },
       "defaultConfiguration": "development"
     },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "travel-log:build"
-      }
-    },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/travel-log/**/*.ts", "apps/travel-log/**/*.html"],
@@ -90,14 +83,7 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/travel-log/jest.config.ts",
-        "cacheDirectory": "../../.cache/jest/netatmo",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "cacheDirectory": "../../.cache/jest/netatmo"
       }
     },
     "runtime-config": {

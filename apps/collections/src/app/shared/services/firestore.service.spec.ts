@@ -10,6 +10,8 @@ import { AuthService } from '~app/auth/auth.service';
 import { FirestoreService } from '~shared/services/firestore.service';
 import { mockUser } from '~tests/mocks/user';
 
+jest.mock('@angular/fire/firestore');
+
 describe('FirestoreService', () => {
   let service: FirestoreService;
   let store: Store;

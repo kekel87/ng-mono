@@ -20,6 +20,7 @@ node_modules
 
 # misc
 /.angular
+.nx/cache
 /.cache
 /.sass-cache
 /connect.lock

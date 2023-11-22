@@ -46,20 +46,6 @@ mat-sidenav {
     }
   }
 
-  .mat-nav-list {
-    padding-top: 0;
-
-    .mat-list-item {
-      &.active {
-        background-color: lightgrey;
-      }
-
-      .mat-list-icon {
-        padding-right: 15px;
-      }
-    }
-  }
-
   .footer {
     position: absolute;
     bottom: 0;

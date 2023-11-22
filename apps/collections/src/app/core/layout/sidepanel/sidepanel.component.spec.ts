@@ -1,5 +1,5 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLinkWithHref } from '@angular/router';
 import { ActionsSubject } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';

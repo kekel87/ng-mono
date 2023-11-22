@@ -1,7 +1,7 @@
 import { fakeAsync, tick, flush } from '@angular/core/testing';
 import { FormArrayName, FormControlName, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks, NG_MOCKS_ROOT_PROVIDERS } from 'ng-mocks';
