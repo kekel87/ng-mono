@@ -2,7 +2,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
 
 import { HeaderComponent } from './header.component';
-import * as layoutSelectors from '../layout.selectors';
+import { layoutFeature } from '../layout.feature';
 
 describe('HeaderComponent', () => {
   let fixture: MockedComponentFixture<HeaderComponent>;
@@ -11,7 +11,7 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     await MockBuilder(HeaderComponent).provide(
       provideMockStore({
-        selectors: [{ selector: layoutSelectors.selectShowSearchBar, value: false }],
+        selectors: [{ selector: layoutFeature.selectShowSearchBar, value: false }],
       })
     );
 
@@ -30,7 +30,7 @@ describe('HeaderComponent', () => {
   });
 
   it('should display search bar', () => {
-    layoutSelectors.selectShowSearchBar.setResult(true);
+    layoutFeature.selectShowSearchBar.setResult(true);
     store.refreshState();
     fixture.detectChanges();
 

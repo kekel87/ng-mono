@@ -3,25 +3,25 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
 
 import { authActions } from '~app/auth/auth.actions';
-import { LoginComponent, LoginModule } from '~app/auth/login/login.component';
+import { LoginComponent } from '~app/auth/login/login.component';
 import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
 import { MockRuntimeConfig } from '~tests/mocks/runtime-config';
 import { mockUser } from '~tests/mocks/user';
 
-import * as authSelectors from '../auth.selectors';
+import { authFeature } from '../auth.feature';
 
 describe('LoginComponent', () => {
   let fixture: MockedComponentFixture<LoginComponent>;
   let store: MockStore;
 
   beforeEach(async () => {
-    await MockBuilder(LoginComponent, LoginModule)
+    await MockBuilder(LoginComponent)
       .keep(FormsModule)
       .provide(
         provideMockStore({
           selectors: [
-            { selector: authSelectors.selectUser, value: null },
-            { selector: authSelectors.selectLoading, value: false },
+            { selector: authFeature.selectUser, value: null },
+            { selector: authFeature.selectLoading, value: false },
           ],
         })
       )
@@ -57,7 +57,7 @@ describe('LoginComponent', () => {
     });
 
     it('should display loading', () => {
-      authSelectors.selectLoading.setResult(true);
+      authFeature.selectLoading.setResult(true);
       store.refreshState();
       fixture.detectChanges();
 
@@ -73,7 +73,7 @@ describe('LoginComponent', () => {
 
   describe('authenticated', () => {
     beforeEach(() => {
-      authSelectors.selectUser.setResult(mockUser);
+      authFeature.selectUser.setResult(mockUser);
       store.refreshState();
       fixture.detectChanges();
     });

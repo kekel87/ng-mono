@@ -15,7 +15,7 @@ import { Item } from '~shared/models/item';
 
 import { collectionsActions } from '../../../../core/entities/collections.actions';
 import { collectionDetailActions } from '../../store/detail.actions';
-import * as detailSelectors from '../../store/detail.selectors';
+import { detailFeature } from '../../store/detail.feature';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({ template: '' })
@@ -23,8 +23,8 @@ export abstract class DetailComponent<T extends Item, F extends FormGroup> {
   item!: T;
   collection!: Collection;
   form!: F;
-  loading$: Observable<boolean> = this.store.select(detailSelectors.selectLoading);
-  saveState$: Observable<SaveState> = this.store.select(detailSelectors.selectSaveState);
+  loading$: Observable<boolean> = this.store.select(detailFeature.selectLoading);
+  saveState$: Observable<SaveState> = this.store.select(detailFeature.selectSaveState);
 
   readonly Collections = Collection;
 

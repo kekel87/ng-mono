@@ -3,8 +3,8 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, ngMocks } from 'ng-mocks';
 
 import { authActions } from './auth.actions';
+import { authFeature } from './auth.feature';
 import { AuthGuard } from './auth.guard';
-import * as authSelectors from './auth.selectors';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -13,7 +13,7 @@ describe('AuthGuard', () => {
   beforeEach(async () => {
     await MockBuilder(AuthGuard).provide(
       provideMockStore({
-        selectors: [{ selector: authSelectors.selectIsLoggedIn, value: false }],
+        selectors: [{ selector: authFeature.selectIsLoggedIn, value: false }],
       })
     );
 
@@ -23,7 +23,7 @@ describe('AuthGuard', () => {
   });
 
   it('should activate with user', () => {
-    authSelectors.selectIsLoggedIn.setResult(true);
+    authFeature.selectIsLoggedIn.setResult(true);
     store.refreshState();
 
     guard.canActivate(new ActivatedRouteSnapshot(), {} as RouterStateSnapshot).subscribe((v) => {

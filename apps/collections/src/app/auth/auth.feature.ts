@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 
 import { authActions } from './auth.actions';
 import { User } from './user.model';
@@ -31,4 +31,7 @@ export const authFeature = createFeature({
     on(authActions.googleLogin, authActions.logout, (state): State => ({ ...state, loading: true })),
     on(authActions.error, (state): State => ({ ...state, loading: false }))
   ),
+  extraSelectors: ({ selectUser }) => ({
+    selectIsLoggedIn: createSelector(selectUser, (user: User | null): boolean => !!user),
+  }),
 });

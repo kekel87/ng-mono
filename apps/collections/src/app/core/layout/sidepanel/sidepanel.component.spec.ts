@@ -8,7 +8,7 @@ import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-moc
 import { Subject } from 'rxjs';
 
 import { authActions } from '~app/auth/auth.actions';
-import * as authSelectors from '~app/auth/auth.selectors';
+import { authFeature } from '~app/auth/auth.feature';
 import { layoutActions } from '~app/core/layout/layout.actions';
 import { SnackbarOptions } from '~app/core/layout/layout.models';
 import { SidePanelComponent } from '~app/core/layout/sidepanel/sidepanel.component';
@@ -16,7 +16,7 @@ import { Collection } from '~shared/enums/collection';
 import { RouteName } from '~shared/enums/route-name';
 import { mockUser } from '~tests/mocks/user';
 
-import * as layoutSelectors from '../layout.selectors';
+import { layoutFeature } from '../layout.feature';
 
 describe('SidePanelComponent', () => {
   let fixture: MockedComponentFixture<SidePanelComponent>;
@@ -35,8 +35,8 @@ describe('SidePanelComponent', () => {
       .provide(
         provideMockStore({
           selectors: [
-            { selector: layoutSelectors.selectShowSidenav, value: null },
-            { selector: authSelectors.selectUser, value: mockUser },
+            { selector: layoutFeature.selectShowSidenav, value: null },
+            { selector: authFeature.selectUser, value: mockUser },
           ],
         })
       );

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,9 +13,11 @@ import { AutoFocusDirective } from '~shared/directives/auto-focus/auto-focus.dir
 import { RequestState } from '~shared/enums/request-state';
 
 @Component({
+  selector: 'col-custom-url-dialog',
   standalone: true,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    NgIf,
     FormsModule,
     MatDialogModule,
     MatIconModule,
@@ -24,7 +26,6 @@ import { RequestState } from '~shared/enums/request-state';
     LoaderComponent,
     AutoFocusDirective,
   ],
-  selector: 'col-custom-url-dialog',
   templateUrl: './custom-url-dialog.component.html',
   styleUrls: ['./custom-url-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

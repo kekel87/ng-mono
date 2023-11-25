@@ -13,7 +13,7 @@ import { FirestoreService } from '~shared/services/firestore.service';
 
 import { collectionDetailActions } from './core/store/detail.actions';
 import * as collectionsSelectors from '../core/entities/collections.selectors';
-import { InitUtils } from '../share/utils/init.utils';
+import { initCollections } from '../share/utils/init-collections.utils';
 
 interface ItemCollection {
   item: Item;
@@ -34,7 +34,7 @@ export class DetailResolver {
     const id = route.paramMap.get('id') as string;
     const meta = metas[collection];
 
-    InitUtils.initCollections(this.store, meta.relations);
+    initCollections(this.store, meta.relations);
 
     if ('new' === id) {
       this.store.dispatch(collectionDetailActions.setSaveState({ saveState: SaveState.NotSave }));

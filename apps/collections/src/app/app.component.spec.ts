@@ -1,4 +1,4 @@
-import { RouterModule } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
 
 import { AppComponent } from '~app/app.component';
@@ -10,7 +10,7 @@ describe('AppComponent', () => {
   let fixture: MockedComponentFixture<AppComponent>;
 
   beforeEach(async () => {
-    await MockBuilder(AppComponent).mock(RouterModule).mock(HeaderComponent).mock(SidePanelComponent);
+    await MockBuilder(AppComponent).mock(RouterOutlet).mock(HeaderComponent).mock(SidePanelComponent);
     fixture = MockRender(AppComponent);
   });
 

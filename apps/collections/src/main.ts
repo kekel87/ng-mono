@@ -1,9 +1,8 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { bootstrapApplication } from '@angular/platform-browser';
 
-import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
-import { RuntimeConfig } from '~shared/models/runtime-config';
-
-import { AppModule } from './app/app.module';
+import { AppComponent } from './app/app.component';
+import { appConfig } from './app/app.config';
+import { RuntimeConfig } from './app/shared/models/runtime-config';
 
 async function loadConfig(): Promise<RuntimeConfig> {
   const response = await fetch('/assets/runtime-config.json');
@@ -13,7 +12,5 @@ async function loadConfig(): Promise<RuntimeConfig> {
 (async () => {
   const runtimeConfig = await loadConfig();
 
-  platformBrowserDynamic([{ provide: RUNTIME_CONFIG, useValue: runtimeConfig }])
-    .bootstrapModule(AppModule)
-    .catch((err) => console.error(err));
+  bootstrapApplication(AppComponent, appConfig(runtimeConfig)).catch((err) => console.error(err));
 })();

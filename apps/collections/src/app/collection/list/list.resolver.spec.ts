@@ -1,4 +1,5 @@
 import { ActivatedRouteSnapshot } from '@angular/router';
+import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { MockBuilder, ngMocks } from 'ng-mocks';
@@ -7,7 +8,9 @@ import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
 
 import { ListResolver } from './list.resolver';
-import { collectionsActions } from '../core/entities/collections.actions';
+import { State } from '../core/entities/collections.feature';
+import * as collectionsSelectors from '../core/entities/collections.selectors';
+import * as initUtils from '../share/utils/init-collections.utils';
 
 describe('ListResolver', () => {
   let resolver: ListResolver;
@@ -19,76 +22,52 @@ describe('ListResolver', () => {
     return activatedRouteSnapshot;
   };
 
+  const selectLinkStateSpy = jest.fn();
+  const selectLinkStateFactorySpy = jest
+    .spyOn(collectionsSelectors, 'selectLinkStateFactory')
+    .mockReturnValue(selectLinkStateSpy as unknown as MemoizedSelector<Record<string, unknown>, LinkState, (s1: State) => LinkState>);
+
+  const initCollectionsSpy = jest.spyOn(initUtils, 'initCollections').mockImplementation();
+
   beforeEach(async () => {
-    await MockBuilder(ListResolver).provide(provideMockStore({ initialState: { collection: { collections: {} } } }));
+    await MockBuilder(ListResolver).provide(provideMockStore());
 
     resolver = ngMocks.findInstance(ListResolver);
     store = ngMocks.findInstance(MockStore);
     jest.spyOn(store, 'dispatch').mockImplementation();
   });
 
-  it('should init simple collection and wait for her initialise', () => {
-    store.setState({ collection: { collections: { [Collection.Amiibos]: { linkState: LinkState.Loading } } } });
-    const expected = cold('------');
-    expect(resolver.resolve(getMockRoute(Collection.Amiibos))).toBeObservable(expected);
-    expect(store.dispatch).toHaveBeenCalledWith(collectionsActions.init({ collection: Collection.Amiibos }));
+  it('should wait for collection initialise', () => {
+    selectLinkStateSpy.mockReturnValue(LinkState.Loading);
+
+    expect(resolver.resolve(getMockRoute(Collection.Amiibos))).toBeObservable(cold('------'));
+    expect(initCollectionsSpy).toHaveBeenCalledWith(store, [Collection.Amiibos]);
+    expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Amiibos);
   });
 
-  it('should resolve a simple collection without re-init them', () => {
-    // TODO: find a better way with jest: https://github.com/ngrx/platform/issues/3107#issuecomment-985184507
-    store.setState({ collection: { collections: { [Collection.Amiibos]: { linkState: LinkState.Linked } } } });
+  it('should resolve a simple collection', () => {
+    selectLinkStateSpy.mockReturnValue(LinkState.Linked);
 
-    const expected = cold('(a|)', {
-      a: Collection.Amiibos,
-    });
-    expect(resolver.resolve(getMockRoute(Collection.Amiibos))).toBeObservable(expected);
-    expect(store.dispatch).not.toHaveBeenCalledWith(collectionsActions.init({ collection: Collection.Amiibos }));
+    expect(resolver.resolve(getMockRoute(Collection.Amiibos))).toBeObservable(cold('(a|)', { a: Collection.Amiibos }));
   });
 
-  it('should init collection with relations and wait for her initialise', () => {
-    store.setState({
-      collection: {
-        collections: {
-          [Collection.Games]: { linkState: LinkState.Loading },
-          [Collection.Consoles]: { linkState: LinkState.Loading },
-        },
-      },
-    });
-    const expected = cold('------');
-    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(expected);
-    expect(store.dispatch).toHaveBeenCalledWith(collectionsActions.init({ collection: Collection.Games }));
-    expect(store.dispatch).toHaveBeenCalledWith(collectionsActions.init({ collection: Collection.Consoles }));
+  it('should wait for collection with relations initialise', () => {
+    selectLinkStateSpy.mockReturnValueOnce(LinkState.Loading).mockReturnValueOnce(LinkState.Loading);
+
+    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(cold('------'));
+    expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Games);
+    expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Games);
   });
 
   it('should wait all relations before resolve', () => {
-    store.setState({
-      collection: {
-        collections: {
-          [Collection.Games]: { linkState: LinkState.Linked },
-          [Collection.Consoles]: { linkState: LinkState.Loading },
-        },
-      },
-    });
+    selectLinkStateSpy.mockReturnValueOnce(LinkState.Linked).mockReturnValueOnce(LinkState.Loading);
 
-    const expected = cold('------');
-    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(expected);
+    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(cold('------'));
   });
 
-  it('should resolve collection with relations without re-init them', () => {
-    store.setState({
-      collection: {
-        collections: {
-          [Collection.Games]: { linkState: LinkState.Linked },
-          [Collection.Consoles]: { linkState: LinkState.Linked },
-        },
-      },
-    });
+  it('should resolve collection with relations', () => {
+    selectLinkStateSpy.mockReturnValueOnce(LinkState.Linked).mockReturnValueOnce(LinkState.Linked);
 
-    const expected = cold('(a|)', {
-      a: Collection.Games,
-    });
-    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(expected);
-    expect(store.dispatch).not.toHaveBeenCalledWith(collectionsActions.init({ collection: Collection.Games }));
-    expect(store.dispatch).not.toHaveBeenCalledWith(collectionsActions.init({ collection: Collection.Consoles }));
+    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(cold('(a|)', { a: Collection.Games }));
   });
 });

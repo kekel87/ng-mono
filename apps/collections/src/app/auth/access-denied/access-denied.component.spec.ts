@@ -1,12 +1,12 @@
 import { MockBuilder, MockRender, MockedComponentFixture } from 'ng-mocks';
 
-import { AccessDeniedComponent, AccessDeniedModule } from './access-denied.component';
+import { AccessDeniedComponent } from './access-denied.component';
 
 describe('AccessDeniedComponent', () => {
   let fixture: MockedComponentFixture<AccessDeniedComponent>;
 
   beforeEach(async () => {
-    await MockBuilder(AccessDeniedComponent, AccessDeniedModule);
+    await MockBuilder(AccessDeniedComponent);
 
     fixture = MockRender(AccessDeniedComponent);
   });

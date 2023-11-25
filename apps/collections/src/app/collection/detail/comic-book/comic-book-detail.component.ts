@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule, FormArray } from '@angular/forms';
@@ -17,7 +17,6 @@ import { Book } from '~shared/models/book';
 import { Tome } from '~shared/models/tome';
 
 import { CreateTomesDialogComponent } from './core/components/create-tomes-dialog/create-tomes-dialog.component';
-import { CreateTomesDialogModule } from './core/components/create-tomes-dialog/create-tomes-dialog.module';
 import { TomeDialogComponent } from './core/components/tome-dialog/tome-dialog.component';
 import { TomeForm } from './core/models/tome-form';
 import { ConfirmDialogComponent } from '../core/components/confirm-dialog/confirm-dialog.component';
@@ -36,12 +35,12 @@ type ComicBookForm = FormGroup<{
 }>;
 
 @Component({
-  standalone: true,
   selector: 'col-comic-book-detail',
-  templateUrl: './comic-book-detail.component.html',
-  styleUrls: ['../core/components/detail/detail.component.scss', './comic-book-detail.component.scss'],
+  standalone: true,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    NgIf,
+    NgForOf,
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
@@ -56,8 +55,10 @@ type ComicBookForm = FormGroup<{
     ConfirmDialogComponent,
     ImageSelectorComponent,
     TomeDialogComponent,
-    CreateTomesDialogModule,
+    CreateTomesDialogComponent,
   ],
+  templateUrl: './comic-book-detail.component.html',
+  styleUrls: ['../core/components/detail/detail.component.scss', './comic-book-detail.component.scss'],
 })
 export class ComicBookDetailComponent extends DetailComponent<Book, ComicBookForm> {
   isOneShot = false;

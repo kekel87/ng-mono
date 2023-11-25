@@ -5,7 +5,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { MockBuilder, ngMocks } from 'ng-mocks';
 
-import * as authSelectors from '~app/auth/auth.selectors';
+import { authFeature } from '~app/auth/auth.feature';
 import { AuthService } from '~app/auth/auth.service';
 import { FirestoreService } from '~shared/services/firestore.service';
 import { mockUser } from '~tests/mocks/user';
@@ -25,7 +25,7 @@ describe('FirestoreService', () => {
   beforeEach(async () => {
     await MockBuilder(AuthService)
       .provide({ provide: Firestore, useValue: firestore })
-      .provide(provideMockStore({ selectors: [{ selector: authSelectors.selectUser, value: mockUser }] }));
+      .provide(provideMockStore({ selectors: [{ selector: authFeature.selectUser, value: mockUser }] }));
 
     service = ngMocks.findInstance(FirestoreService);
     store = ngMocks.findInstance(MockStore);

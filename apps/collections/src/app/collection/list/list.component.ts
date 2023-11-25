@@ -1,13 +1,14 @@
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { ActivatedRoute } from '@angular/router';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { delay, filter, first, switchMap, take } from 'rxjs/operators';
+import { delay, filter, first, switchMap } from 'rxjs/operators';
 
 import { layoutActions } from '~app/core/layout/layout.actions';
-import * as layoutSelectors from '~app/core/layout/layout.selectors';
+import { layoutFeature } from '~app/core/layout/layout.feature';
 import { routerActions } from '~app/core/router/router.actions';
 import { metas } from '~shared/consts/metas';
 import { Collection } from '~shared/enums/collection';
@@ -15,11 +16,14 @@ import { ItemToDisplay } from '~shared/models/item-to-display';
 import { hasValue } from '~shared/utils/type-guards';
 
 import { collectionListActions } from './list.actions';
+import { listFeature } from './list.feature';
 import * as listSelectors from './list.selectors';
 import { collectionsActions } from '../core/entities/collections.actions';
 
 @Component({
   selector: 'col-list',
+  standalone: true,
+  imports: [AsyncPipe, RouterLink, CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf, MatCheckboxModule],
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,17 +48,17 @@ export class ListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.store
-      .select(layoutSelectors.selectSearchPredicate)
+      .select(layoutFeature.selectSearchPredicate)
       .pipe(
         filter((search) => search.length > 0),
-        take(1)
+        first()
       )
       .subscribe(() => this.store.dispatch(layoutActions.openSearchBar()));
   }
 
   ngAfterViewInit(): void {
     this.store
-      .select(listSelectors.selectScrollIndex)
+      .select(listFeature.selectScrollIndex)
       .pipe(first(), filter(hasValue), delay(1))
       .subscribe((index) => {
         this.viewport.scrollToIndex(index);

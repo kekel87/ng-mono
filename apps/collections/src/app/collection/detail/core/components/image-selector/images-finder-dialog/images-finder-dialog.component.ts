@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,7 +10,7 @@ import { ImageService } from '~shared/services/image.service';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatInputModule, LoaderComponent],
+  imports: [NgIf, NgForOf, MatDialogModule, MatButtonModule, MatInputModule, LoaderComponent],
   selector: 'col-images-finder-dialog',
   templateUrl: './images-finder-dialog.component.html',
   styleUrls: ['./images-finder-dialog.component.scss'],

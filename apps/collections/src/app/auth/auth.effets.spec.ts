@@ -12,7 +12,7 @@ import { mockUser } from '~tests/mocks/user';
 
 import { authActions } from './auth.actions';
 import { AuthEffects } from './auth.effets';
-import * as authSelectors from './auth.selectors';
+import { authFeature } from './auth.feature';
 import { AuthService } from './auth.service';
 import { User } from './user.model';
 
@@ -31,7 +31,7 @@ describe('Auth Effects', () => {
   beforeEach(async () => {
     await MockBuilder(AuthEffects)
       .provide(provideMockActions(() => actions$))
-      .provide(provideMockStore({ selectors: [{ selector: authSelectors.selectRedirectUrl, value: '/' }] }))
+      .provide(provideMockStore({ selectors: [{ selector: authFeature.selectRedirectUrl, value: '/' }] }))
       .provide({ provide: AuthService, useValue: authService });
 
     effects = ngMocks.findInstance(AuthEffects);
@@ -177,7 +177,7 @@ describe('Auth Effects', () => {
     });
 
     it('should redirect to url when Redirect is dispatched', () => {
-      authSelectors.selectRedirectUrl.setResult('/redirect');
+      authFeature.selectRedirectUrl.setResult('/redirect');
       store.refreshState();
 
       actions$ = hot('-a-', { a: authActions.redirect() });

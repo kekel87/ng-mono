@@ -1,6 +1,6 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ApplicationConfig } from '@angular/core';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
@@ -48,6 +48,6 @@ export const appConfig: (runtimeConfig: RuntimeConfig) => ApplicationConfig = (r
         sendAccessToken: true,
       },
     }),
-    importProvidersFrom(BrowserAnimationsModule),
+    provideAnimations(),
   ],
 });

@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs/operators';
 
 import { layoutActions } from './layout.actions';
-import * as layoutSelectors from './layout.selectors';
+import { layoutFeature } from './layout.feature';
 
 @Injectable()
 export class LayoutEffects {
@@ -25,7 +25,7 @@ export class LayoutEffects {
   closeSearchBar$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ROUTER_NAVIGATED),
-      concatLatestFrom(() => this.store.select(layoutSelectors.selectShowSearchBar)),
+      concatLatestFrom(() => this.store.select(layoutFeature.selectShowSearchBar)),
       filter(([_, show]: [RouterEvent, boolean]) => show),
       map(() => layoutActions.closeSearchBar())
     );

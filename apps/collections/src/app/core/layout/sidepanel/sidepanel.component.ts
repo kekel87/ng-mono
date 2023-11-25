@@ -1,5 +1,5 @@
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, KeyValuePipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,28 +8,33 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { RouterModule } from '@angular/router';
+import { RouterLinkActive, RouterLinkWithHref } from '@angular/router';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
 import { authActions } from '~app/auth/auth.actions';
-import * as authSelectors from '~app/auth/auth.selectors';
+import { authFeature } from '~app/auth/auth.feature';
 import { User } from '~app/auth/user.model';
 import { metas } from '~shared/consts/metas';
 import { RouteName } from '~shared/enums/route-name';
 import { OrderUtils } from '~shared/utils/order';
 
 import { layoutActions } from '../layout.actions';
+import { layoutFeature } from '../layout.feature';
 import { SnackbarOptions } from '../layout.models';
-import * as layoutSelectors from '../layout.selectors';
 
 @Component({
+  selector: 'col-sidepanel',
   standalone: true,
   imports: [
-    CommonModule,
-    RouterModule,
+    AsyncPipe,
+    KeyValuePipe,
+    NgIf,
+    NgForOf,
+    RouterLinkWithHref,
+    RouterLinkActive,
     MatMenuModule,
     MatSidenavModule,
     MatButtonModule,
@@ -38,14 +43,13 @@ import * as layoutSelectors from '../layout.selectors';
     MatSnackBarModule,
     MatInputModule,
   ],
-  selector: 'col-sidepanel',
   templateUrl: './sidepanel.component.html',
   styleUrls: ['./sidepanel.component.scss', './sidepanel.component-theme.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidePanelComponent {
-  open$: Observable<boolean> = this.store.select(layoutSelectors.selectShowSidenav);
-  user$: Observable<User | null> = this.store.select(authSelectors.selectUser);
+  open$: Observable<boolean> = this.store.select(layoutFeature.selectShowSidenav);
+  user$: Observable<User | null> = this.store.select(authFeature.selectUser);
   isMobile$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((state: BreakpointState) => state.matches));

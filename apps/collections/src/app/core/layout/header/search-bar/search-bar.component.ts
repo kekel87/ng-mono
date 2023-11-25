@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -13,18 +13,18 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AutoFocusDirective } from '~shared/directives/auto-focus/auto-focus.directive';
 
 import { layoutActions } from '../../layout.actions';
-import * as layoutSelectors from '../../layout.selectors';
+import { layoutFeature } from '../../layout.feature';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MatToolbarModule, MatInputModule, AutoFocusDirective],
   selector: 'col-search-bar',
+  standalone: true,
+  imports: [AsyncPipe, FormsModule, MatButtonModule, MatIconModule, MatToolbarModule, MatInputModule, AutoFocusDirective],
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBarComponent {
-  search$: Observable<string> = this.store.select(layoutSelectors.selectSearchPredicate);
+  search$: Observable<string> = this.store.select(layoutFeature.selectSearchPredicate);
   searchChange$: Subject<string> = new Subject<string>();
 
   constructor(private store: Store) {

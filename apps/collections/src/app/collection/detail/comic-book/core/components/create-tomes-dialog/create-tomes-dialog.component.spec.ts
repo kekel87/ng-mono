@@ -4,13 +4,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks, NG_MOCKS_ROOT_PROVIDERS } from 'ng-mocks';
 
 import { CreateTomesDialogComponent } from './create-tomes-dialog.component';
-import { CreateTomesDialogModule } from './create-tomes-dialog.module';
 
 describe('CreateTomesDialogComponent', () => {
   let fixture: MockedComponentFixture<CreateTomesDialogComponent>;
 
   beforeEach(async () => {
-    await MockBuilder(CreateTomesDialogComponent, CreateTomesDialogModule)
+    await MockBuilder(CreateTomesDialogComponent)
       .keep(FormsModule)
       .keep(ReactiveFormsModule)
       .provide({ provide: MAT_DIALOG_DATA, useValue: { start: 2 } })

@@ -3,9 +3,9 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
 
 import { layoutActions } from '~app/core/layout/layout.actions';
-import * as layoutSelectors from '~app/core/layout/layout.selectors';
 
 import { ToolbarComponent } from './toolbar.component';
+import { layoutFeature } from '../../layout.feature';
 
 describe('ToolbarComponent', () => {
   let fixture: MockedComponentFixture<ToolbarComponent>;
@@ -23,7 +23,7 @@ describe('ToolbarComponent', () => {
   beforeEach(async () => {
     await MockBuilder(ToolbarComponent).provide(
       provideMockStore({
-        selectors: [{ selector: layoutSelectors.selectToolbarConfig, value: config }],
+        selectors: [{ selector: layoutFeature.selectToolbarConfig, value: config }],
       })
     );
 

@@ -12,8 +12,8 @@ import { MockFirebaseError } from '~tests/mocks/mock-firebase-error';
 
 import { counterActions } from './counter.actions';
 import { CounterEffects } from './counter.effects';
+import { counterFeature } from './counter.feature';
 import { Counter } from './counter.model';
-import * as counterSelectors from './counter.selectors';
 
 describe('CounterEffects', () => {
   let actions$: Observable<Action>;
@@ -33,7 +33,7 @@ describe('CounterEffects', () => {
   beforeEach(async () => {
     await MockBuilder(CounterEffects)
       .provide(provideMockActions(() => actions$))
-      .provide(provideMockStore({ selectors: [{ selector: counterSelectors.selectCollectionState, value: LinkState.Initial }] }))
+      .provide(provideMockStore({ selectors: [{ selector: counterFeature.selectCollectionState, value: LinkState.Initial }] }))
       .provide({ provide: FirestoreService, useValue: firestoreService });
 
     effects = ngMocks.findInstance(CounterEffects);
@@ -73,7 +73,7 @@ describe('CounterEffects', () => {
     });
 
     it('should not emit if counter collection already init', () => {
-      counterSelectors.selectCollectionState.setResult(LinkState.Linked);
+      counterFeature.selectCollectionState.setResult(LinkState.Linked);
       store.refreshState();
 
       actions$ = hot('-a-', { a: counterActions.dataChange({ counters }) });

@@ -1,5 +1,5 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 
 import { LinkState } from '~shared/enums/link-state';
 
@@ -30,4 +30,8 @@ export const counterFeature = createFeature({
     on(counterActions.dataChange, (state, { counters }): State => adapter.setAll(counters, state)),
     on(counterActions.error, (state): State => ({ ...state, collectionState: LinkState.Error }))
   ),
+  extraSelectors: ({ selectCounterState, selectCollectionState }) => ({
+    ...adapter.getSelectors(selectCounterState),
+    selectIsLoading: createSelector(selectCollectionState, (collectionState) => collectionState === LinkState.Loading),
+  }),
 });

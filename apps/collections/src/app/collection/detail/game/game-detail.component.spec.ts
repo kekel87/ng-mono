@@ -2,13 +2,14 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControlName, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks, NG_MOCKS_ROOT_PROVIDERS } from 'ng-mocks';
 import { ReplaySubject, of } from 'rxjs';
 
+import { State } from '~app/collection/core/entities/collections.feature';
 import { layoutActions } from '~app/core/layout/layout.actions';
 import { Collection } from '~shared/enums/collection';
-import { LinkState } from '~shared/enums/link-state';
 import { SaveState } from '~shared/enums/save-state';
 import { Game } from '~shared/models/game';
 import { Item } from '~shared/models/item';
@@ -16,9 +17,10 @@ import { MockCollection } from '~tests/mocks/collection';
 
 import { GameDetailComponent } from './game-detail.component';
 import { collectionsActions } from '../../core/entities/collections.actions';
+import * as collectionsSelectors from '../../core/entities/collections.selectors';
 import { ConfirmDialogComponent } from '../core/components/confirm-dialog/confirm-dialog.component';
 import { collectionDetailActions } from '../core/store/detail.actions';
-import * as detailSelectors from '../core/store/detail.selectors';
+import { detailFeature } from '../core/store/detail.feature';
 
 describe('GameDetailComponent', () => {
   ngMocks.faster();
@@ -44,6 +46,11 @@ describe('GameDetailComponent', () => {
     },
   });
 
+  const selectAllSpy = jest.fn().mockReturnValue(MockCollection.consoles);
+  const selectAllFactorySpy = jest
+    .spyOn(collectionsSelectors, 'selectAllFactory')
+    .mockReturnValue(selectAllSpy as unknown as MemoizedSelector<Record<string, unknown>, Item[], (s1: State) => Item[]>);
+
   const data$ = new ReplaySubject<{ itemCollection: { item: Item; collection: Collection } }>(1);
 
   beforeAll(() =>
@@ -53,8 +60,8 @@ describe('GameDetailComponent', () => {
       .provide(
         provideMockStore({
           selectors: [
-            { selector: detailSelectors.selectLoading, value: false },
-            { selector: detailSelectors.selectSaveState, value: SaveState.Unchanged },
+            { selector: detailFeature.selectLoading, value: false },
+            { selector: detailFeature.selectSaveState, value: SaveState.Unchanged },
           ],
         })
       )
@@ -69,18 +76,6 @@ describe('GameDetailComponent', () => {
     store = ngMocks.findInstance(MockStore);
     jest.spyOn(store, 'dispatch');
 
-    store.setState({
-      collection: {
-        collections: {
-          [Collection.Consoles]: {
-            ids: MockCollection.consoles.map(({ id }) => id),
-            entities: MockCollection.consoles.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {}),
-            linkState: LinkState.Linked,
-          },
-        },
-      },
-    });
-
     data$.next({ itemCollection: { collection: Collection.Games, item: MockCollection.game2 } });
 
     fixture.detectChanges();
@@ -93,7 +88,7 @@ describe('GameDetailComponent', () => {
   it('should toggle loader', () => {
     expect(ngMocks.find('col-loader', null)).toBeNull();
 
-    detailSelectors.selectLoading.setResult(true);
+    detailFeature.selectLoading.setResult(true);
     store.refreshState();
     fixture.detectChanges();
 
@@ -113,6 +108,7 @@ describe('GameDetailComponent', () => {
 
   it('should display list of console', () => {
     expect(ngMocks.findAll('mat-option').length).toBe(2);
+    expect(selectAllFactorySpy).toHaveBeenCalledWith(Collection.Consoles);
   });
 
   it('should update header title when game title change', fakeAsync(() => {
@@ -180,7 +176,7 @@ describe('GameDetailComponent', () => {
   });
 
   it('should change toolbar icon when saving', () => {
-    detailSelectors.selectSaveState.setResult(SaveState.Saving);
+    detailFeature.selectSaveState.setResult(SaveState.Saving);
     store.refreshState();
     fixture.detectChanges();
 
@@ -188,7 +184,7 @@ describe('GameDetailComponent', () => {
   });
 
   it('should change toolbar icon when saved', () => {
-    detailSelectors.selectSaveState.setResult(SaveState.Saved);
+    detailFeature.selectSaveState.setResult(SaveState.Saved);
     store.refreshState();
     fixture.detectChanges();
 

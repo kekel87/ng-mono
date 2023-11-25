@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, NgModule, OnInit } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { Store, StoreModule } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
@@ -11,11 +11,12 @@ import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
 import { RuntimeConfig } from '~shared/models/runtime-config';
 
 import { authActions } from '../auth.actions';
-import { authFeature } from '../auth.reducer';
-import * as authSelectors from '../auth.selectors';
+import { authFeature } from '../auth.feature';
 
 @Component({
   selector: 'col-login',
+  standalone: true,
+  imports: [AsyncPipe, NgIf, FormsModule, MatButtonModule, LoaderComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,13 +32,13 @@ export class LoginComponent implements OnInit {
     private store: Store,
     @Inject(RUNTIME_CONFIG) { isQa }: RuntimeConfig
   ) {
-    this.loading$ = this.store.select(authSelectors.selectLoading);
+    this.loading$ = this.store.select(authFeature.selectLoading);
     this.displayLoginField = isQa;
   }
 
   ngOnInit(): void {
     this.store
-      .select(authSelectors.selectUser)
+      .select(authFeature.selectUser)
       .pipe(
         first(),
         filter((user) => !!user)
@@ -55,10 +56,3 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(authActions.emailPasswordLogin({ email, password }));
   }
 }
-
-@NgModule({
-  imports: [CommonModule, FormsModule, StoreModule.forFeature(authFeature), MatButtonModule, LoaderComponent],
-  declarations: [LoginComponent],
-  exports: [LoginComponent],
-})
-export class LoginModule {}

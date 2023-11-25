@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 
 import { layoutActions } from './layout.actions';
 import { LayoutEffects } from './layout.effects';
-import * as layoutSelectors from './layout.selectors';
+import { layoutFeature } from './layout.feature';
 
 describe('LayoutEffetcs', () => {
   let actions$: Observable<Action>;
@@ -18,7 +18,7 @@ describe('LayoutEffetcs', () => {
   beforeEach(async () => {
     await MockBuilder(LayoutEffects)
       .provide(provideMockActions(() => actions$))
-      .provide(provideMockStore({ selectors: [{ selector: layoutSelectors.selectShowSearchBar, value: false }] }));
+      .provide(provideMockStore({ selectors: [{ selector: layoutFeature.selectShowSearchBar, value: false }] }));
 
     effects = ngMocks.findInstance(LayoutEffects);
     store = ngMocks.findInstance(MockStore);
@@ -34,7 +34,7 @@ describe('LayoutEffetcs', () => {
 
   describe('closeSearchBar$', () => {
     it('should close search-bar on navigate', () => {
-      layoutSelectors.selectShowSearchBar.setResult(true);
+      layoutFeature.selectShowSearchBar.setResult(true);
       store.refreshState();
 
       actions$ = hot('-a-', { a: { type: ROUTER_NAVIGATED } });

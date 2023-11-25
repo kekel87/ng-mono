@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +19,9 @@ import { ImageFinderDialogComponent } from './images-finder-dialog/images-finder
 @Component({
   standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
+    NgSwitch,
+    NgSwitchCase,
     FormsModule,
     MatDialogModule,
     MatIconModule,

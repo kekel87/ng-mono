@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,9 +11,9 @@ import { ImageSelectorComponent } from '~app/collection/detail/core/components/i
 import { TomeForm } from '../../models/tome-form';
 
 @Component({
+  selector: 'col-tome-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
@@ -24,7 +23,6 @@ import { TomeForm } from '../../models/tome-form';
     MatSlideToggleModule,
     ImageSelectorComponent,
   ],
-  selector: 'col-tome-dialog',
   templateUrl: './tome-dialog.component.html',
   styleUrls: ['./tome-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

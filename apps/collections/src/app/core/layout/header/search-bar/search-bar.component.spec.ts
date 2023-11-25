@@ -6,7 +6,7 @@ import { MockBuilder, MockRender, MockedComponentFixture, NG_MOCKS_ROOT_PROVIDER
 import { layoutActions } from '~app/core/layout/layout.actions';
 
 import { SearchBarComponent } from './search-bar.component';
-import * as layoutSelectors from '../../layout.selectors';
+import { layoutFeature } from '../../layout.feature';
 
 describe('SearchBarComponent', () => {
   let fixture: MockedComponentFixture<SearchBarComponent>;
@@ -18,7 +18,7 @@ describe('SearchBarComponent', () => {
       .keep(NG_MOCKS_ROOT_PROVIDERS)
       .provide(
         provideMockStore({
-          selectors: [{ selector: layoutSelectors.selectSearchPredicate, value: null }],
+          selectors: [{ selector: layoutFeature.selectSearchPredicate, value: null }],
         })
       );
 
@@ -41,7 +41,7 @@ describe('SearchBarComponent', () => {
   }));
 
   it('should restore previous search', () => {
-    layoutSelectors.selectSearchPredicate.setResult('pokemon');
+    layoutFeature.selectSearchPredicate.setResult('pokemon');
     store.refreshState();
     fixture.detectChanges();
 

@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { RouteName } from '~shared/enums/route-name';
 
 import { AuthGuard } from './auth/auth.guard';
 
-export const routes: Routes = [
+export default [
   {
     path: '',
     redirectTo: `/${RouteName.Dashboard}`,
@@ -13,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: RouteName.Dashboard,
-    loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+    loadChildren: () => import('./dashboard/dashboard.routes'),
     canActivate: [AuthGuard],
   },
   {
@@ -22,14 +21,12 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('./collection/collection.module').then((m) => m.CollectionModule),
+    loadChildren: () => import('./collection/collection.routes'),
     canActivate: [AuthGuard],
   },
+  {
+    path: '',
+    loadChildren: () => import('./auth/auth.routes'),
+  },
   { path: '**', redirectTo: `/${RouteName.Dashboard}` },
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
+] satisfies Routes;

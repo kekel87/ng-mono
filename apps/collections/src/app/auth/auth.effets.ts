@@ -8,7 +8,7 @@ import { routerActions } from '~app/core/router/router.actions';
 import { isFirebaseError } from '~shared/utils/type-guards';
 
 import { authActions } from './auth.actions';
-import * as authSelectors from './auth.selectors';
+import { authFeature } from './auth.feature';
 import { AuthService } from './auth.service';
 
 @Injectable()
@@ -104,7 +104,7 @@ export class AuthEffects {
   redirect$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(authActions.redirect),
-      concatMap(() => this.store.select(authSelectors.selectRedirectUrl).pipe(first())),
+      concatMap(() => this.store.select(authFeature.selectRedirectUrl).pipe(first())),
       map((redirectUrl) => routerActions.navigate({ commands: [redirectUrl] }))
     );
   });

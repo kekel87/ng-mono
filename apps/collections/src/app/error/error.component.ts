@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  standalone: true,
   selector: 'col-error',
+  standalone: true,
   templateUrl: './error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

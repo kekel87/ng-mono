@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 import { Observable, from } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
-import * as authSelectors from '~app/auth/auth.selectors';
+import { authFeature } from '~app/auth/auth.feature';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +36,7 @@ export class FirestoreService {
 
   onChange<T extends { id: string }>(col: string): Observable<T[]> {
     const colRef = collection(this.firestore, col) as CollectionReference<T>;
-    return collectionData(colRef, { idField: 'id' }).pipe(takeUntil(this.store.select(authSelectors.selectUser).pipe(filter((u) => !u))));
+    return collectionData(colRef, { idField: 'id' }).pipe(takeUntil(this.store.select(authFeature.selectUser).pipe(filter((u) => !u))));
   }
 
   save<T extends { id: string }>(collection: string, data: Partial<T>): Observable<string> {

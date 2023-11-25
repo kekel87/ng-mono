@@ -12,7 +12,6 @@ $palette-dark-warn: mat.define-palette(mat.$deep-orange-palette);
 
 $palette-light-primary: mat.define-palette(mat.$indigo-palette);
 $palette-light-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-$palette-light-theme: mat.define-light-theme($palette-light-primary, $palette-light-accent);
 $palette-dark-primary: mat.define-palette(mat.$blue-grey-palette);
 $palette-dark-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
 $palette-dark-warn: mat.define-palette(mat.$deep-orange-palette);

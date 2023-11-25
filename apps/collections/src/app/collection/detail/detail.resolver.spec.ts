@@ -1,4 +1,5 @@
 import { ActivatedRouteSnapshot } from '@angular/router';
+import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { MockBuilder, ngMocks } from 'ng-mocks';
@@ -6,11 +7,16 @@ import { of } from 'rxjs';
 
 import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
+import { SaveState } from '~shared/enums/save-state';
+import { Item } from '~shared/models/item';
 import { FirestoreService } from '~shared/services/firestore.service';
 import { MockCollection } from '~tests/mocks/collection';
 
 import { collectionDetailActions } from './core/store/detail.actions';
 import { DetailResolver } from './detail.resolver';
+import { State } from '../core/entities/collections.feature';
+import * as collectionsSelectors from '../core/entities/collections.selectors';
+import * as initUtils from '../share/utils/init-collections.utils';
 
 describe('DetailResolver', () => {
   let resolver: DetailResolver;
@@ -27,10 +33,22 @@ describe('DetailResolver', () => {
     return activatedRouteSnapshot;
   };
 
+  const selectLinkStateSpy = jest.fn();
+  const selectLinkStateFactorySpy = jest
+    .spyOn(collectionsSelectors, 'selectLinkStateFactory')
+    .mockReturnValue(selectLinkStateSpy as unknown as MemoizedSelector<Record<string, unknown>, LinkState, (s1: State) => LinkState>);
+
+  const selectEntitySpy = jest.fn();
+  const selectEntityFactorySpy = jest
+    .spyOn(collectionsSelectors, 'selectEntityFactory')
+    .mockReturnValue(
+      selectEntitySpy as unknown as MemoizedSelector<Record<string, unknown>, Item | undefined, (s1: State) => Item | undefined>
+    );
+
+  const initCollectionsSpy = jest.spyOn(initUtils, 'initCollections').mockImplementation();
+
   beforeEach(async () => {
-    await MockBuilder(DetailResolver)
-      .provide(provideMockStore({ initialState: { collection: { collections: {} } } }))
-      .provide({ provide: FirestoreService, useValue: firestoreService });
+    await MockBuilder(DetailResolver).provide(provideMockStore()).provide({ provide: FirestoreService, useValue: firestoreService });
 
     resolver = ngMocks.findInstance(DetailResolver);
     store = ngMocks.findInstance(MockStore);
@@ -39,68 +57,40 @@ describe('DetailResolver', () => {
     firestoreService.createId.mockReset();
     firestoreService.findById.mockReset();
     firestoreService.createId.mockReturnValue('newId');
+    selectLinkStateFactorySpy.mockClear();
+    selectEntityFactorySpy.mockClear();
   });
 
-  it('should resolve new Game', () => {
+  it('should resolve new item', () => {
     const expected = cold('(a|)', {
       a: { item: MockCollection.newGame, collection: Collection.Games },
     });
+
     expect(resolver.resolve(getMockRoute('new', Collection.Games))).toBeObservable(expected);
+    expect(store.dispatch).toHaveBeenCalledWith(collectionDetailActions.setSaveState({ saveState: SaveState.NotSave }));
+
     expect(firestoreService.findById).not.toHaveBeenCalled();
     expect(store.dispatch).not.toHaveBeenCalledWith(collectionDetailActions.notFound({ collection: Collection.Games }));
-  });
-
-  it('should resolve new Amiibo', () => {
-    const expected = cold('(a|)', {
-      a: { item: MockCollection.newAmiibos, collection: Collection.Amiibos },
-    });
-    expect(resolver.resolve(getMockRoute('new', Collection.Amiibos))).toBeObservable(expected);
-    expect(firestoreService.findById).not.toHaveBeenCalled();
-    expect(store.dispatch).not.toHaveBeenCalledWith(collectionDetailActions.notFound({ collection: Collection.Amiibos }));
-  });
-
-  it('should resolve new Vinyle', () => {
-    const expected = cold('(a|)', {
-      a: { item: MockCollection.newVinyle, collection: Collection.Vinyles },
-    });
-    expect(resolver.resolve(getMockRoute('new', Collection.Vinyles))).toBeObservable(expected);
-    expect(firestoreService.findById).not.toHaveBeenCalled();
-    expect(store.dispatch).not.toHaveBeenCalledWith(collectionDetailActions.notFound({ collection: Collection.Vinyles }));
-  });
-
-  it('should resolve new Book', () => {
-    const expected = cold('(a|)', {
-      a: { item: MockCollection.newBook, collection: Collection.Books },
-    });
-    expect(resolver.resolve(getMockRoute('new', Collection.Books))).toBeObservable(expected);
-    expect(firestoreService.findById).not.toHaveBeenCalled();
-    expect(store.dispatch).not.toHaveBeenCalledWith(collectionDetailActions.notFound({ collection: Collection.Books }));
+    expect(initCollectionsSpy).not.toHaveBeenCalledWith(store, [Collection.Games]);
   });
 
   it('should resolve from linked Collection', () => {
-    // TODO: find a better way with jest: https://github.com/ngrx/platform/issues/3107#issuecomment-985184507
-    store.setState({
-      collection: {
-        collections: {
-          [Collection.Amiibos]: {
-            ids: MockCollection.items.map(({ id }) => id),
-            entities: MockCollection.items.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {}),
-            linkState: LinkState.Linked,
-          },
-        },
-      },
-    });
+    selectLinkStateSpy.mockReturnValue(LinkState.Linked);
+    selectEntitySpy.mockReturnValue(MockCollection.itemNotAcquired);
 
     const expected = cold('(a|)', {
       a: { item: MockCollection.itemNotAcquired, collection: Collection.Amiibos },
     });
     expect(resolver.resolve(getMockRoute('uid2', Collection.Amiibos))).toBeObservable(expected);
+    expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Amiibos);
+    expect(selectEntityFactorySpy).toHaveBeenCalledWith(Collection.Amiibos, 'uid2');
+
     expect(firestoreService.findById).not.toHaveBeenCalled();
     expect(store.dispatch).not.toHaveBeenCalledWith(collectionDetailActions.notFound({ collection: Collection.Amiibos }));
   });
 
   it('should resolve from online data', () => {
-    store.setState({ collection: { collections: { [Collection.Games]: { linkState: LinkState.Loading } } } });
+    selectLinkStateSpy.mockReturnValue(LinkState.Loading);
     firestoreService.findById.mockReturnValue(of(MockCollection.itemNotAcquired));
 
     const expected = cold('(a|)', {
@@ -108,26 +98,21 @@ describe('DetailResolver', () => {
     });
     expect(resolver.resolve(getMockRoute('uid2', Collection.Games))).toBeObservable(expected);
     expect(firestoreService.findById).toHaveBeenCalledWith(Collection.Games, 'uid2');
+    expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Games);
+
+    expect(selectEntityFactorySpy).not.toHaveBeenCalledWith(Collection.Games, 'uid2');
     expect(store.dispatch).not.toHaveBeenCalledWith(collectionDetailActions.notFound({ collection: Collection.Games }));
   });
 
   it('should dispatch NotFound', () => {
-    // TODO: find a better way with jest: https://github.com/ngrx/platform/issues/3107#issuecomment-985184507
-    store.setState({
-      collection: {
-        collections: {
-          [Collection.Amiibos]: {
-            ids: MockCollection.items.map(({ id }) => id),
-            entities: MockCollection.items.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {}),
-            linkState: LinkState.Linked,
-          },
-        },
-      },
-    });
+    selectLinkStateSpy.mockReturnValue(LinkState.Linked);
+    selectEntitySpy.mockReturnValue(undefined);
     firestoreService.findById.mockReturnValue(of(undefined));
 
     const expected = cold('#', undefined, 'Item not found');
     expect(resolver.resolve(getMockRoute('uid3', Collection.Books))).toBeObservable(expected);
+    expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Books);
+    expect(selectEntityFactorySpy).toHaveBeenCalledWith(Collection.Books, 'uid3');
     expect(firestoreService.findById).toHaveBeenCalledWith(Collection.Books, 'uid3');
     expect(store.dispatch).toHaveBeenCalledWith(collectionDetailActions.notFound({ collection: Collection.Books }));
   });

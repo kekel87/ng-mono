@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,12 +27,11 @@ type VinyleForm = FormGroup<{
 }>;
 
 @Component({
-  standalone: true,
   selector: 'col-vinyle-detail',
-  templateUrl: './vinyle-detail.component.html',
-  styleUrls: ['../core/components/detail/detail.component.scss'],
+  standalone: true,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    NgIf,
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
@@ -47,6 +46,8 @@ type VinyleForm = FormGroup<{
     ConfirmDialogComponent,
     ImageSelectorComponent,
   ],
+  templateUrl: './vinyle-detail.component.html',
+  styleUrls: ['../core/components/detail/detail.component.scss'],
 })
 export class VinyleDetailComponent extends DetailComponent<Vinyle, VinyleForm> {
   get titleControl(): FormControl<string> {

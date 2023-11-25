@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,12 +27,11 @@ type AmiiboForm = FormGroup<{
 }>;
 
 @Component({
-  standalone: true,
   selector: 'col-amiibo-detail',
-  templateUrl: './amiibo-detail.component.html',
-  styleUrls: ['../core/components/detail/detail.component.scss'],
+  standalone: true,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    NgIf,
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
@@ -47,6 +46,8 @@ type AmiiboForm = FormGroup<{
     ConfirmDialogComponent,
     ImageSelectorComponent,
   ],
+  templateUrl: './amiibo-detail.component.html',
+  styleUrls: ['../core/components/detail/detail.component.scss'],
 })
 export class AmiiboDetailComponent extends DetailComponent<Amiibo, AmiiboForm> {
   get titleControl(): FormControl<string> {

@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { filter, first, map } from 'rxjs/operators';
 
 import { metas } from '~shared/consts/metas';
 import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
 
 import * as collectionsSelectors from '../core/entities/collections.selectors';
-import { InitUtils } from '../share/utils/init.utils';
+import { initCollections } from '../share/utils/init-collections.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class ListResolver {
     const collection = route.paramMap.get('collection') as Collection;
     const collections = [collection, ...metas[collection].relations];
 
-    InitUtils.initCollections(this.store, collections);
+    initCollections(this.store, collections);
     return this.waitForCollections(collections);
   }
 
@@ -30,13 +30,13 @@ export class ListResolver {
       collections.map((relation) =>
         this.store.select(collectionsSelectors.selectLinkStateFactory(relation)).pipe(
           filter((linkState) => linkState !== LinkState.Loading),
-          take(1)
+          first()
         )
       )
     ).pipe(
       filter((v) => v.length > 0),
       map(() => collections[0]),
-      take(1)
+      first()
     );
   }
 }

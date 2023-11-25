@@ -1,22 +1,25 @@
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
 
-import { LinkState } from '~shared/enums/link-state';
 import { MockCounter } from '~tests/mocks/counter';
 
 import { DashboardComponent } from './dashboard.component';
-import { DashboardModule } from './dashboard.module';
-import * as counterSelectors from './store/counter/counter.selectors';
+import { counterFeature } from './store/counter/counter.feature';
 
 describe('DashboardComponent', () => {
   let fixture: MockedComponentFixture<DashboardComponent>;
   let store: MockStore;
 
   beforeEach(async () => {
-    await MockBuilder(DashboardComponent, DashboardModule).provide(
+    await MockBuilder(DashboardComponent).provide(
       provideMockStore({
-        initialState: { dashboard: { counter: { ids: [], entities: [] } } },
-        selectors: [{ selector: counterSelectors.selectIsLoading, value: true }],
+        selectors: [
+          { selector: counterFeature.selectIsLoading, value: true },
+          {
+            selector: counterFeature.selectEntities,
+            value: MockCounter.all.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {}),
+          },
+        ],
       })
     );
 
@@ -33,7 +36,7 @@ describe('DashboardComponent', () => {
   });
 
   it('should hide game loader', () => {
-    counterSelectors.selectIsLoading.setResult(false);
+    counterFeature.selectIsLoading.setResult(false);
     store.refreshState();
     fixture.detectChanges();
 
@@ -41,17 +44,6 @@ describe('DashboardComponent', () => {
   });
 
   it('should display number of items', () => {
-    store.setState({
-      dashboard: {
-        counter: {
-          ids: MockCounter.all.map(({ id }) => id),
-          entities: MockCounter.all.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {}),
-          linkState: LinkState.Linked,
-        },
-      },
-    });
-    fixture.detectChanges();
-
     expect(ngMocks.findAll('mat-card-subtitle').map((el) => ngMocks.formatText(el))).toEqual(['2', '0', '4', '6', '1']);
   });
 });

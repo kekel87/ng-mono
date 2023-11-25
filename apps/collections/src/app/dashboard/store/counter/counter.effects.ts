@@ -10,8 +10,8 @@ import { FirestoreService } from '~shared/services/firestore.service';
 import { isFirebaseError } from '~shared/utils/type-guards';
 
 import { counterActions } from './counter.actions';
+import { counterFeature } from './counter.feature';
 import { Counter } from './counter.model';
-import * as counterSelectors from './counter.selectors';
 
 @Injectable()
 export class CounterEffects implements OnInitEffects {
@@ -33,7 +33,7 @@ export class CounterEffects implements OnInitEffects {
   initSuccesWhenDataChangeAndNotLinked$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(counterActions.dataChange),
-      concatLatestFrom(() => this.store.select(counterSelectors.selectCollectionState)),
+      concatLatestFrom(() => this.store.select(counterFeature.selectCollectionState)),
       filter(([, collectionState]) => collectionState !== LinkState.Linked),
       map(() => counterActions.initSuccess())
     );

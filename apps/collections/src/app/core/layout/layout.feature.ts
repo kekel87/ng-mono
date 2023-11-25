@@ -1,4 +1,6 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+
+import { toPredicate } from '~shared/utils/string';
 
 import { layoutActions } from './layout.actions';
 import { SnackbarOptions, ToolbarConfig } from './layout.models';
@@ -36,4 +38,7 @@ export const layoutFeature = createFeature({
       })
     )
   ),
+  extraSelectors: ({ selectSearch }) => ({
+    selectSearchPredicate: createSelector(selectSearch, (search: string): string => toPredicate(search)),
+  }),
 });

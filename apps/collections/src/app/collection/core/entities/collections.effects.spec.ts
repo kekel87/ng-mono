@@ -1,6 +1,6 @@
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { Action, MemoizedSelector } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { MockBuilder, ngMocks } from 'ng-mocks';
 import { Observable, of, throwError } from 'rxjs';
@@ -14,11 +14,12 @@ import { MockFirebaseError } from '~tests/mocks/mock-firebase-error';
 
 import { collectionsActions } from './collections.actions';
 import { CollectionsEffects } from './collections.effects';
+import { State } from './collections.feature';
+import * as collectionsSelectors from './collections.selectors';
 
 describe('CollectionsEffects', () => {
   let actions$: Observable<Action>;
   let effects: CollectionsEffects;
-  let store: MockStore;
 
   const firestoreService = {
     onChange: jest.fn(),
@@ -33,7 +34,6 @@ describe('CollectionsEffects', () => {
       .provide({ provide: FirestoreService, useValue: firestoreService });
 
     effects = ngMocks.findInstance(CollectionsEffects);
-    store = ngMocks.findInstance(MockStore);
   });
 
   describe('initDataChange$', () => {
@@ -61,40 +61,29 @@ describe('CollectionsEffects', () => {
   });
 
   describe('initSuccesWhenDataChangeAndNotLinked$', () => {
+    const selectorSpy = jest.fn();
+    const selectorFactorySpy = jest
+      .spyOn(collectionsSelectors, 'selectLinkStateFactory')
+      .mockReturnValue(selectorSpy as unknown as MemoizedSelector<Record<string, unknown>, LinkState, (s1: State) => LinkState>);
+
     it('should init item list', () => {
-      // TODO: find a better way with jest: https://github.com/ngrx/platform/issues/3107#issuecomment-985184507
-      store.setState({
-        collection: {
-          collections: {
-            [Collection.Games]: {
-              linkState: LinkState.Loading,
-            },
-          },
-        },
-      });
+      selectorSpy.mockReturnValue(LinkState.Loading);
 
       actions$ = hot('-a-', { a: collectionsActions.dataChange({ collection: Collection.Games, items: MockCollection.items }) });
       const expected = cold('-a-', { a: collectionsActions.initSuccess({ collection: Collection.Games }) });
 
       expect(effects.initSuccesWhenDataChangeAndNotLinked$).toBeObservable(expected);
+      expect(selectorFactorySpy).toHaveBeenCalledWith(Collection.Games);
     });
 
-    it('should only emit if item list already init', () => {
-      // TODO: find a better way with jest: https://github.com/ngrx/platform/issues/3107#issuecomment-985184507
-      store.setState({
-        collection: {
-          collections: {
-            [Collection.Games]: {
-              linkState: LinkState.Linked,
-            },
-          },
-        },
-      });
+    it('should only emit if item list is not already init', () => {
+      selectorSpy.mockReturnValue(LinkState.Linked);
 
       actions$ = hot('-a-', { a: collectionsActions.dataChange({ collection: Collection.Games, items: MockCollection.items }) });
       const expected = cold('---');
 
       expect(effects.initSuccesWhenDataChangeAndNotLinked$).toBeObservable(expected);
+      expect(selectorFactorySpy).toHaveBeenCalledWith(Collection.Games);
     });
   });
 

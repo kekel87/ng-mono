@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,12 +32,12 @@ type GameForm = FormGroup<{
 }>;
 
 @Component({
-  standalone: true,
   selector: 'col-game-detail',
-  templateUrl: './game-detail.component.html',
-  styleUrls: ['../core/components/detail/detail.component.scss'],
+  standalone: true,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    NgIf,
+    NgForOf,
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
@@ -53,6 +53,8 @@ type GameForm = FormGroup<{
     ConfirmDialogComponent,
     ImageSelectorComponent,
   ],
+  templateUrl: './game-detail.component.html',
+  styleUrls: ['../core/components/detail/detail.component.scss'],
 })
 export class GameDetailComponent extends DetailComponent<Game, GameForm> {
   itemRelation$ = this.store.select(collectionsSelectors.selectAllFactory<Console>(Collection.Consoles));

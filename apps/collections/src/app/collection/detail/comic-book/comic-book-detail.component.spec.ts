@@ -21,19 +21,15 @@ import { TomeForm } from './core/models/tome-form';
 import { collectionsActions } from '../../core/entities/collections.actions';
 import { ConfirmDialogComponent } from '../core/components/confirm-dialog/confirm-dialog.component';
 import { collectionDetailActions } from '../core/store/detail.actions';
-import * as detailSelectors from '../core/store/detail.selectors';
+import { detailFeature } from '../core/store/detail.feature';
 
 describe('ComicBookDetailComponent', () => {
   ngMocks.faster();
 
   let fixture: MockedComponentFixture<ComicBookDetailComponent>;
   let store: MockStore;
-  const dialogRef = {
-    afterClosed: jest.fn(),
-  };
-  const dialog = {
-    open: jest.fn(),
-  };
+  const dialogRef = { afterClosed: jest.fn() };
+  const dialog = { open: jest.fn() };
   const fakeToolbarConfig = (title: string, icon: string) => ({
     toolbarConfig: {
       title,
@@ -55,8 +51,8 @@ describe('ComicBookDetailComponent', () => {
       .provide(
         provideMockStore({
           selectors: [
-            { selector: detailSelectors.selectLoading, value: false },
-            { selector: detailSelectors.selectSaveState, value: SaveState.Unchanged },
+            { selector: detailFeature.selectLoading, value: false },
+            { selector: detailFeature.selectSaveState, value: SaveState.Unchanged },
           ],
         })
       )
