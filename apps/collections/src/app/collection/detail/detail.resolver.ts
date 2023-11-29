@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
 import { metas } from '~shared/consts/metas';
@@ -20,44 +20,36 @@ interface ItemCollection {
   collection: Collection;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class DetailResolver {
-  constructor(
-    private store: Store,
-    private service: FirestoreService
-  ) {}
+export const detailResolver: ResolveFn<ItemCollection> = (route: ActivatedRouteSnapshot) => {
+  const store = inject(Store);
+  const firestoreService = inject(FirestoreService);
+  const collection = route.data['collection'] as Collection;
+  const id = route.paramMap.get('id') as string;
+  const meta = metas[collection];
 
-  resolve(route: ActivatedRouteSnapshot): Observable<ItemCollection> {
-    const collection = route.data['collection'] as Collection;
-    const id = route.paramMap.get('id') as string;
-    const meta = metas[collection];
+  initCollections(store, meta.relations);
 
-    initCollections(this.store, meta.relations);
+  if ('new' === id) {
+    store.dispatch(collectionDetailActions.setSaveState({ saveState: SaveState.NotSave }));
 
-    if ('new' === id) {
-      this.store.dispatch(collectionDetailActions.setSaveState({ saveState: SaveState.NotSave }));
-
-      const item = meta.newItem(this.service.createId());
-      return of({ item, collection });
-    }
-
-    return this.store.select(collectionsSelectors.selectLinkStateFactory(collection)).pipe(
-      switchMap((linkState) =>
-        linkState === LinkState.Linked ? this.store.select(collectionsSelectors.selectEntityFactory(collection, id)) : of(undefined)
-      ),
-      switchMap((item) => (item === undefined ? this.service.findById<Item>(collection, id) : of(item))),
-      take(1),
-      switchMap((item) => {
-        if (item === undefined) {
-          this.store.dispatch(collectionDetailActions.notFound({ collection }));
-          return throwError('Item not found');
-        }
-
-        this.store.dispatch(collectionDetailActions.setSaveState({ saveState: SaveState.Unchanged }));
-        return of({ item, collection });
-      })
-    );
+    const item = meta.newItem(firestoreService.createId());
+    return of({ item, collection });
   }
-}
+
+  return store.select(collectionsSelectors.selectLinkStateFactory(collection)).pipe(
+    switchMap((linkState) =>
+      linkState === LinkState.Linked ? store.select(collectionsSelectors.selectEntityFactory(collection, id)) : of(undefined)
+    ),
+    switchMap((item) => (item === undefined ? firestoreService.findById<Item>(collection, id) : of(item))),
+    take(1),
+    switchMap((item) => {
+      if (item === undefined) {
+        store.dispatch(collectionDetailActions.notFound({ collection }));
+        return throwError('Item not found');
+      }
+
+      store.dispatch(collectionDetailActions.setSaveState({ saveState: SaveState.Unchanged }));
+      return of({ item, collection });
+    })
+  );
+};

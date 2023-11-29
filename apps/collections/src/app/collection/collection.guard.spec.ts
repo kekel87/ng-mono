@@ -1,29 +1,34 @@
-import { ActivatedRouteSnapshot } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree, provideRouter } from '@angular/router';
 import { MockBuilder, ngMocks } from 'ng-mocks';
 
 import { Collection } from '~shared/enums/collection';
 
-import { CollectionGuard } from './collection.guard';
+import { canActivate } from './collection.guard';
 
-describe('AuthGuard', () => {
-  let guard: CollectionGuard;
+describe('Collection guards', () => {
   let activatedRouteSnapshot: ActivatedRouteSnapshot;
+  const routerStateSnapshot = {} as RouterStateSnapshot;
 
   beforeEach(async () => {
-    await MockBuilder(CollectionGuard).keep(RouterTestingModule.withRoutes([]));
+    await MockBuilder().provide(provideRouter([]));
 
-    guard = ngMocks.findInstance(CollectionGuard);
     activatedRouteSnapshot = new ActivatedRouteSnapshot();
   });
 
   it('should activate handle collection', () => {
     jest.spyOn(activatedRouteSnapshot.paramMap, 'get').mockReturnValue(Collection.Games);
-    expect(guard.canActivate(activatedRouteSnapshot)).toEqual(true);
+
+    expect(TestBed.runInInjectionContext(() => canActivate(activatedRouteSnapshot, routerStateSnapshot))).toEqual(true);
   });
 
   it('should redirect with not handle collection', () => {
+    const router = ngMocks.findInstance(Router);
+    const urlTree = {} as UrlTree;
+    jest.spyOn(router, 'parseUrl').mockReturnValue(urlTree);
     jest.spyOn(activatedRouteSnapshot.paramMap, 'get').mockReturnValue('bite');
-    expect(guard.canActivate(activatedRouteSnapshot).toString()).toEqual('/error');
+
+    expect(TestBed.runInInjectionContext(() => canActivate(activatedRouteSnapshot, routerStateSnapshot))).toEqual(urlTree);
+    expect(router.parseUrl).toHaveBeenLastCalledWith('/error');
   });
 });

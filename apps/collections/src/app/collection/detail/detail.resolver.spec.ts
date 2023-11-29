@@ -1,4 +1,5 @@
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
@@ -13,14 +14,14 @@ import { FirestoreService } from '~shared/services/firestore.service';
 import { MockCollection } from '~tests/mocks/collection';
 
 import { collectionDetailActions } from './core/store/detail.actions';
-import { DetailResolver } from './detail.resolver';
+import { detailResolver } from './detail.resolver';
 import { State } from '../core/entities/collections.feature';
 import * as collectionsSelectors from '../core/entities/collections.selectors';
 import * as initUtils from '../share/utils/init-collections.utils';
 
 describe('DetailResolver', () => {
-  let resolver: DetailResolver;
   let store: MockStore;
+  const routerStateSnapshot = {} as RouterStateSnapshot;
   const firestoreService = {
     findById: jest.fn(),
     createId: jest.fn(),
@@ -48,9 +49,8 @@ describe('DetailResolver', () => {
   const initCollectionsSpy = jest.spyOn(initUtils, 'initCollections').mockImplementation();
 
   beforeEach(async () => {
-    await MockBuilder(DetailResolver).provide(provideMockStore()).provide({ provide: FirestoreService, useValue: firestoreService });
+    await MockBuilder().provide(provideMockStore()).provide({ provide: FirestoreService, useValue: firestoreService });
 
-    resolver = ngMocks.findInstance(DetailResolver);
     store = ngMocks.findInstance(MockStore);
     jest.spyOn(store, 'dispatch');
 
@@ -66,7 +66,9 @@ describe('DetailResolver', () => {
       a: { item: MockCollection.newGame, collection: Collection.Games },
     });
 
-    expect(resolver.resolve(getMockRoute('new', Collection.Games))).toBeObservable(expected);
+    expect(TestBed.runInInjectionContext(() => detailResolver(getMockRoute('new', Collection.Games), routerStateSnapshot))).toBeObservable(
+      expected
+    );
     expect(store.dispatch).toHaveBeenCalledWith(collectionDetailActions.setSaveState({ saveState: SaveState.NotSave }));
 
     expect(firestoreService.findById).not.toHaveBeenCalled();
@@ -81,7 +83,9 @@ describe('DetailResolver', () => {
     const expected = cold('(a|)', {
       a: { item: MockCollection.itemNotAcquired, collection: Collection.Amiibos },
     });
-    expect(resolver.resolve(getMockRoute('uid2', Collection.Amiibos))).toBeObservable(expected);
+    expect(
+      TestBed.runInInjectionContext(() => detailResolver(getMockRoute('uid2', Collection.Amiibos), routerStateSnapshot))
+    ).toBeObservable(expected);
     expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Amiibos);
     expect(selectEntityFactorySpy).toHaveBeenCalledWith(Collection.Amiibos, 'uid2');
 
@@ -96,7 +100,9 @@ describe('DetailResolver', () => {
     const expected = cold('(a|)', {
       a: { item: MockCollection.itemNotAcquired, collection: Collection.Games },
     });
-    expect(resolver.resolve(getMockRoute('uid2', Collection.Games))).toBeObservable(expected);
+    expect(TestBed.runInInjectionContext(() => detailResolver(getMockRoute('uid2', Collection.Games), routerStateSnapshot))).toBeObservable(
+      expected
+    );
     expect(firestoreService.findById).toHaveBeenCalledWith(Collection.Games, 'uid2');
     expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Games);
 
@@ -110,7 +116,9 @@ describe('DetailResolver', () => {
     firestoreService.findById.mockReturnValue(of(undefined));
 
     const expected = cold('#', undefined, 'Item not found');
-    expect(resolver.resolve(getMockRoute('uid3', Collection.Books))).toBeObservable(expected);
+    expect(TestBed.runInInjectionContext(() => detailResolver(getMockRoute('uid3', Collection.Books), routerStateSnapshot))).toBeObservable(
+      expected
+    );
     expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Books);
     expect(selectEntityFactorySpy).toHaveBeenCalledWith(Collection.Books, 'uid3');
     expect(firestoreService.findById).toHaveBeenCalledWith(Collection.Books, 'uid3');

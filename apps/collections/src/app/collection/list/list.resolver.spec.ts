@@ -1,4 +1,5 @@
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
@@ -7,14 +8,14 @@ import { MockBuilder, ngMocks } from 'ng-mocks';
 import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
 
-import { ListResolver } from './list.resolver';
+import { listResolver } from './list.resolver';
 import { State } from '../core/entities/collections.feature';
 import * as collectionsSelectors from '../core/entities/collections.selectors';
 import * as initUtils from '../share/utils/init-collections.utils';
 
-describe('ListResolver', () => {
-  let resolver: ListResolver;
+describe('listResolver', () => {
   let store: MockStore;
+  const routerStateSnapshot = {} as RouterStateSnapshot;
 
   const getMockRoute = (collection: Collection): ActivatedRouteSnapshot => {
     const activatedRouteSnapshot = new ActivatedRouteSnapshot();
@@ -30,9 +31,8 @@ describe('ListResolver', () => {
   const initCollectionsSpy = jest.spyOn(initUtils, 'initCollections').mockImplementation();
 
   beforeEach(async () => {
-    await MockBuilder(ListResolver).provide(provideMockStore());
+    await MockBuilder().provide(provideMockStore());
 
-    resolver = ngMocks.findInstance(ListResolver);
     store = ngMocks.findInstance(MockStore);
     jest.spyOn(store, 'dispatch').mockImplementation();
   });
@@ -40,7 +40,9 @@ describe('ListResolver', () => {
   it('should wait for collection initialise', () => {
     selectLinkStateSpy.mockReturnValue(LinkState.Loading);
 
-    expect(resolver.resolve(getMockRoute(Collection.Amiibos))).toBeObservable(cold('------'));
+    expect(TestBed.runInInjectionContext(() => listResolver(getMockRoute(Collection.Amiibos), routerStateSnapshot))).toBeObservable(
+      cold('------')
+    );
     expect(initCollectionsSpy).toHaveBeenCalledWith(store, [Collection.Amiibos]);
     expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Amiibos);
   });
@@ -48,13 +50,17 @@ describe('ListResolver', () => {
   it('should resolve a simple collection', () => {
     selectLinkStateSpy.mockReturnValue(LinkState.Linked);
 
-    expect(resolver.resolve(getMockRoute(Collection.Amiibos))).toBeObservable(cold('(a|)', { a: Collection.Amiibos }));
+    expect(TestBed.runInInjectionContext(() => listResolver(getMockRoute(Collection.Amiibos), routerStateSnapshot))).toBeObservable(
+      cold('(a|)', { a: Collection.Amiibos })
+    );
   });
 
   it('should wait for collection with relations initialise', () => {
     selectLinkStateSpy.mockReturnValueOnce(LinkState.Loading).mockReturnValueOnce(LinkState.Loading);
 
-    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(cold('------'));
+    expect(TestBed.runInInjectionContext(() => listResolver(getMockRoute(Collection.Games), routerStateSnapshot))).toBeObservable(
+      cold('------')
+    );
     expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Games);
     expect(selectLinkStateFactorySpy).toHaveBeenCalledWith(Collection.Games);
   });
@@ -62,12 +68,16 @@ describe('ListResolver', () => {
   it('should wait all relations before resolve', () => {
     selectLinkStateSpy.mockReturnValueOnce(LinkState.Linked).mockReturnValueOnce(LinkState.Loading);
 
-    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(cold('------'));
+    expect(TestBed.runInInjectionContext(() => listResolver(getMockRoute(Collection.Games), routerStateSnapshot))).toBeObservable(
+      cold('------')
+    );
   });
 
   it('should resolve collection with relations', () => {
     selectLinkStateSpy.mockReturnValueOnce(LinkState.Linked).mockReturnValueOnce(LinkState.Linked);
 
-    expect(resolver.resolve(getMockRoute(Collection.Games))).toBeObservable(cold('(a|)', { a: Collection.Games }));
+    expect(TestBed.runInInjectionContext(() => listResolver(getMockRoute(Collection.Games), routerStateSnapshot))).toBeObservable(
+      cold('(a|)', { a: Collection.Games })
+    );
   });
 });
