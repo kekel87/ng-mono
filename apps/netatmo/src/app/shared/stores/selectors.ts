@@ -1,6 +1,8 @@
 import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 
+import { isEmpty } from '@ng-mono/shared';
+
 import { filterFeature } from './filter/filter.reducer';
 import { homeFeature } from './home/home.reducer';
 import { MeasureType } from '../api/enums/measure-type';
@@ -55,7 +57,9 @@ export const selectEnabledModuleMeasureTypesByModule = createSelector(
 export const selectModuleWithEnabledMeasureType = createSelector(
   selectEnabledModuleMeasureTypesByModule,
   selectModulesWithMeasureType,
-  (enabled: Dictionary<MeasureType[]>, modules: ModuleWithMeasureTypes[]): ModuleWithEnabledMeasureTypes[] => {
-    return modules.map((m) => ({ ...m, enabledMeasureTypes: enabled[m.id] ?? [] }));
-  }
+  (enabled: Dictionary<MeasureType[]>, modules: ModuleWithMeasureTypes[]): ModuleWithEnabledMeasureTypes[] =>
+    modules.reduce<ModuleWithEnabledMeasureTypes[]>(
+      (acc, curr) => (isEmpty(enabled[curr.id]) ? acc : [...acc, { ...curr, enabledMeasureTypes: enabled[curr.id]! }]),
+      []
+    )
 );
