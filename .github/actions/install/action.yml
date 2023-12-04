@@ -6,6 +6,9 @@ runs:
   steps:
     - uses: nrwl/nx-set-shas@v3
 
+    - run: echo "NX_REJECT_UNKNOWN_LOCAL_CACHE=0" >> $GITHUB_ENV
+      shell: bash
+
     - uses: actions/cache@v3
       with:
         path: |
