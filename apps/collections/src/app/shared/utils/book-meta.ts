@@ -1,9 +1,9 @@
 import { Dictionary } from '@ngrx/entity';
 
+import { toPredicate } from '@ng-mono/shared';
 import { Book } from '~shared/models/book';
 import { Item } from '~shared/models/item';
 import { ItemToDisplay } from '~shared/models/item-to-display';
-import { toPredicate } from '~shared/utils/string';
 
 import { MetaUtils } from './meta';
 

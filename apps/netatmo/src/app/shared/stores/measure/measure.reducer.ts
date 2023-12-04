@@ -1,8 +1,9 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeature, createReducer, on } from '@ngrx/store';
 
+import { RequestState } from '@ng-mono/shared';
+
 import { measureActions } from './measure.actions';
-import { RequestState } from '../../enums/request-state';
 import { MeasureSource } from '../../models/measure-source';
 
 export interface State extends EntityState<MeasureSource> {

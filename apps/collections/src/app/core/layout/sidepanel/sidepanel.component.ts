@@ -14,12 +14,12 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
+import { original } from '@ng-mono/shared';
 import { authActions } from '~app/auth/auth.actions';
 import { authFeature } from '~app/auth/auth.feature';
 import { User } from '~app/auth/user.model';
 import { metas } from '~shared/consts/metas';
 import { RouteName } from '~shared/enums/route-name';
-import { OrderUtils } from '~shared/utils/order';
 
 import { layoutActions } from '../layout.actions';
 import { layoutFeature } from '../layout.feature';
@@ -56,7 +56,7 @@ export class SidePanelComponent {
 
   readonly routeName = RouteName;
   readonly metas = metas;
-  readonly originalOrder = OrderUtils.original;
+  readonly originalOrder = original;
 
   constructor(
     private store: Store,

@@ -1,6 +1,6 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 
-import { toPredicate } from '~shared/utils/string';
+import { toPredicate } from '@ng-mono/shared';
 
 import { layoutActions } from './layout.actions';
 import { SnackbarOptions, ToolbarConfig } from './layout.models';

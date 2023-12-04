@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { from } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import { RequestState, hasValue, mergeRequestState } from '@ng-mono/shared';
+import { RequestState, hasValue, merge } from '@ng-mono/shared';
 
 import { logObjectActions } from './log-object.actions';
 import { logEntryObjectActions } from '../log-entry-object/log-entry-object.actions';
@@ -52,7 +52,7 @@ export class LogObjectEffects {
           }
         )
       ),
-      filter(({ requestStates }) => mergeRequestState(requestStates) === RequestState.Success),
+      filter(({ requestStates }) => merge(requestStates) === RequestState.Success),
       map(({ id, geoJson, distance }) => logObjectActions.geoJsonSuccess({ id, geoJson, distance }))
     );
   });

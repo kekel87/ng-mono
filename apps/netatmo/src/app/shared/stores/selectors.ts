@@ -1,7 +1,7 @@
 import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 
-import { isEmpty } from '@ng-mono/shared';
+import { isEmpty, getElementAt } from '@ng-mono/shared';
 
 import { filterFeature } from './filter/filter.reducer';
 import { homeFeature } from './home/home.reducer';
@@ -14,7 +14,6 @@ import { ModuleMesureType } from '../models/module-measure-type';
 import { ModuleWithEnabledMeasureTypes } from '../models/module-with-enabled-measure-types';
 import { ModuleWithMeasureTypes } from '../models/module-with-measure-types';
 import { ModuleWithRoom } from '../models/module-with-room';
-import { getElementAt } from '../utils/get-element-at';
 import { hasRoom } from '../utils/has-room';
 
 export const selectRooms = createSelector(homeFeature.selectHome, (home: Home | undefined): Room[] => home?.rooms ?? []);

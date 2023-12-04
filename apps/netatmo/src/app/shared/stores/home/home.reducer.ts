@@ -1,9 +1,10 @@
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { createFeature, createReducer, on, createSelector } from '@ngrx/store';
 
+import { RequestState } from '@ng-mono/shared';
+
 import { homeActions } from './home.actions';
 import { Home } from '../../api/models/home';
-import { RequestState } from '../../enums/request-state';
 
 export interface State extends EntityState<Home> {
   selected: string | null;

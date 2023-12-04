@@ -8,9 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
+import { RequestState } from '@ng-mono/shared';
 import { LoaderComponent } from '~shared/components/loader/loader.component';
 import { AutoFocusDirective } from '~shared/directives/auto-focus/auto-focus.directive';
-import { RequestState } from '~shared/enums/request-state';
 
 @Component({
   selector: 'col-custom-url-dialog',

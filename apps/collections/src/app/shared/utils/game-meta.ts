@@ -1,11 +1,11 @@
 import { Dictionary } from '@ngrx/entity';
 
+import { toPredicate } from '@ng-mono/shared';
 import { Collection } from '~shared/enums/collection';
 import { Console } from '~shared/models/console';
 import { Game } from '~shared/models/game';
 import { Item } from '~shared/models/item';
 import { ItemToDisplay } from '~shared/models/item-to-display';
-import { toPredicate } from '~shared/utils/string';
 
 import { MetaUtils } from './meta';
 

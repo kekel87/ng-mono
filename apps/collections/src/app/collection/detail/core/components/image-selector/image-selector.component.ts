@@ -8,10 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { OperatorFunction, of, pipe } from 'rxjs';
 import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 
+import { hasValue, RequestState } from '@ng-mono/shared';
 import { LoaderComponent } from '~shared/components/loader/loader.component';
-import { RequestState } from '~shared/enums/request-state';
 import { ImageService } from '~shared/services/image.service';
-import { hasValue } from '~shared/utils/type-guards';
 
 import { CustomUrlDialogComponent } from './custom-url-dialog/custom-url-dialog.component';
 import { ImageFinderDialogComponent } from './images-finder-dialog/images-finder-dialog.component';

@@ -4,13 +4,14 @@ import { Store } from '@ngrx/store';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
+import { isoStringToUnixTimestamp } from '@ng-mono/shared';
+
 import { measureActions } from './measure.actions';
 import { Measure } from '../../api/models/measure';
 import { NetatmoService } from '../../api/servives/netatmo.service';
 import { Interval } from '../../models/interval';
 import { MeasureSource } from '../../models/measure-source';
 import { ModuleWithEnabledMeasureTypes } from '../../models/module-with-enabled-measure-types';
-import { dateToUnixTimestamp } from '../../utils/date-to-unix-timestamp';
 import { filterFeature } from '../filter/filter.reducer';
 import { selectModuleWithEnabledMeasureType } from '../selectors';
 
@@ -62,8 +63,8 @@ export class MeasureEffects {
         device_id: module.bridge ?? module.id,
         type: module.enabledMeasureTypes.join(','),
         scale: interval.scale,
-        date_begin: dateToUnixTimestamp(interval.begin),
-        date_end: dateToUnixTimestamp(interval.end),
+        date_begin: isoStringToUnixTimestamp(interval.begin),
+        date_end: isoStringToUnixTimestamp(interval.end),
       })
       .pipe(map(({ body }) => this.toDataSetSource(module, body)));
   }

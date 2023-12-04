@@ -5,9 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 
+import { original } from '@ng-mono/shared';
 import { LoaderComponent } from '~shared/components/loader/loader.component';
 import { metas } from '~shared/consts/metas';
-import { OrderUtils } from '~shared/utils/order';
 
 import { counterFeature } from './store/counter/counter.feature';
 
@@ -24,7 +24,7 @@ export class DashboardComponent {
   counters$ = this.store.select(counterFeature.selectEntities);
 
   readonly metas = metas;
-  readonly originalOrder = OrderUtils.original;
+  readonly originalOrder = original;
 
   constructor(private store: Store) {}
 }

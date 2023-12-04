@@ -1,7 +1,8 @@
 import { Dictionary } from '@ngrx/entity';
 
+import { toPredicate } from '@ng-mono/shared';
+
 import { MetaUtils } from './meta';
-import { toPredicate } from './string';
 import { Item } from '../models/item';
 import { ItemToDisplay } from '../models/item-to-display';
 import { Vinyle } from '../models/vinyle';
