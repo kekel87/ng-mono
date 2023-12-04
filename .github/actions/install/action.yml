@@ -1,6 +1,12 @@
 name: Install
 description: Setup nx and cache and install dependencies
 
+inputs:
+  pull_cache_only:
+    description: Pull cache only
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
@@ -10,19 +16,32 @@ runs:
       shell: bash
 
     - uses: actions/cache@v3
+      if: inputs.pull_cache_only == 'false'
       with:
         path: |
           ~/.npm
           node_modules
           .cache/nx
           .cache/angular
-          /home/runner/.cache/Cypress
         key: ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}-${{ github.run_id }}
         restore-keys: |
-          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}-${{ github.run_id }}
-          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}
-          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}
-          ${{ runner.os }}-package
+          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}-
+          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-
+          ${{ runner.os }}-package-
+
+    - uses: actions/cache/restore@v3
+      if: inputs.pull_cache_only == 'true'
+      with:
+        path: |
+          ~/.npm
+          node_modules
+          .cache/nx
+          .cache/angular
+        key: ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-${{ github.job }}-
+          ${{ runner.os }}-package-${{ hashFiles('**/package-lock.json') }}-
+          ${{ runner.os }}-package-
 
     - run: npm i --no-audit --no-fund
       shell: bash

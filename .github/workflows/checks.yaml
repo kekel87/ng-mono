@@ -33,6 +33,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/install
+        with:
+          pull_cache_only: 'true'
       - uses: actions/cache@v3
         with:
           path: .cache/eslint
@@ -53,6 +55,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/install
+        with:
+          pull_cache_only: 'true'
       - uses: actions/cache@v3
         with:
           path: .cache/jest
@@ -76,6 +80,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/install
+        with:
+          pull_cache_only: 'true'
       - run: npx nx affected --target=runtime-config
       - uses: actions/cache@v3
         with:
@@ -83,8 +89,8 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
-      # - run: npx nx affected --target=e2e --parallel=1
       - run: npx nx run-many --target=e2e --parallel=1
+      # - run: npx nx affected --target=e2e --parallel=1
 
   build:
     name: 🛠️ Test build

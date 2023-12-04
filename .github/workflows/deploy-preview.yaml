@@ -21,6 +21,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/install
+        with:
+          pull_cache_only: 'true'
       - run: npx nx run-many --target=runtime-config
       - run: npx nx run-many --target=build
       - run: npx nx run-many --target=deploy
