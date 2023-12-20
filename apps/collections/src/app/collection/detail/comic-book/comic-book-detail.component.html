@@ -13,6 +13,13 @@
   ></col-images-selector>
 
   <!-- <mat-slide-toggle color="primary" formControlName="acquired">Acquis</mat-slide-toggle> -->
+  <mat-form-field class="type">
+    <mat-select placeholder="Type" formControlName="type">
+      <mat-option *ngFor="let type of bookTypes" [value]="type">
+        {{ type | titlecase }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
   <div formArrayName="authors" class="max-price">
     <div class="author" *ngFor="let _ of form.controls.authors.controls; let i = index">
@@ -51,8 +58,8 @@
         </div>
         <div class="mat-elevation-z3" *ngFor="let tomeControl of form.controls.tomes.controls; let i = index" [formGroupName]="i">
           <mat-checkbox formControlName="acquired"></mat-checkbox>
-          <img [src]="tomeControl.get('cover')!.value" alt="Tome cover" (click)="editTome(i)" />
-          <span *ngIf="tomeControl.get('cover')!.value === 'assets/75x118.png'" (click)="editTome(i)">
+          <img [colImg]="tomeControl.get('image')!.value" default="assets/75x118.png" alt="Tome cover" (click)="editTome(i)" />
+          <span *ngIf="!tomeControl.get('image')!.value" (click)="editTome(i)">
             {{ tomeControl.get('number')!.value }}
           </span>
         </div>

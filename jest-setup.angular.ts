@@ -15,3 +15,5 @@ import { ngMocks } from 'ng-mocks';
 ngMocks.autoSpy('jest');
 ngMocks.globalKeep(CommonModule, true);
 ngMocks.globalReplace(BrowserAnimationsModule, NoopAnimationsModule);
+
+jest.mock('uuid', () => ({ v4: () => 'uuid' }));

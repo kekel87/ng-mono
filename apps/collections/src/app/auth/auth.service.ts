@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, authState, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { AuthError, AuthTokenResponse, OAuthResponse } from '@supabase/supabase-js';
+import { Observable, Subject, from } from 'rxjs';
+
+import { SupabaseService } from '~shared/services/supabase.service';
 
 import { User } from './user.model';
 
@@ -9,33 +10,31 @@ import { User } from './user.model';
   providedIn: 'root',
 })
 export class AuthService {
-  user$: Observable<User | null>;
+  private _user$ = new Subject<User | null>();
+  private _error$ = new Subject<AuthError | null>();
+  public user$ = this._user$.asObservable();
+  public error$ = this._error$.asObservable();
 
-  constructor(private auth: Auth) {
-    this.user$ = authState(this.auth).pipe(
-      map((user) =>
-        user !== null
-          ? ({
-              uid: user.uid,
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-              email: user.email,
-            } as User)
-          : null
-      )
-    );
+  constructor(private supabase: SupabaseService) {
+    this.supabase.client.auth.getUser().then(({ data, error }) => {
+      this._user$.next(data && data.user && !error ? data.user : null);
+
+      this.supabase.client.auth.onAuthStateChange((_, session) => {
+        this._user$.next(session?.user ?? null);
+        this._error$.next(error);
+      });
+    });
   }
 
-  signOut(): Observable<void> {
-    return from(signOut(this.auth));
+  signOut(): Observable<{ error: AuthError | null }> {
+    return from(this.supabase.client.auth.signOut());
   }
 
-  signInWithGoogle() {
-    // this.firebaseAuth.setPersistence('local')
-    return from(signInWithPopup(this.auth, new GoogleAuthProvider()));
+  signInWithGoogle(): Observable<OAuthResponse> {
+    return from(this.supabase.client.auth.signInWithOAuth({ provider: 'google' }));
   }
 
-  signInWithEmailAndPassword(email: string, password: string) {
-    return from(signInWithEmailAndPassword(this.auth, email, password));
+  signInWithEmailAndPassword(email: string, password: string): Observable<AuthTokenResponse> {
+    return from(this.supabase.client.auth.signInWithPassword({ email, password }));
   }
 }

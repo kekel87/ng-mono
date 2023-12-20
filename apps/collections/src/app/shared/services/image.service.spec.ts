@@ -1,8 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Storage, StorageReference, UploadResult } from '@angular/fire/storage';
-import * as fireStorage from '@angular/fire/storage';
 import { MockBuilder, ngMocks } from 'ng-mocks';
+import { of } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
@@ -10,14 +9,15 @@ import * as MockImage from '~tests/mocks/images';
 import { MockRuntimeConfig } from '~tests/mocks/runtime-config';
 
 import { ImageService } from './image.service';
-
-jest.mock('@angular/fire/storage');
+import { SupabaseService } from './supabase.service';
 
 describe('ImageService', () => {
   let service: ImageService;
   let httpMock: HttpTestingController;
   const document = { createElement: jest.fn(), querySelectorAll: () => [] };
-  const storage = jest.fn();
+  const returnPath = 'path';
+  const supabaseService = { upload: jest.fn() };
+  const blob = new Blob();
 
   // https://newdevzone.com/posts/how-to-test-imgonload-using-jest
   let onloadRef: () => void | undefined;
@@ -47,7 +47,7 @@ describe('ImageService', () => {
   beforeEach(async () => {
     await MockBuilder(ImageService)
       .keep(HttpClientTestingModule)
-      .provide({ provide: Storage, useValue: storage })
+      .mock(SupabaseService, supabaseService)
       .provide({ provide: DOCUMENT, useValue: document })
       .provide({ provide: RUNTIME_CONFIG, useValue: MockRuntimeConfig.base });
 
@@ -81,15 +81,10 @@ describe('ImageService', () => {
     };
 
     beforeEach(() => {
-      const storageReference = {} as StorageReference;
-      const uploadResult = {} as UploadResult;
-      jest.spyOn(fireStorage, 'ref').mockReturnValue(storageReference);
-      jest.spyOn(fireStorage, 'uploadBytes').mockReturnValue(Promise.resolve(uploadResult));
-      jest.spyOn(fireStorage, 'getDownloadURL').mockReturnValue(Promise.resolve('firebase-url'));
-
+      supabaseService.upload.mockReturnValue(of(returnPath));
       document.createElement.mockReturnValue(canvas);
       canvas.getContext.mockReturnValue(context);
-      canvas.toBlob.mockImplementation((callback) => callback(new Blob()));
+      canvas.toBlob.mockImplementation((callback) => callback(blob));
     });
 
     it('should not resize small image', (done) => {
@@ -98,7 +93,11 @@ describe('ImageService', () => {
         .pipe(first())
         .subscribe({
           next: (newUrl) => {
-            expect(newUrl).toEqual('firebase-url');
+            expect(newUrl).toEqual(returnPath);
+            expect(supabaseService.upload).toHaveBeenCalledWith('path', blob, {
+              cacheControl: '7200',
+              upsert: true,
+            });
             done();
           },
           error: done.fail,
@@ -113,7 +112,7 @@ describe('ImageService', () => {
         .pipe(first())
         .subscribe({
           next: (newUrl) => {
-            expect(newUrl).toEqual('firebase-url');
+            expect(newUrl).toEqual(returnPath);
             expect(document.createElement).toHaveBeenCalledWith('canvas');
             expect(canvas.toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/png', 0.8);
             done();
@@ -130,7 +129,7 @@ describe('ImageService', () => {
         .pipe(first())
         .subscribe({
           next: (newUrl) => {
-            expect(newUrl).toEqual('firebase-url');
+            expect(newUrl).toEqual(returnPath);
             expect(document.createElement).toHaveBeenCalledWith('canvas');
             expect(canvas.toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/png', 0.8);
             done();
@@ -147,7 +146,7 @@ describe('ImageService', () => {
         .pipe(first())
         .subscribe({
           next: (newUrl) => {
-            expect(newUrl).toEqual('firebase-url');
+            expect(newUrl).toEqual(returnPath);
             expect(document.createElement).toHaveBeenCalledWith('canvas');
             expect(canvas.toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/jpeg', 0.8);
             done();
@@ -164,7 +163,7 @@ describe('ImageService', () => {
         .pipe(first())
         .subscribe({
           next: (newUrl) => {
-            expect(newUrl).toEqual('firebase-url');
+            expect(newUrl).toEqual(returnPath);
             expect(document.createElement).toHaveBeenCalledWith('canvas');
             expect(canvas.toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/gif', 0.8);
             done();

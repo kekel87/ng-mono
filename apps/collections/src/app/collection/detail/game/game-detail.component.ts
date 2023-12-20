@@ -27,7 +27,7 @@ type GameForm = FormGroup<{
   title: FormControl<string>;
   console: FormControl<string>;
   maxPrice: FormControl<number>;
-  cover: FormControl<string>;
+  cover: FormControl<string | null>;
   comment: FormControl<string | undefined>;
 }>;
 

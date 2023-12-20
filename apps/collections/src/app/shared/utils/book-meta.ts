@@ -1,6 +1,7 @@
 import { Dictionary } from '@ngrx/entity';
 
 import { toPredicate } from '@ng-mono/shared';
+import { BookType } from '~shared/enums/book-type';
 import { Book } from '~shared/models/book';
 import { Item } from '~shared/models/item';
 import { ItemToDisplay } from '~shared/models/item-to-display';
@@ -16,7 +17,8 @@ export abstract class BookMetaUtils extends MetaUtils {
   static override newItem(id: string): Item {
     return {
       id,
-      image: 'assets/400x200.png',
+      type: BookType.Book,
+      image: null,
       acquired: false,
       tomes: [],
       authors: [null],

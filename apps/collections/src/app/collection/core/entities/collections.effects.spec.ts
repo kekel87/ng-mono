@@ -5,12 +5,10 @@ import { cold, hot } from 'jasmine-marbles';
 import { MockBuilder, ngMocks } from 'ng-mocks';
 import { Observable, of, throwError } from 'rxjs';
 
-import { routerActions } from '~app/core/router/router.actions';
 import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
-import { FirestoreService } from '~shared/services/firestore.service';
+import { SupabaseService } from '~shared/services/supabase.service';
 import { MockCollection } from '~tests/mocks/collection';
-import { MockFirebaseError } from '~tests/mocks/mock-firebase-error';
 
 import { collectionsActions } from './collections.actions';
 import { CollectionsEffects } from './collections.effects';
@@ -21,7 +19,7 @@ describe('CollectionsEffects', () => {
   let actions$: Observable<Action>;
   let effects: CollectionsEffects;
 
-  const firestoreService = {
+  const supabaseService = {
     onChange: jest.fn(),
     save: jest.fn(),
     delete: jest.fn(),
@@ -31,14 +29,14 @@ describe('CollectionsEffects', () => {
     await MockBuilder(CollectionsEffects)
       .provide(provideMockActions(() => actions$))
       .provide(provideMockStore())
-      .provide({ provide: FirestoreService, useValue: firestoreService });
+      .mock(SupabaseService, supabaseService);
 
     effects = ngMocks.findInstance(CollectionsEffects);
   });
 
   describe('initDataChange$', () => {
     it('should init data change for item list', () => {
-      firestoreService.onChange.mockReturnValue(of(MockCollection.items));
+      supabaseService.onChange.mockReturnValue(of(MockCollection.items));
 
       actions$ = hot('-a-', { a: collectionsActions.init({ collection: Collection.Games }) });
       const expected = cold('-a-', {
@@ -49,11 +47,11 @@ describe('CollectionsEffects', () => {
     });
 
     it('should handle error', () => {
-      firestoreService.onChange.mockReturnValue(cold('#', undefined, MockFirebaseError.base));
+      supabaseService.onChange.mockReturnValue(cold('#'));
 
       actions$ = hot('-a-', { a: collectionsActions.init({ collection: Collection.Amiibos }) });
       const expected = cold('-a-', {
-        a: collectionsActions.error({ collection: Collection.Amiibos, error: MockFirebaseError.base.code }),
+        a: collectionsActions.error({ collection: Collection.Amiibos }),
       });
 
       expect(effects.initDataChange$).toBeObservable(expected);
@@ -89,7 +87,7 @@ describe('CollectionsEffects', () => {
 
   describe('save$', () => {
     it('should save an item', () => {
-      firestoreService.save.mockReturnValue(cold('a|'));
+      supabaseService.save.mockReturnValue(cold('a|'));
 
       actions$ = hot('-a-', {
         a: collectionsActions.save({ collection: Collection.Books, item: MockCollection.items[0] }),
@@ -102,7 +100,7 @@ describe('CollectionsEffects', () => {
     });
 
     it('should handle error', () => {
-      firestoreService.save.mockReturnValue(throwError(MockFirebaseError.base));
+      supabaseService.save.mockReturnValue(throwError('error'));
       actions$ = hot('-a-', {
         a: collectionsActions.save({
           collection: Collection.Vinyles,
@@ -110,7 +108,7 @@ describe('CollectionsEffects', () => {
         }),
       });
       const expected = cold('-b-', {
-        b: collectionsActions.error({ collection: Collection.Vinyles, error: MockFirebaseError.base.code }),
+        b: collectionsActions.error({ collection: Collection.Vinyles }),
       });
       expect(effects.save$).toBeObservable(expected);
     });
@@ -118,7 +116,7 @@ describe('CollectionsEffects', () => {
 
   describe('delete$', () => {
     it('should delete a item', () => {
-      firestoreService.delete.mockReturnValue(cold('a|'));
+      supabaseService.delete.mockReturnValue(cold('a|'));
 
       actions$ = hot('-a-', {
         a: collectionsActions.delete({ collection: Collection.Vinyles, id: 'uid1' }),
@@ -131,32 +129,16 @@ describe('CollectionsEffects', () => {
     });
 
     it('should handle error', () => {
-      firestoreService.delete.mockReturnValue(throwError(MockFirebaseError.base));
+      supabaseService.delete.mockReturnValue(throwError('error'));
 
       actions$ = hot('-a--', {
         a: collectionsActions.delete({ collection: Collection.Vinyles, id: 'uid1' }),
       });
       const expected = cold('-b-', {
-        b: collectionsActions.error({ collection: Collection.Vinyles, error: MockFirebaseError.base.code }),
+        b: collectionsActions.error({ collection: Collection.Vinyles }),
       });
 
       expect(effects.delete$).toBeObservable(expected);
-    });
-  });
-
-  describe('permissionDenied$', () => {
-    it('should show access-denied error page', () => {
-      actions$ = hot('-a-', {
-        a: collectionsActions.error({
-          collection: Collection.Vinyles,
-          error: 'permission-denied',
-        }),
-      });
-      const expected = cold('-b-', {
-        b: routerActions.navigate({ commands: ['/access-denied'] }),
-      });
-
-      expect(effects.permissionDenied$).toBeObservable(expected);
     });
   });
 });

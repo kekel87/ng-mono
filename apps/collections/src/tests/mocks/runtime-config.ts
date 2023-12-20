@@ -4,13 +4,9 @@ export abstract class MockRuntimeConfig {
   static readonly base: RuntimeConfig = {
     isQa: true,
     corsAnywhere: 'corsAnywhere',
-    firebase: {
-      apiKey: 'apiKey',
-      authDomain: 'authDomain',
-      databaseURL: 'databaseURL',
-      projectId: 'projectId',
-      storageBucket: 'storageBucket',
-      messagingSenderId: 'messagingSenderId',
+    supabase: {
+      url: 'url',
+      key: 'key',
     },
     googleSearch: {
       url: 'googleSearch',

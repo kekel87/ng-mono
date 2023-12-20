@@ -3,13 +3,14 @@ import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { of, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
+import { v4 as uuidv4 } from 'uuid';
 
 import { metas } from '~shared/consts/metas';
 import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
 import { SaveState } from '~shared/enums/save-state';
 import { Item } from '~shared/models/item';
-import { FirestoreService } from '~shared/services/firestore.service';
+import { SupabaseService } from '~shared/services/supabase.service';
 
 import { collectionDetailActions } from './core/store/detail.actions';
 import * as collectionsSelectors from '../core/entities/collections.selectors';
@@ -22,7 +23,7 @@ interface ItemCollection {
 
 export const detailResolver: ResolveFn<ItemCollection> = (route: ActivatedRouteSnapshot) => {
   const store = inject(Store);
-  const firestoreService = inject(FirestoreService);
+  const supabase = inject(SupabaseService);
   const collection = route.data['collection'] as Collection;
   const id = route.paramMap.get('id') as string;
   const meta = metas[collection];
@@ -32,7 +33,7 @@ export const detailResolver: ResolveFn<ItemCollection> = (route: ActivatedRouteS
   if ('new' === id) {
     store.dispatch(collectionDetailActions.setSaveState({ saveState: SaveState.NotSave }));
 
-    const item = meta.newItem(firestoreService.createId());
+    const item = meta.newItem(uuidv4());
     return of({ item, collection });
   }
 
@@ -40,7 +41,7 @@ export const detailResolver: ResolveFn<ItemCollection> = (route: ActivatedRouteS
     switchMap((linkState) =>
       linkState === LinkState.Linked ? store.select(collectionsSelectors.selectEntityFactory(collection, id)) : of(undefined)
     ),
-    switchMap((item) => (item === undefined ? firestoreService.findById<Item>(collection, id) : of(item))),
+    switchMap((item) => (item === undefined ? supabase.findById<Item>(collection, id) : of(item))),
     take(1),
     switchMap((item) => {
       if (item === undefined) {

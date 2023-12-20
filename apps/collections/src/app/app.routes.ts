@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { RouteName } from '~shared/enums/route-name';
 
-import { AuthGuard } from './auth/auth.guard';
+import * as authGuards from './auth/auth.guard';
 
 export default [
   {
@@ -11,9 +11,13 @@ export default [
     pathMatch: 'full',
   },
   {
+    path: '',
+    loadChildren: () => import('./auth/auth.routes'),
+  },
+  {
     path: RouteName.Dashboard,
     loadChildren: () => import('./dashboard/dashboard.routes'),
-    canActivate: [AuthGuard],
+    canActivate: [authGuards.canActivate],
   },
   {
     path: RouteName.Error,
@@ -22,11 +26,7 @@ export default [
   {
     path: '',
     loadChildren: () => import('./collection/collection.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: '',
-    loadChildren: () => import('./auth/auth.routes'),
+    canActivate: [authGuards.canActivate],
   },
   { path: '**', redirectTo: `/${RouteName.Dashboard}` },
 ] satisfies Routes;

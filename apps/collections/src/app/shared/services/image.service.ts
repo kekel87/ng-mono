@@ -1,13 +1,14 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { getDownloadURL, ref, Storage, uploadBytes } from '@angular/fire/storage';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
 import { GoogleImage, GoogleImageSearchResponse } from '~shared/models/google-image';
 import { RuntimeConfig } from '~shared/models/runtime-config';
+
+import { SupabaseService } from './supabase.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class ImageService {
 
   constructor(
     private http: HttpClient,
-    private storage: Storage,
+    private supabaseService: SupabaseService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(RUNTIME_CONFIG) { corsAnywhere, googleSearch }: RuntimeConfig
   ) {
@@ -37,13 +38,11 @@ export class ImageService {
   upload(path: string, url: string): Observable<string> {
     return this.resize(url).pipe(
       switchMap((image: Blob) =>
-        from(
-          uploadBytes(ref(this.storage, path), image, {
-            cacheControl: 'public, max-age=7200',
-          })
-        )
-      ),
-      switchMap(({ ref }) => from(getDownloadURL(ref)))
+        this.supabaseService.upload(path, image, {
+          cacheControl: '7200',
+          upsert: true,
+        })
+      )
     );
   }
 

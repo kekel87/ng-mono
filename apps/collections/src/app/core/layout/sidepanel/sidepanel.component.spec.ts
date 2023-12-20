@@ -52,8 +52,8 @@ describe('SidePanelComponent', () => {
   });
 
   it('should display user', () => {
-    expect(ngMocks.find('img').properties['src']).toEqual(mockUser.photoURL);
-    expect(ngMocks.formatText(ngMocks.find('.name'))).toEqual(mockUser.displayName);
+    expect(ngMocks.find('img').properties['src']).toEqual(mockUser.user_metadata['avatar_url']);
+    expect(ngMocks.formatText(ngMocks.find('.name'))).toEqual(mockUser.user_metadata['name']);
     expect(ngMocks.formatText(ngMocks.find('.email'))).toEqual(mockUser.email);
   });
 
@@ -61,7 +61,6 @@ describe('SidePanelComponent', () => {
     expect(ngMocks.findInstances('mat-nav-list a', RouterLinkWithHref).map(({ routerLink }) => routerLink)).toEqual([
       ['/', RouteName.Dashboard],
       ['/', Collection.Games],
-      ['/', Collection.Comics],
       ['/', Collection.Amiibos],
       ['/', Collection.Books],
       ['/', Collection.Vinyles],

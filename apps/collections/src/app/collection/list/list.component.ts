@@ -12,6 +12,7 @@ import { layoutActions } from '~app/core/layout/layout.actions';
 import { layoutFeature } from '~app/core/layout/layout.feature';
 import { routerActions } from '~app/core/router/router.actions';
 import { metas } from '~shared/consts/metas';
+import { ImageDowloaderDirective } from '~shared/directives/image-downloader/image-downloader.directive';
 import { Collection } from '~shared/enums/collection';
 import { ItemToDisplay } from '~shared/models/item-to-display';
 
@@ -23,7 +24,15 @@ import { collectionsActions } from '../core/entities/collections.actions';
 @Component({
   selector: 'col-list',
   standalone: true,
-  imports: [AsyncPipe, RouterLink, CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf, MatCheckboxModule],
+  imports: [
+    AsyncPipe,
+    RouterLink,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    MatCheckboxModule,
+    ImageDowloaderDirective,
+  ],
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,5 +1,5 @@
 export interface Tome {
   number: number;
   acquired: boolean;
-  cover: string;
+  image: string | null;
 }

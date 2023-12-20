@@ -10,6 +10,7 @@ import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 
 import { hasValue, RequestState } from '@ng-mono/shared';
 import { LoaderComponent } from '~shared/components/loader/loader.component';
+import { ImageDowloaderDirective } from '~shared/directives/image-downloader/image-downloader.directive';
 import { ImageService } from '~shared/services/image.service';
 
 import { CustomUrlDialogComponent } from './custom-url-dialog/custom-url-dialog.component';
@@ -29,6 +30,7 @@ import { ImageFinderDialogComponent } from './images-finder-dialog/images-finder
     LoaderComponent,
     CustomUrlDialogComponent,
     ImageFinderDialogComponent,
+    ImageDowloaderDirective,
   ],
   selector: 'col-images-selector',
   templateUrl: './image-selector.component.html',

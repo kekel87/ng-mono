@@ -14,7 +14,7 @@ export abstract class VinyleMetaUtils extends MetaUtils {
   static override readonly relations = [];
 
   static override newItem(id: string): Item {
-    return { id, cover: 'assets/400x200.png', acquired: false } as Item;
+    return { id, cover: null, acquired: false } as Item;
   }
 
   static override toItemsDisplay(data: Item[] | (Item[] | Dictionary<Item>)[]): ItemToDisplay[] {

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf, TitleCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule, FormArray } from '@angular/forms';
@@ -9,10 +9,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { debounceTime } from 'rxjs/operators';
 
+import { isEmpty, hasValue } from '@ng-mono/shared';
 import { LoaderComponent } from '~shared/components/loader/loader.component';
+import { ImageDowloaderDirective } from '~shared/directives/image-downloader/image-downloader.directive';
+import { BookType } from '~shared/enums/book-type';
 import { Book } from '~shared/models/book';
 import { Tome } from '~shared/models/tome';
 
@@ -25,11 +29,12 @@ import { ImageSelectorComponent } from '../core/components/image-selector/image-
 
 type ComicBookForm = FormGroup<{
   id: FormControl<string>;
+  type: FormControl<BookType>;
   acquired: FormControl<boolean>;
   title: FormControl<string>;
   authors: FormArray<FormControl<string>>;
   publisher: FormControl<string>;
-  image: FormControl<string>;
+  image: FormControl<string | null>;
   comment: FormControl<string | undefined>;
   tomes: FormArray<TomeForm>;
 }>;
@@ -56,11 +61,15 @@ type ComicBookForm = FormGroup<{
     ImageSelectorComponent,
     TomeDialogComponent,
     CreateTomesDialogComponent,
+    ImageDowloaderDirective,
+    MatSelectModule,
+    TitleCasePipe,
   ],
   templateUrl: './comic-book-detail.component.html',
   styleUrls: ['../core/components/detail/detail.component.scss', './comic-book-detail.component.scss'],
 })
 export class ComicBookDetailComponent extends DetailComponent<Book, ComicBookForm> {
+  protected readonly bookTypes = Object.values(BookType);
   isOneShot = false;
 
   get titleControl(): FormControl<string> {
@@ -74,6 +83,7 @@ export class ComicBookDetailComponent extends DetailComponent<Book, ComicBookFor
 
     this.form = this.formBuilder.nonNullable.group({
       id: [book.id, [Validators.required]],
+      type: [book.type, [Validators.required]],
       acquired: [book.acquired, [Validators.required]],
       title: [book.title, [Validators.required]],
       authors: this.formBuilder.array(
@@ -90,10 +100,10 @@ export class ComicBookDetailComponent extends DetailComponent<Book, ComicBookFor
       .pipe(debounceTime(200), takeUntilDestroyed(this.destroyRef))
       .subscribe((value: Partial<Tome>[]) => {
         const imageFormControl = this.form.controls.image;
-        if (imageFormControl && imageFormControl.value === 'assets/400x200.png') {
-          const firstTome = value.find((tome: Partial<Tome>) => tome.number === 1 && tome.cover !== 'assets/75x118.png');
-          if (firstTome && firstTome.cover) {
-            imageFormControl.patchValue(firstTome.cover);
+        if (imageFormControl && isEmpty(imageFormControl.value)) {
+          const firstTome = value.find((tome: Partial<Tome>) => tome.number === 1 && hasValue(tome.image));
+          if (firstTome && firstTome.image) {
+            imageFormControl.patchValue(firstTome.image);
             this.changeDetectorRef.markForCheck();
           }
         }
@@ -108,7 +118,7 @@ export class ComicBookDetailComponent extends DetailComponent<Book, ComicBookFor
       this.formBuilder.nonNullable.group({
         number: [this.getLastTomeNumber(), Validators.required],
         acquired: [true],
-        cover: ['assets/75x118.png'],
+        image: this.formBuilder.control<string | null>(null),
       })
     );
   }
@@ -130,7 +140,7 @@ export class ComicBookDetailComponent extends DetailComponent<Book, ComicBookFor
               this.formBuilder.nonNullable.group({
                 number: [i, Validators.required],
                 acquired: [true],
-                cover: ['assets/75x118.png'],
+                image: this.formBuilder.control<string | null>(null),
               })
             );
           }
@@ -180,7 +190,7 @@ export class ComicBookDetailComponent extends DetailComponent<Book, ComicBookFor
     return this.formBuilder.nonNullable.group({
       number: [tome.number, Validators.required],
       acquired: [tome.acquired],
-      cover: [tome.cover],
+      image: this.formBuilder.control<string | null>(tome.image || null),
     });
   }
 

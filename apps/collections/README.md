@@ -8,7 +8,7 @@
 
 ## Main features
 
-- use Firebase Authentification, Firestore, Storage
+- use Supabase Authentification, Database, Storage
 - live data sync
 - PWA
 - Comics, mangas series management

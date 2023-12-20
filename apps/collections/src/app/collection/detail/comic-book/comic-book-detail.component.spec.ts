@@ -8,6 +8,7 @@ import { MockBuilder, MockRender, MockedComponentFixture, ngMocks, NG_MOCKS_ROOT
 import { ReplaySubject, of } from 'rxjs';
 
 import { layoutActions } from '~app/core/layout/layout.actions';
+import { BookType } from '~shared/enums/book-type';
 import { Collection } from '~shared/enums/collection';
 import { SaveState } from '~shared/enums/save-state';
 import { Book } from '~shared/models/book';
@@ -81,6 +82,7 @@ describe('ComicBookDetailComponent', () => {
 
     it('should display current book with tomes', () => {
       expect(ngMocks.findInstance('[formControlName="title"]', FormControlName).value).toBe(MockCollection.book1.title);
+      expect(ngMocks.findInstance('[formControlName="type"]', FormControlName).value).toBe(MockCollection.book1.type);
       expect(ngMocks.findInstance('[formArrayName="authors"]', FormArrayName).value).toEqual(MockCollection.book1.authors);
       expect(ngMocks.findInstance('[formControlName="publisher"]', FormControlName).value).toBe(MockCollection.book1.publisher);
 
@@ -102,10 +104,11 @@ describe('ComicBookDetailComponent', () => {
 
     it('should save book with modification', fakeAsync(() => {
       ngMocks.change('[formControlName="title"]', 'Toto');
+      ngMocks.change('[formControlName="type"]', BookType.Bd);
       ngMocks.change('.author:nth-of-type(1) input', 'New author');
       ngMocks.change('[formControlName="publisher"]', 'New publisher');
       ngMocks.change('.tomes > div:nth-of-type(2) mat-checkbox', true);
-      ngMocks.click('.tomes  div button:nth-of-type(1)');
+      ngMocks.click('.tomes div button:nth-of-type(1)');
 
       tick(500);
 
@@ -114,16 +117,17 @@ describe('ComicBookDetailComponent', () => {
           collection: Collection.Books,
           item: {
             id: MockCollection.book1.id,
-            image: 'assets/400x200.png',
+            type: BookType.Bd,
             title: 'Toto',
             acquired: MockCollection.book1.acquired,
             authors: ['New author'],
             publisher: 'New publisher',
+            image: MockCollection.book1.image,
             tomes: [
               {
                 number: 3,
                 acquired: true,
-                cover: 'assets/75x118.png',
+                image: null,
               },
               {
                 ...MockCollection.tome1,
@@ -218,7 +222,7 @@ describe('ComicBookDetailComponent', () => {
         fixture.detectChanges();
 
         expect(ngMocks.findAll('.tomes img').length).toBe(3);
-        expect(fixture.componentInstance.form.controls.tomes.at(0).get('number')?.value).toBe(3);
+        expect(ngMocks.findInstance('[formArrayName="tomes"]', FormArrayName).control.at(0).get('number')?.value).toBe(3);
       });
 
       it('should add many tome and order then', () => {
@@ -226,6 +230,7 @@ describe('ComicBookDetailComponent', () => {
         dialog.open.mockReturnValue(dialogRef);
 
         expect(ngMocks.findAll('.tomes img').length).toBe(2);
+        expect(ngMocks.findAll('.tomes span').map((el) => ngMocks.formatText(el))).toEqual([]);
 
         ngMocks.click('.tomes div button:nth-of-type(2)');
         fixture.detectChanges();
@@ -234,7 +239,8 @@ describe('ComicBookDetailComponent', () => {
           width: '300px',
           data: { start: 3 },
         });
-        expect(ngMocks.findAll('.tomes span').map((el) => ngMocks.formatText(el))).toEqual(['5', '4', '3', '2', '1']);
+        expect(ngMocks.findAll('.tomes img').length).toBe(5);
+        expect(ngMocks.findAll('.tomes span').map((el) => ngMocks.formatText(el))).toEqual(['5', '4', '3']);
       });
 
       it('should cancel add many tome', () => {
@@ -261,7 +267,8 @@ describe('ComicBookDetailComponent', () => {
       });
 
       it('should set book image with first tome cover', fakeAsync(() => {
-        fixture.componentInstance.form.controls.tomes.at(1).get('cover')?.patchValue('img/50x250.png');
+        ngMocks.change('[formControlName="image"]', null);
+        ngMocks.findInstance('[formArrayName="tomes"]', FormArrayName).control.at(1).get('image')?.patchValue('img/50x250.png');
         tick(600);
         fixture.detectChanges();
 
@@ -269,23 +276,21 @@ describe('ComicBookDetailComponent', () => {
       }));
 
       it('should not set book image with other tome', fakeAsync(() => {
-        fixture.componentInstance.form.controls.tomes.at(0).get('cover')?.patchValue('img/50x250.png');
+        ngMocks.findInstance('[formArrayName="tomes"]', FormArrayName).control.at(1).get('image')?.patchValue(null);
+        ngMocks.change('[formControlName="image"]', null);
+        ngMocks.findInstance('[formArrayName="tomes"]', FormArrayName).control.at(0).get('image')?.patchValue('img/50x250.png');
+        tick(600);
+        fixture.detectChanges();
+
+        expect(ngMocks.findInstance('[formControlName="image"]', FormControlName).value).toBe(null);
+      }));
+
+      it('should not set book image with first tome if she are already set', fakeAsync(() => {
+        ngMocks.findInstance('[formArrayName="tomes"]', FormArrayName).control.at(0).get('image')?.patchValue('img/50x250.png');
         tick(600);
         fixture.detectChanges();
 
         expect(ngMocks.findInstance('[formControlName="image"]', FormControlName).value).toContain(MockCollection.book1.image);
-      }));
-
-      it('should not set book image with first tome if she are already set', fakeAsync(() => {
-        ngMocks.change('[formControlName="image"]', 'img/500x50.png');
-        tick(200);
-        fixture.detectChanges();
-
-        fixture.componentInstance.form.controls.tomes.at(0).get('cover')?.patchValue('img/50x250.png');
-        tick(600);
-        fixture.detectChanges();
-
-        expect(ngMocks.findInstance('[formControlName="image"]', FormControlName).value).toContain('img/500x50.png');
       }));
     });
   });
@@ -316,7 +321,7 @@ describe('ComicBookDetailComponent', () => {
         fixture.detectChanges();
 
         expect(ngMocks.findAll('.tomes img').length).toBe(1);
-        expect(fixture.componentInstance.form.controls.tomes.at(0).get('number')?.value).toBe(1);
+        expect(ngMocks.findInstance('[formArrayName="tomes"]', FormArrayName).control.at(0).get('number')?.value).toBe(1);
       });
 
       it('should add many tomes', () => {

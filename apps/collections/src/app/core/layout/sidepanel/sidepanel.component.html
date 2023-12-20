@@ -4,9 +4,9 @@
     <a mat-button style="height: 0; position: absolute"></a>
 
     <div *ngIf="user$ | async as user" class="user">
-      <img [src]="user.photoURL" class="mat-elevation-z3" />
+      <img *ngIf="user.user_metadata['avatar_url'] as url" [src]="url" class="mat-elevation-z3" />
       <div class="info">
-        <span class="name">{{ user.displayName }}</span>
+        <span *ngIf="user.user_metadata['name'] as name" class="name">{{ name }}</span>
         <span class="email">{{ user.email }}</span>
       </div>
       <button mat-icon-button (click)="logout()">

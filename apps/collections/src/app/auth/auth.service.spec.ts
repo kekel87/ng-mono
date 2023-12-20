@@ -1,24 +1,28 @@
-import { Auth, User, UserCredential } from '@angular/fire/auth';
-import * as fireAuth from '@angular/fire/auth';
 import { MockBuilder, ngMocks } from 'ng-mocks';
-import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 
+import { SupabaseService } from '~shared/services/supabase.service';
 import { mockUser } from '~tests/mocks/user';
 
 import { AuthService } from './auth.service';
 
-jest.mock('@angular/fire/auth');
-
 describe('AuthService', () => {
   let authService: AuthService;
-  const auth = jest.fn();
-  const authState$ = new BehaviorSubject<User | null>(null);
+  let callback: (event: unknown, session: unknown) => void | Promise<void>;
+  const supabaseService = {
+    client: {
+      auth: {
+        getUser: jest.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
+        onAuthStateChange: jest.fn((cb) => (callback = cb)),
+        signOut: jest.fn(),
+        signInWithOAuth: jest.fn(),
+        signInWithPassword: jest.fn(),
+      },
+    },
+  };
 
   beforeEach(async () => {
-    jest.spyOn(fireAuth, 'authState').mockReturnValue(authState$);
-
-    await MockBuilder(AuthService).provide({ provide: Auth, useValue: auth });
+    await MockBuilder(AuthService).provide({ provide: SupabaseService, useValue: supabaseService });
 
     authService = ngMocks.findInstance(AuthService);
   });
@@ -27,21 +31,7 @@ describe('AuthService', () => {
     expect(authService).toBeDefined();
   });
 
-  it('should handle null User', (done: jest.DoneCallback) => {
-    authState$.next(null);
-
-    authService.user$.pipe(first()).subscribe({
-      next: (v) => {
-        expect(v).toBeNull();
-        done();
-      },
-      error: done.fail,
-    });
-  });
-
   it('should return an observable of the user', (done: jest.DoneCallback) => {
-    authState$.next(mockUser as unknown as User);
-
     authService.user$.pipe(first()).subscribe({
       next: (v) => {
         expect(v).toEqual(mockUser);
@@ -49,34 +39,34 @@ describe('AuthService', () => {
       },
       error: done.fail,
     });
+
+    callback(null, { user: mockUser });
   });
 
-  it('should call the popup opening method', (done: jest.DoneCallback) => {
-    jest.spyOn(fireAuth, 'signInWithPopup').mockReturnValue(Promise.resolve({} as unknown as UserCredential));
-    // angularFireAuth.setPersistence.and.returnValue(Promise.resolve());
+  it('should sign-in with google', (done: jest.DoneCallback) => {
+    supabaseService.client.auth.signInWithOAuth.mockResolvedValue({});
 
     authService
       .signInWithGoogle()
       .pipe(first())
       .subscribe({
         next: () => {
-          expect(fireAuth.signInWithPopup).toHaveBeenCalled();
+          expect(supabaseService.client.auth.signInWithOAuth).toHaveBeenCalledWith({ provider: 'google' });
           done();
         },
         error: done.fail,
       });
   });
 
-  it('should call the popup opening method', (done: jest.DoneCallback) => {
-    jest.spyOn(fireAuth, 'signInWithEmailAndPassword').mockReturnValue(Promise.resolve({} as unknown as UserCredential));
-    // angularFireAuth.setPersistence.and.returnValue(Promise.resolve());
+  it('should sign-in with email and password', (done: jest.DoneCallback) => {
+    supabaseService.client.auth.signInWithPassword.mockResolvedValue({});
 
     authService
       .signInWithEmailAndPassword('test@test.fr', '123456')
       .pipe(first())
       .subscribe({
         next: () => {
-          expect(fireAuth.signInWithEmailAndPassword).toHaveBeenCalledWith(auth, 'test@test.fr', '123456');
+          expect(supabaseService.client.auth.signInWithPassword).toHaveBeenCalledWith({ email: 'test@test.fr', password: '123456' });
           done();
         },
         error: done.fail,
@@ -84,10 +74,10 @@ describe('AuthService', () => {
   });
 
   it('should call the sign method', () => {
-    jest.spyOn(fireAuth, 'signOut').mockReturnValue(Promise.resolve());
+    supabaseService.client.auth.signOut.mockReturnValue(Promise.resolve());
 
     authService.signOut();
 
-    expect(fireAuth.signOut).toHaveBeenCalled();
+    expect(supabaseService.client.auth.signOut).toHaveBeenCalled();
   });
 });

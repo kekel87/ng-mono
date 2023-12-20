@@ -22,7 +22,7 @@ type AmiiboForm = FormGroup<{
   acquired: FormControl<boolean>;
   character: FormControl<string>;
   serie: FormControl<string>;
-  image: FormControl<string>;
+  image: FormControl<string | null>;
   comment: FormControl<string | undefined>;
 }>;
 

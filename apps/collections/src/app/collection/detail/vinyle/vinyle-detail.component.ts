@@ -22,7 +22,7 @@ type VinyleForm = FormGroup<{
   acquired: FormControl<boolean>;
   title: FormControl<string>;
   artist: FormControl<string>;
-  cover: FormControl<string>;
+  cover: FormControl<string | null>;
   comment: FormControl<string | undefined>;
 }>;
 
