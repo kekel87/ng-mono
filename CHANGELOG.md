@@ -1,5 +1,37 @@
 # Changelog
 
+## [2023.3.0](https://github.com/kekel87/ng-mono/compare/v2023.2.0...v2023.3.0) (2023-12-20)
+
+
+### ✨ Features
+
+* **travel-log:** base layout, deploy and runtime config ([9b252a6](https://github.com/kekel87/ng-mono/commit/9b252a64f1c9bba6c72ffaf03f5c14e53cda932f))
+* **travel-log:** load, list and display gpx ([#33](https://github.com/kekel87/ng-mono/issues/33)) ([824da19](https://github.com/kekel87/ng-mono/commit/824da199e1a978d9c931b9cfbc3d6c86f5d0ae2b))
+
+
+### 🐛 Bug Fixes
+
+* **netatmo:** do not fetch module without active measure type ([0019d86](https://github.com/kekel87/ng-mono/commit/0019d86aca7161d000e7d859e2e3a4f7c515cae2))
+
+
+### 🛠️ Refactorings
+
+* **collections:** migrate to standalone ([5688bcc](https://github.com/kekel87/ng-mono/commit/5688bccd7e3e3f79116eef3822c79d29c80b5a44))
+* **collections:** migrate to supabase ([#41](https://github.com/kekel87/ng-mono/issues/41)) ([fe7062a](https://github.com/kekel87/ng-mono/commit/fe7062a40eaf05c03f7a80c4ef71e1b772f0295f))
+* migrate guard and resolver to functions ([1e28909](https://github.com/kekel87/ng-mono/commit/1e2890900e337cf2f72a47a56249d08d2034d3f5))
+* put and use utils in common ([2f43853](https://github.com/kekel87/ng-mono/commit/2f43853c4e2faa32350be5631e4762ee540fdc64))
+
+
+### ⚙️ Global
+
+* ⬆️ update repo and dependencies ([c10f679](https://github.com/kekel87/ng-mono/commit/c10f679f790feb11fb0c87315c2ef3e6bdbfa8f4))
+* ⬆️ update repo and dependencies ([f9d4e14](https://github.com/kekel87/ng-mono/commit/f9d4e14dfe67574bf8542e5c8d5a68f06bc59bc4))
+* ⬆️ update repo and dependencies 17 ([#38](https://github.com/kekel87/ng-mono/issues/38)) ([25cc610](https://github.com/kekel87/ng-mono/commit/25cc610ba021aba554ad35fb5affa4d21af5197d))
+* migrate to playwright ([#35](https://github.com/kekel87/ng-mono/issues/35)) ([767110e](https://github.com/kekel87/ng-mono/commit/767110e02cd6d3d634d076a31b3be5b5e55069f7))
+* nvm and node 20 ([1c2f594](https://github.com/kekel87/ng-mono/commit/1c2f594d334cec9080a8100791f0f624a899277f))
+* remove dependabot ([60d2a5b](https://github.com/kekel87/ng-mono/commit/60d2a5b3facf7e37a28c0a742d68d5819a05eed4))
+* **travel-log:** init ([#28](https://github.com/kekel87/ng-mono/issues/28)) ([91a594e](https://github.com/kekel87/ng-mono/commit/91a594e5c16de2fcebeb9dd3c10daf42215a9802))
+
 ## [2023.2.0](https://github.com/kekel87/ng-mono/compare/v2023.1.0...v2023.2.0) (2023-07-15)
 
 ### ⚙️ Global
