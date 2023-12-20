@@ -94,10 +94,10 @@
       "options": {
         "commands": [
           {
-            "command": "echo '/* /index.html 200' > dist/apps/travel-log/_redirects",
+            "command": "echo \"/* /index.html 200\" > dist/apps/travel-log/browser/_redirects",
             "forwardAllArgs": false
           },
-          "netlify deploy --site fa4a9f07-2f1f-4ebc-9f71-fe647e544a74 --dir dist/apps/travel-log --filter travel-log"
+          "netlify deploy --site fa4a9f07-2f1f-4ebc-9f71-fe647e544a74 --dir dist/apps/travel-log/browser --filter travel-log"
         ],
         "parallel": false
       }

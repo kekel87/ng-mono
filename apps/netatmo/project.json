@@ -93,10 +93,10 @@
       "options": {
         "commands": [
           {
-            "command": "echo '/* /index.html 200' > dist/apps/netatmo/_redirects",
+            "command": "echo \"/* /index.html 200\" > dist/apps/netatmo/browser/_redirects",
             "forwardAllArgs": false
           },
-          "netlify deploy --site c4ecaf62-311b-4189-8303-fee917451d56 --dir dist/apps/netatmo --filter netatmo"
+          "netlify deploy --site c4ecaf62-311b-4189-8303-fee917451d56 --dir dist/apps/netatmo/browser --filter netatmo"
         ],
         "parallel": false
       }

@@ -91,10 +91,10 @@
       "options": {
         "commands": [
           {
-            "command": "echo '/* /index.html 200' > dist/apps/collections/_redirects",
+            "command": "echo \"/* /index.html 200\" > dist/apps/collections/browser/_redirects",
             "forwardAllArgs": false
           },
-          "netlify deploy --site abe8d931-a0da-4bb3-b6c8-00b0712f7c60 --dir dist/apps/collections --filter collections"
+          "netlify deploy --site abe8d931-a0da-4bb3-b6c8-00b0712f7c60 --dir dist/apps/collections/browser --filter collections"
         ],
         "parallel": false
       }
