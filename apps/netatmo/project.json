@@ -96,7 +96,7 @@
             "command": "echo '/* /index.html 200' > dist/apps/netatmo/_redirects",
             "forwardAllArgs": false
           },
-          "netlify deploy --site c4ecaf62-311b-4189-8303-fee917451d56 --dir dist/apps/netatmo"
+          "netlify deploy --site c4ecaf62-311b-4189-8303-fee917451d56 --dir dist/apps/netatmo --filter netatmo"
         ],
         "parallel": false
       }

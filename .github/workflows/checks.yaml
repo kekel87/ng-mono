@@ -89,8 +89,7 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
-      - run: npx nx run-many --target=e2e --parallel=1
-      # - run: npx nx affected --target=e2e --parallel=1
+      - run: npx nx affected --target=e2e --parallel=1
 
   build:
     name: 🛠️ Test build

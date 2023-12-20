@@ -10,7 +10,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: nrwl/nx-set-shas@v3
+    - uses: nrwl/nx-set-shas@v4
 
     - run: echo "NX_REJECT_UNKNOWN_LOCAL_CACHE=0" >> $GITHUB_ENV
       shell: bash
