@@ -82,6 +82,5 @@
       "environment": "all",
       "path": ".cache/angular"
     }
-  },
-  "defaultProject": "netatmo"
+  }
 }

@@ -1,17 +1,21 @@
+import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { cold } from 'jasmine-marbles';
 import { MockBuilder, ngMocks } from 'ng-mocks';
 
 import { authActions } from './auth.actions';
 import { authFeature } from './auth.feature';
-import { AuthGuard } from './auth.guard';
+import { canActivate } from './auth.guard';
 
-describe('AuthGuard', () => {
-  let guard: AuthGuard;
+describe('canActivate', () => {
+  let activatedRouteSnapshot: ActivatedRouteSnapshot;
+  const redirectUrl = '/redicrect';
+  const routerStateSnapshot = { url: redirectUrl } as RouterStateSnapshot;
   let store: MockStore;
 
   beforeEach(async () => {
-    await MockBuilder(AuthGuard).provide(
+    await MockBuilder().provide(
       provideMockStore({
         selectors: [{ selector: authFeature.selectIsLoggedIn, value: false }],
       })
@@ -19,21 +23,21 @@ describe('AuthGuard', () => {
 
     store = ngMocks.findInstance(MockStore);
     jest.spyOn(store, 'dispatch');
-    guard = ngMocks.findInstance(AuthGuard);
   });
 
   it('should activate with user', () => {
     authFeature.selectIsLoggedIn.setResult(true);
     store.refreshState();
 
-    guard.canActivate(new ActivatedRouteSnapshot(), {} as RouterStateSnapshot).subscribe((v) => {
-      expect(v).toEqual(true);
-    });
+    expect(TestBed.runInInjectionContext(() => canActivate(activatedRouteSnapshot, routerStateSnapshot))).toBeObservable(
+      cold('(a|)', { a: true })
+    );
   });
 
   it('should dispatch NotAuthenticated with redirect url without user', () => {
-    guard.canActivate(new ActivatedRouteSnapshot(), { url: '/redirect' } as RouterStateSnapshot).subscribe(() => {
-      expect(store.dispatch).toHaveBeenCalledWith(authActions.notAuthenticated({ redirectUrl: '/redirect' }));
-    });
+    expect(TestBed.runInInjectionContext(() => canActivate(activatedRouteSnapshot, routerStateSnapshot))).toBeObservable(
+      cold('(a|)', { a: false })
+    );
+    expect(store.dispatch).toHaveBeenCalledWith(authActions.notAuthenticated({ redirectUrl }));
   });
 });

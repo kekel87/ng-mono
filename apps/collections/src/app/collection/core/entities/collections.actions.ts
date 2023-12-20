@@ -13,6 +13,6 @@ export const collectionsActions = createActionGroup({
     'Save success': props<{ collection: Collection }>(),
     delete: props<{ collection: Collection; id: string }>(),
     'Delete Success': props<{ collection: Collection }>(),
-    error: props<{ collection: Collection; error?: string }>(),
+    error: props<{ collection: Collection }>(),
   },
 });

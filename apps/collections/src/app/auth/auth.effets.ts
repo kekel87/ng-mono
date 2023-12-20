@@ -4,12 +4,16 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, concatMap, filter, first, map, switchMap } from 'rxjs/operators';
 
+import { hasValue, isRecord } from '@ng-mono/shared';
 import { routerActions } from '~app/core/router/router.actions';
-import { isFirebaseError } from '~shared/utils/type-guards';
 
 import { authActions } from './auth.actions';
 import { authFeature } from './auth.feature';
 import { AuthService } from './auth.service';
+
+export function hasMsg(input: unknown): input is { msg: string } {
+  return isRecord(input) && 'msg' in input;
+}
 
 @Injectable()
 export class AuthEffects {
@@ -26,7 +30,7 @@ export class AuthEffects {
         switchMap(() =>
           this.authService.signInWithGoogle().pipe(
             map(() => authActions.loginSuccess()),
-            catchError((error: unknown) => of(authActions.error(isFirebaseError(error) ? { error: error.code } : {})))
+            catchError((error: unknown) => of(authActions.error(hasMsg(error) ? { error: error.msg } : {})))
           )
         )
       );
@@ -40,8 +44,8 @@ export class AuthEffects {
         ofType(authActions.emailPasswordLogin),
         switchMap(({ email, password }) =>
           this.authService.signInWithEmailAndPassword(email, password).pipe(
-            map(() => authActions.loginSuccess()),
-            catchError((error: unknown) => of(authActions.error(isFirebaseError(error) ? { error: error.code } : {})))
+            map(({ error }) => (error ? authActions.error({ error: error.message }) : authActions.loginSuccess())),
+            catchError((_: unknown) => of(authActions.error({})))
           )
         )
       );
@@ -78,7 +82,7 @@ export class AuthEffects {
         switchMap(() =>
           this.authService.signOut().pipe(
             map(() => authActions.notAuthenticated({})),
-            catchError((error: unknown) => of(authActions.error(isFirebaseError(error) ? { error: error.code } : {})))
+            catchError((_: unknown) => of(authActions.error({})))
           )
         )
       );
@@ -86,10 +90,19 @@ export class AuthEffects {
     { useEffectsErrorHandler: false }
   );
 
-  disabled$ = createEffect(() => {
+  watchError$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(authActions.findUser),
+      switchMap(() => this.authService.error$),
+      filter(hasValue),
+      map(({ message }) => authActions.error({ error: message }))
+    );
+  });
+
+  accessDenied$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(authActions.error),
-      filter(({ error }) => error === 'auth/user-disabled'),
+      filter(({ error }) => error === 'invalid claim: missing sub claim'),
       map(() => routerActions.navigate({ commands: ['/access-denied'] }))
     );
   });

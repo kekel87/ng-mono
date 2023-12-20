@@ -20,11 +20,11 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 
 @Component({ template: '' })
 export abstract class DetailComponent<T extends Item, F extends FormGroup> {
-  item!: T;
-  collection!: Collection;
-  form!: F;
-  loading$: Observable<boolean> = this.store.select(detailFeature.selectLoading);
-  saveState$: Observable<SaveState> = this.store.select(detailFeature.selectSaveState);
+  protected item!: T;
+  protected collection!: Collection;
+  protected form!: F;
+  protected loading$: Observable<boolean> = this.store.select(detailFeature.selectLoading);
+  protected saveState$: Observable<SaveState> = this.store.select(detailFeature.selectSaveState);
 
   readonly Collections = Collection;
 

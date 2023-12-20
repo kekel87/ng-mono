@@ -3,6 +3,6 @@ export interface ItemToDisplay {
   predicate: string;
   title: string;
   subTitle: string;
-  image: string;
+  image: string | null;
   acquired?: boolean;
 }

@@ -4,11 +4,6 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponent } from './login/login.component';
 
 export default [
-  {
-    path: '',
-    children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'access-denied', component: AccessDeniedComponent },
-    ],
-  },
+  { path: 'login', component: LoginComponent },
+  { path: 'access-denied', component: AccessDeniedComponent },
 ] satisfies Routes;

@@ -1,13 +1,12 @@
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { AuthError } from '@supabase/supabase-js';
 import { cold, hot } from 'jasmine-marbles';
 import { MockBuilder, ngMocks } from 'ng-mocks';
 import { Observable, of, ReplaySubject } from 'rxjs';
 
 import { routerActions } from '~app/core/router/router.actions';
-import { MockFirebaseError } from '~tests/mocks/mock-firebase-error';
-import { MockUserCredential } from '~tests/mocks/mock-user-credential';
 import { mockUser } from '~tests/mocks/user';
 
 import { authActions } from './auth.actions';
@@ -25,7 +24,8 @@ describe('Auth Effects', () => {
     signInWithGoogle: jest.fn(),
     signInWithEmailAndPassword: jest.fn(),
     signOut: jest.fn(),
-    user$: new ReplaySubject<User | null>(1),
+    user$: new ReplaySubject<User | null>(0),
+    error$: new ReplaySubject<AuthError | null>(0),
   };
 
   beforeEach(async () => {
@@ -40,7 +40,7 @@ describe('Auth Effects', () => {
 
   describe('login$', () => {
     it('should dispatch success when signInWithGoogle successfull', () => {
-      authService.signInWithGoogle.mockReturnValue(of(MockUserCredential.base));
+      authService.signInWithGoogle.mockReturnValue(of({}));
 
       actions$ = hot('-a-', { a: authActions.googleLogin() });
       const expected = cold('-a-', { a: authActions.loginSuccess() });
@@ -50,11 +50,11 @@ describe('Auth Effects', () => {
     });
 
     it('should dispatch AuthError when signInWithGoogle error', () => {
-      authService.signInWithGoogle.mockReturnValue(cold('#', undefined, MockFirebaseError.base));
+      authService.signInWithGoogle.mockReturnValue(cold('#', undefined, { msg: 'error' }));
 
       actions$ = hot('-a-', { a: authActions.googleLogin() });
       const expected = cold('-b-', {
-        b: authActions.error({ error: MockFirebaseError.base.code }),
+        b: authActions.error({ error: 'error' }),
       });
 
       expect(effects.login$).toBeObservable(expected);
@@ -62,9 +62,9 @@ describe('Auth Effects', () => {
     });
   });
 
-  describe('devLogin$', () => {
-    it('should dispatch success when signInWithGoogle successfull', () => {
-      authService.signInWithEmailAndPassword.mockReturnValue(of(MockUserCredential.base));
+  describe('emailPasswordLogin$', () => {
+    it('should dispatch success when sign with email and password not return an error', () => {
+      authService.signInWithEmailAndPassword.mockReturnValue(of({}));
       actions$ = hot('-a-', {
         a: authActions.emailPasswordLogin({ email: 'test@test.fr', password: '123456' }),
       });
@@ -73,13 +73,25 @@ describe('Auth Effects', () => {
       expect(authService.signInWithEmailAndPassword).toHaveBeenCalledWith('test@test.fr', '123456');
     });
 
-    it('should dispatch AuthError when signInWithGoogle error', () => {
-      authService.signInWithEmailAndPassword.mockReturnValue(cold('#', undefined, MockFirebaseError.base));
+    it('should dispatch AuthError when sign with email and password rise an error', () => {
+      authService.signInWithEmailAndPassword.mockReturnValue(cold('#'));
       actions$ = hot('-a-', {
         a: authActions.emailPasswordLogin({ email: 'test@test.fr', password: '123456' }),
       });
       const expected = cold('-b-', {
-        b: authActions.error({ error: MockFirebaseError.base.code }),
+        b: authActions.error({}),
+      });
+      expect(effects.devLogin$).toBeObservable(expected);
+      expect(authService.signInWithEmailAndPassword).toHaveBeenCalledWith('test@test.fr', '123456');
+    });
+
+    it('should dispatch AuthError when sign with email and password return an error', () => {
+      authService.signInWithEmailAndPassword.mockReturnValue(of({ error: { message: 'error' } }));
+      actions$ = hot('-a-', {
+        a: authActions.emailPasswordLogin({ email: 'test@test.fr', password: '123456' }),
+      });
+      const expected = cold('-b-', {
+        b: authActions.error({ error: 'error' }),
       });
       expect(effects.devLogin$).toBeObservable(expected);
       expect(authService.signInWithEmailAndPassword).toHaveBeenCalledWith('test@test.fr', '123456');
@@ -138,11 +150,11 @@ describe('Auth Effects', () => {
     });
 
     it('should dispatch a AuthError when signOut error', () => {
-      authService.signOut.mockReturnValue(cold('#', undefined, MockFirebaseError.base));
+      authService.signOut.mockReturnValue(cold('#'));
 
       actions$ = hot('-a-', { a: authActions.logout() });
       const expected = cold('-b-', {
-        b: authActions.error({ error: MockFirebaseError.base.code }),
+        b: authActions.error({}),
       });
 
       expect(effects.logout$).toBeObservable(expected);
@@ -150,12 +162,23 @@ describe('Auth Effects', () => {
     });
   });
 
-  describe('disabled$', () => {
+  describe('watchError$', () => {
+    it('should watch auth service errors', () => {
+      authService.error$.next({ message: 'error' } as unknown as AuthError);
+
+      actions$ = hot('-a-', { a: authActions.findUser() });
+      const expected = cold('-b-', { b: authActions.error({ error: 'error' }) });
+
+      expect(effects.watchError$).toBeObservable(expected);
+    });
+  });
+
+  describe('accessDenied$', () => {
     it(`should navigate when AuthError with 'auth/user-disabled' code is dispatched`, () => {
-      actions$ = hot('-a-', { a: authActions.error({ error: MockFirebaseError.userDisabled.code }) });
+      actions$ = hot('-a-', { a: authActions.error({ error: 'invalid claim: missing sub claim' }) });
       const expected = cold('-b-', { b: routerActions.navigate({ commands: ['/access-denied'] }) });
 
-      expect(effects.disabled$).toBeObservable(expected);
+      expect(effects.accessDenied$).toBeObservable(expected);
     });
   });
 

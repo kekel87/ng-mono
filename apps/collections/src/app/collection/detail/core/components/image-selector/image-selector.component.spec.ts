@@ -39,7 +39,7 @@ describe('ImageSelectorComponent', () => {
   });
 
   it('should show image as init', () => {
-    expect(ngMocks.find('img').properties['src']).toEqual('assets/400x200.png');
+    expect(ngMocks.input('img', 'colImg')).toEqual('assets/400x200.png');
   });
 
   it('should open image finder popup', () => {
@@ -62,7 +62,7 @@ describe('ImageSelectorComponent', () => {
     ngMocks.click('button:nth-child(1)');
     fixture.detectChanges();
 
-    expect(ngMocks.find('img').properties['src']).toEqual('assets/400x200.png');
+    expect(ngMocks.input('img', 'colImg')).toEqual('assets/400x200.png');
     expect(imageService.upload).toHaveBeenCalledWith('upload-path', 'assets/400x200.png');
   });
 
@@ -84,7 +84,7 @@ describe('ImageSelectorComponent', () => {
     ngMocks.click('button:nth-child(2)');
     fixture.detectChanges();
 
-    expect(ngMocks.find('img').properties['src']).toEqual('assets/400x200.png');
+    expect(ngMocks.input('img', 'colImg')).toEqual('assets/400x200.png');
     expect(imageService.upload).toHaveBeenCalledWith('upload-path', 'assets/400x200.png');
   });
 

@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // TODO this should be a guard
     this.store
       .select(authFeature.selectUser)
       .pipe(

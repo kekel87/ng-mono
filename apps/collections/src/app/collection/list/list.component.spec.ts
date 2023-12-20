@@ -118,15 +118,15 @@ describe('ListComponent', () => {
     });
 
     it('should display a list item', () => {
-      expect(ngMocks.findInstance('li:nth-of-type(1)', RouterLink).routerLink).toEqual([MockCollection.game1.id]);
-      expect(ngMocks.find('li:nth-of-type(1) img').attributes['src']).toContain(MockCollection.game1.cover);
-      expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) h3'))).toContain(MockCollection.game1.title);
+      expect(ngMocks.findInstance('li', RouterLink).routerLink).toEqual([MockCollection.game1.id]);
+      expect(ngMocks.input('li img', 'colImg')).toEqual(MockCollection.game1.cover);
+      expect(ngMocks.formatText(ngMocks.find('li h3'))).toContain(MockCollection.game1.title);
       expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) p'))).toContain(MockCollection.gameBoys.name);
-      expect(ngMocks.findInstance('li:nth-of-type(1) mat-checkbox', MatCheckbox).checked).toBe(MockCollection.game1.acquired);
+      expect(ngMocks.findInstance('li mat-checkbox', MatCheckbox).checked).toBe(MockCollection.game1.acquired);
     });
 
     it('should save game when toggle acquired', () => {
-      ngMocks.output('mat-checkbox:nth-of-type(1)', 'change').emit({ checked: true });
+      ngMocks.output('mat-checkbox', 'change').emit({ checked: true });
       fixture.detectChanges();
 
       expect(store.dispatch).toHaveBeenCalledWith(

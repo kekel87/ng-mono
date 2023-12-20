@@ -47,12 +47,6 @@ export default [
         data: { collection: Collection.Books },
       },
       {
-        path: 'comics/:id',
-        component: ComicBookDetailComponent,
-        resolve: { itemCollection: detailResolver },
-        data: { collection: Collection.Comics },
-      },
-      {
         path: 'games/:id',
         component: GameDetailComponent,
         resolve: { itemCollection: detailResolver },

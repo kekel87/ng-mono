@@ -20,5 +20,11 @@ export default {
   collectCoverage: true,
   coverageReporters: ['lcov', 'text-summary'],
   collectCoverageFrom: ['./src/**'],
-  coveragePathIgnorePatterns: ['index.html', 'main.ts', 'index.ts'],
+  coveragePathIgnorePatterns: [
+    'index.html',
+    'main.ts',
+    'index.ts',
+    'app.config.ts',
+    '.*.routes.ts',
+  ],
 };

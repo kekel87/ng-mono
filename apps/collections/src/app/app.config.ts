@@ -1,9 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getStorage, provideStorage } from '@angular/fire/storage';
+import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
@@ -37,16 +33,10 @@ export const appConfig: (runtimeConfig: RuntimeConfig) => ApplicationConfig = (r
       },
       { runtimeChecks: runtimeConfig.ngrx.runtimeChecks }
     ),
-    provideStoreDevtools(runtimeConfig.ngrx.devtoolsOptions),
+    ...(runtimeConfig.ngrx.devtoolsOptions ? [provideStoreDevtools(runtimeConfig.ngrx.devtoolsOptions)] : []),
     provideRouterStore(),
     provideEffects(RouterEffects, LayoutEffects, AuthEffects),
     provideAnimations(),
-    importProvidersFrom(
-      provideFirebaseApp((injector) => initializeApp(injector.get(RUNTIME_CONFIG).firebase), RUNTIME_CONFIG),
-      provideFirestore(() => getFirestore()),
-      provideAuth(() => getAuth()),
-      provideStorage(() => getStorage())
-    ),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,

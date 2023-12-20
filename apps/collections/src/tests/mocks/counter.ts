@@ -1,11 +1,10 @@
-import { Counter } from '~app/dashboard/store/counter/counter.model';
+import { Collection } from '~shared/enums/collection';
 
 export abstract class MockCounter {
-  static readonly all: Counter[] = [
-    { count: 2, id: 'games' },
-    { count: 4, id: 'amiibos' },
-    { count: 6, id: 'books' },
-    { count: 1, id: 'vinyles' },
-    { count: 0, id: 'comics' },
-  ];
+  static readonly base: Partial<Record<Collection, number>> = {
+    [Collection.Games]: 2,
+    [Collection.Amiibos]: 4,
+    [Collection.Books]: 6,
+    [Collection.Vinyles]: 1,
+  };
 }

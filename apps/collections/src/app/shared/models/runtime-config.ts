@@ -4,13 +4,9 @@ import { StoreDevtoolsOptions } from '@ngrx/store-devtools';
 export interface RuntimeConfig {
   isQa: boolean;
   corsAnywhere: string;
-  firebase: {
-    apiKey: string;
-    authDomain: string;
-    databaseURL: string;
-    projectId: string;
-    storageBucket: string;
-    messagingSenderId: string;
+  supabase: {
+    url: string;
+    key: string;
   };
   googleSearch: {
     url: string;
@@ -19,6 +15,6 @@ export interface RuntimeConfig {
   };
   ngrx: {
     runtimeChecks: Partial<RuntimeChecks>;
-    devtoolsOptions: StoreDevtoolsOptions;
+    devtoolsOptions?: StoreDevtoolsOptions;
   };
 }
