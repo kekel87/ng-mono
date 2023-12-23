@@ -1,6 +1,6 @@
+/* eslint-disable */
 import jestAngularConfig from '../../jest.angular.config';
 
-/* eslint-disable */
 export default {
   ...jestAngularConfig,
   displayName: 'collections',

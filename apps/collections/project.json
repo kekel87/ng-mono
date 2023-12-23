@@ -69,7 +69,6 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/collections/**/*.ts", "apps/collections/**/*.html"],
         "cache": true,
         "cacheLocation": ".cache/eslint",
         "cacheStrategy": "content"

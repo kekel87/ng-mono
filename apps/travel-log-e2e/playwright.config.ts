@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { defineConfig } from '@playwright/test';
 
 import { playwrightAngularPreset } from '../../playwright.angular.preset';
