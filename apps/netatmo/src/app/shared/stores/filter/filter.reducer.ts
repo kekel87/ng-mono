@@ -12,12 +12,16 @@ const adapter: EntityAdapter<ModuleMesureType> = createEntityAdapter<ModuleMesur
 
 export interface State {
   autoRefresh: boolean;
+  temparatureForecast: boolean;
+  humidityForecast: boolean;
   interval: Interval;
   enabledModuleMeasureType: EntityState<ModuleMesureType>;
 }
 
 const initialState: State = {
   autoRefresh: true,
+  temparatureForecast: true,
+  humidityForecast: false,
   interval: build(IntervalType.Day),
   enabledModuleMeasureType: adapter.getInitialState(),
 };
@@ -27,6 +31,8 @@ export const filterFeature = createFeature({
   reducer: createReducer(
     initialState,
     on(filterActions.changeAutoRefresh, (state, { autoRefresh }): State => ({ ...state, autoRefresh })),
+    on(filterActions.toggleTemperatureForecast, (state, { temparatureForecast }): State => ({ ...state, temparatureForecast })),
+    on(filterActions.toggleHumidityForecast, (state, { humidityForecast }): State => ({ ...state, humidityForecast })),
     on(
       filterActions.changeIntervalType,
       (state, { intervalType }): State => ({

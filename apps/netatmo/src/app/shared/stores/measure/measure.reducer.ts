@@ -28,6 +28,7 @@ export const measureFeature = createFeature({
       measureActions.fetchSuccess,
       (state, { measures }): State => adapter.upsertMany(measures, { ...state, requestState: RequestState.Success })
     ),
+    on(measureActions.upsertMany, (state, { measures }): State => adapter.upsertMany(measures, state)),
     on(measureActions.fetchError, (state): State => ({ ...state, requestState: RequestState.Error }))
   ),
   extraSelectors: ({ selectMeasureState }) => ({

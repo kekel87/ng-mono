@@ -55,14 +55,36 @@ export class GraphComponent implements OnInit {
         },
       })
     );
-    this.store.select(measureFeature.selectAll).subscribe((source) => this.chart.setOption({ dataset: [{ source }] }));
+    this.store.select(measureFeature.selectAll).subscribe((source) => {
+      console.log('source', source);
+      this.chart.setOption({ dataset: [{ source }] });
+    });
+
+    const weatherSeries = [
+      {
+        id: `weather_id-${MeasureType.Temperature}`,
+        type: 'line',
+        yAxisId: MeasureType.Temperature,
+        datasetId: 'weather_id',
+        name: 'Prédiction',
+        color: ['#f39611'],
+        encode: {
+          x: 'timestamp',
+          y: MeasureType.Temperature,
+        },
+      },
+    ];
+
     this.store
       .select(selectModuleWithEnabledMeasureType)
       .pipe(
         map((modules) => {
-          return modules.reduce((acc: any[], curr) => {
-            return [...acc, ...curr.enabledMeasureTypes.map((type) => this.toSerie(type, curr))];
-          }, []);
+          return modules.reduce(
+            (acc: any[], curr) => {
+              return [...acc, ...curr.enabledMeasureTypes.map((type) => this.toSerie(type, curr))];
+            },
+            [...weatherSeries]
+          );
         })
       )
       .subscribe((series) => this.chart.setOption({ series }, { replaceMerge: ['series'] }));
@@ -199,6 +221,14 @@ export class GraphComponent implements OnInit {
           id: 'raw',
           dimensions: ['id', 'timestamp', ...Object.values(MeasureType)],
           source: [],
+        },
+        {
+          id: 'weather_id',
+          fromDatasetId: 'raw',
+          transform: {
+            type: 'filter',
+            config: { dimension: 'id', '=': 'weather_id' },
+          },
         },
         ...modules.map(({ id }) => ({
           id: id,

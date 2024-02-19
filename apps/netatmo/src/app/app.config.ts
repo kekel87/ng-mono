@@ -17,6 +17,8 @@ import { HomeEffects } from './shared/stores/home/home.effects';
 import { homeFeature } from './shared/stores/home/home.reducer';
 import { MeasureEffects } from './shared/stores/measure/measure.effects';
 import { measureFeature } from './shared/stores/measure/measure.reducer';
+import { WeatherEffects } from './shared/stores/weather/weather.effects';
+import { weatherFeature } from './shared/stores/weather/weather.reducer';
 
 export const appConfig: (runtimeConfig: RuntimeConfig) => ApplicationConfig = (runtimeConfig: RuntimeConfig) => ({
   providers: [
@@ -36,12 +38,13 @@ export const appConfig: (runtimeConfig: RuntimeConfig) => ApplicationConfig = (r
         [homeFeature.name]: homeFeature.reducer,
         [filterFeature.name]: filterFeature.reducer,
         [measureFeature.name]: measureFeature.reducer,
+        [weatherFeature.name]: weatherFeature.reducer,
       },
       { runtimeChecks: runtimeConfig.ngrx.runtimeChecks }
     ),
     provideStoreDevtools(runtimeConfig.ngrx.devtoolsOptions),
     provideRouterStore(),
-    provideEffects(HomeEffects, FilterEffects, MeasureEffects),
+    provideEffects(HomeEffects, FilterEffects, MeasureEffects, WeatherEffects),
     provideOAuthClient({
       resourceServer: {
         allowedUrls: ['https://api.netatmo.com/api'],
