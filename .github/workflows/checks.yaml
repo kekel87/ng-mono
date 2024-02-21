@@ -84,12 +84,7 @@ jobs:
         with:
           pull_cache_only: 'true'
       - run: npx nx affected --target=runtime-config
-      - uses: actions/cache@v3
-        with:
-          path: .cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
+      - run: npx playwright install --with-deps
       - run: npx nx affected --target=e2e --parallel=1
 
   build:
