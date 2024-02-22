@@ -4,7 +4,7 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 export function playwrightAngularPreset(project: string, url: string): PlaywrightTestConfig {
   return {
-    ...nxE2EPreset(__filename, { testDir: './e2e' }),
+    ...nxE2EPreset(__filename, { testDir: './src' }),
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   projects: [{ name: 'chromium', use: devices['Desktop Chrome'] }],
   workers: process.env.CI ? 2 : undefined,

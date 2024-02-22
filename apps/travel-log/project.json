@@ -77,14 +77,6 @@
         "cacheStrategy": "content"
       }
     },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "apps/travel-log/jest.config.ts",
-        "cacheDirectory": "../../.cache/jest/netatmo"
-      }
-    },
     "runtime-config": {
       "command": "echo $RUNTIME_CONFIG_TRAVEL_JSON | base64 -d > apps/travel-log/src/assets/runtime-config.json"
     },
