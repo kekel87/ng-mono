@@ -1,5 +1,13 @@
 # Changelog
 
+## [2023.3.1](https://github.com/kekel87/ng-mono/compare/v2023.3.0...v2023.3.1) (2024-02-22)
+
+
+### ⚙️ Global
+
+* ⬆️ update repo and dependencies ([#43](https://github.com/kekel87/ng-mono/issues/43)) ([6d4f8b9](https://github.com/kekel87/ng-mono/commit/6d4f8b9b481a950e1c67557969add7bd5408a35e))
+* ⬆️ update repo and dependencies ([#45](https://github.com/kekel87/ng-mono/issues/45)) ([65884a5](https://github.com/kekel87/ng-mono/commit/65884a5d1edb1fa83987fec1e3c92da050d68926))
+
 ## [2023.3.0](https://github.com/kekel87/ng-mono/compare/v2023.2.0...v2023.3.0) (2023-12-20)
 
 
