@@ -38,9 +38,9 @@ describe('ToolbarComponent', () => {
   });
 
   it('should set display config', () => {
-    expect(ngMocks.formatText(ngMocks.find('h1'))).toBe(config.title);
+    expect('h1').toHaveText(config.title);
     expect(ngMocks.findAll('button').length).toBe(3);
-    expect(ngMocks.formatText(ngMocks.find('mat-toolbar > mat-icon'))).toEqual('empty');
+    expect('mat-toolbar > mat-icon').toHaveText('empty');
     expect(ngMocks.find('button:nth-of-type(3)').attributes['style']).toEqual('color: blue;');
     expect(ngMocks.find('mat-toolbar > mat-icon').attributes['style']).toEqual('color: red;');
   });

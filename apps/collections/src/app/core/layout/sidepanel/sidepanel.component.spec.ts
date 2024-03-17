@@ -53,8 +53,8 @@ describe('SidePanelComponent', () => {
 
   it('should display user', () => {
     expect(ngMocks.find('img').properties['src']).toEqual(mockUser.user_metadata['avatar_url']);
-    expect(ngMocks.formatText(ngMocks.find('.name'))).toEqual(mockUser.user_metadata['name']);
-    expect(ngMocks.formatText(ngMocks.find('.email'))).toEqual(mockUser.email);
+    expect('.name').toHaveText(mockUser.user_metadata['name']);
+    expect('.email').toHaveText(mockUser.email);
   });
 
   it('should nav list links', () => {

@@ -120,8 +120,8 @@ describe('ListComponent', () => {
     it('should display a list item', () => {
       expect(ngMocks.findInstance('li', RouterLink).routerLink).toEqual([MockCollection.game1.id]);
       expect(ngMocks.input('li img', 'colImg')).toEqual(MockCollection.game1.cover);
-      expect(ngMocks.formatText(ngMocks.find('li h3'))).toContain(MockCollection.game1.title);
-      expect(ngMocks.formatText(ngMocks.find('li:nth-of-type(1) p'))).toContain(MockCollection.gameBoys.name);
+      expect('li h3').toHaveText(MockCollection.game1.title);
+      expect('li:nth-of-type(1) p').toHaveText(MockCollection.gameBoys.name);
       expect(ngMocks.findInstance('li mat-checkbox', MatCheckbox).checked).toBe(MockCollection.game1.acquired);
     });
 
