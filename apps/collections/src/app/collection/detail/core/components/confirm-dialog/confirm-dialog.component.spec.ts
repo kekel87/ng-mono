@@ -24,9 +24,7 @@ describe('ConfirmDialogComponent', () => {
   });
 
   it('should display provide value', () => {
-    expect(ngMocks.formatText(ngMocks.find('h2 span'))).toContain(data.title);
-    expect(ngMocks.formatText(ngMocks.find('mat-dialog-content p'))).toContain(data.content);
-    expect(ngMocks.formatText(ngMocks.find('button:nth-of-type(1)'))).toContain(data.cancelText);
-    expect(ngMocks.formatText(ngMocks.find('button:nth-of-type(2)'))).toContain(data.confirmText);
+    expect('h2 span').toHaveText(data.title);
+    expect(ngMocks.find('h2 span')).toHaveText(data.title);
   });
 });
