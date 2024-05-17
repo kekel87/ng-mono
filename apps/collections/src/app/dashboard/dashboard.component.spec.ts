@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
+import { MockBuilder, MockRender, MockedComponentFixture } from 'ng-mocks';
 import { of } from 'rxjs';
 
 import { MockCounter } from '~tests/mocks/counter';
@@ -21,6 +21,6 @@ describe('DashboardComponent', () => {
   });
 
   it('should display number of items', () => {
-    expect(ngMocks.findAll('mat-card-subtitle').map((el) => ngMocks.formatText(el))).toEqual(['2', '4', '6', '1']);
+    expect('mat-card-subtitle').toHaveAllText(['2', '4', '6', '1']);
   });
 });

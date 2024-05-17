@@ -34,7 +34,7 @@ describe('TomeDialogComponent', () => {
   });
 
   it('should have title', () => {
-    expect(ngMocks.formatText(ngMocks.find('h2'))).toContain('Tome - Title');
+    expect('h2').toHaveText('Tome - Title');
   });
 
   it('should have image selector component', () => {

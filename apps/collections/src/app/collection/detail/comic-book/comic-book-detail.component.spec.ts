@@ -230,7 +230,7 @@ describe('ComicBookDetailComponent', () => {
         dialog.open.mockReturnValue(dialogRef);
 
         expect(ngMocks.findAll('.tomes img').length).toBe(2);
-        expect(ngMocks.findAll('.tomes span').map((el) => ngMocks.formatText(el))).toEqual([]);
+        expect('.tomes span').toHaveAllText([]);
 
         ngMocks.click('.tomes div button:nth-of-type(2)');
         fixture.detectChanges();
@@ -240,7 +240,7 @@ describe('ComicBookDetailComponent', () => {
           data: { start: 3 },
         });
         expect(ngMocks.findAll('.tomes img').length).toBe(5);
-        expect(ngMocks.findAll('.tomes span').map((el) => ngMocks.formatText(el))).toEqual(['5', '4', '3']);
+        expect('.tomes span').toHaveAllText(['5', '4', '3']);
       });
 
       it('should cancel add many tome', () => {
@@ -256,7 +256,7 @@ describe('ComicBookDetailComponent', () => {
       });
 
       it('should hide tome if isOneShot', () => {
-        expect(ngMocks.formatText(ngMocks.find('.comment h3'))).toContain('Tomes :');
+        expect('.comment h3').toHaveText('Tomes :');
         expect(ngMocks.findAll('.tomes img').length).toBe(2);
 
         ngMocks.output('.comment mat-checkbox', 'change').emit({ checked: true });
@@ -337,7 +337,7 @@ describe('ComicBookDetailComponent', () => {
           width: '300px',
           data: { start: 1 },
         });
-        expect(ngMocks.findAll('.tomes span').map((el) => ngMocks.formatText(el))).toEqual(['5', '4', '3', '2', '1']);
+        expect('.tomes span').toHaveAllText(['5', '4', '3', '2', '1']);
       });
     });
   });

@@ -23,7 +23,7 @@ describe('CreateTomesDialogComponent', () => {
   });
 
   it('should display title', () => {
-    expect(ngMocks.formatText(ngMocks.find('h2'))).toContain('Ajouter plusieurs tomes');
+    expect('h2').toHaveText('Ajouter plusieurs tomes');
   });
 
   it('should display init range', () => {
@@ -40,7 +40,7 @@ describe('CreateTomesDialogComponent', () => {
     ngMocks.change('[formControlName="from"]', '0');
     fixture.detectChanges();
 
-    expect(ngMocks.formatText(ngMocks.find('mat-error'))).toContain('Saisie invalide');
+    expect('mat-error').toHaveText('Saisie invalide');
     expect(ngMocks.findInstance('mat-dialog-actions button:nth-of-type(2)', MatButton).disabled).toBe(true);
   });
 
@@ -48,7 +48,7 @@ describe('CreateTomesDialogComponent', () => {
     ngMocks.change('[formControlName="from"]', '3');
     fixture.detectChanges();
 
-    expect(ngMocks.formatText(ngMocks.find('mat-error'))).toContain('Saisie invalide');
+    expect('mat-error').toHaveText('Saisie invalide');
     expect(ngMocks.findInstance('mat-dialog-actions button:nth-of-type(2)', MatButton).disabled).toBe(true);
   });
 });

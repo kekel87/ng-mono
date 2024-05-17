@@ -104,7 +104,7 @@ describe('ImageSelectorComponent', () => {
 
       flush();
 
-      expect(ngMocks.formatText(ngMocks.find('mat-error'))).toEqual(`Error durant l'upload`);
+      expect('mat-error').toHaveText(`Error durant l'upload`);
       expect(ngMocks.find('img', null)).toBeNull();
     });
   });
