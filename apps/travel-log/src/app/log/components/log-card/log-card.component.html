@@ -1,0 +1,49 @@
+<mat-card>
+  @if (entries().length === 1) {
+    <log-header [log]="log()" />
+  } @else {
+    <mat-expansion-panel class="mat-elevation-z0">
+      <mat-expansion-panel-header>
+        <log-header [log]="log()" />
+      </mat-expansion-panel-header>
+
+      <ng-template matExpansionPanelContent>
+        <mat-card-content>
+          <mat-list>
+            @for (entry of entries(); track entry.id) {
+              <log-entry [entry]="entry" />
+            }
+          </mat-list>
+        </mat-card-content>
+      </ng-template>
+
+      <mat-divider />
+    </mat-expansion-panel>
+  }
+
+  <mat-card-actions>
+    <mat-chip-listbox>
+      @for (tag of log().tags; track tag) {
+        <mat-chip-option>{{ tag }}</mat-chip-option>
+      }
+    </mat-chip-listbox>
+
+    <span class="spacer"></span>
+
+    <button mat-icon-button>
+      <mat-icon>visibility</mat-icon>
+    </button>
+
+    <button mat-icon-button (click)="fit()">
+      <mat-icon>crop_free</mat-icon>
+    </button>
+
+    <button mat-icon-button>
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-card-actions>
+
+  <mat-card-footer>
+    <!--    <mat-progress-bar *ngIf="log.load !== RequestState.Success" mode="indeterminate"></mat-progress-bar>-->
+  </mat-card-footer>
+</mat-card>

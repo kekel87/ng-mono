@@ -3,7 +3,7 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/util/shared/src",
   "prefix": "",
-  "tags": [],
+  "tags": ["type:lib", "lib:ui", "scope:shared"],
   "projectType": "library",
   "targets": {
     "lint": {

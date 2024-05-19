@@ -1,0 +1,66 @@
+@use '@angular/material' as mat;
+@import 'variables';
+
+:host {
+  display: block;
+  height: 100%;
+
+  padding: 16px;
+
+  box-sizing: border-box;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.tiles {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+}
+
+.tile {
+  flex: 1 1 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  border-color: mat.get-color-from-palette($palette-primary, lighter);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+}
+
+mat-list {
+  flex: 1;
+  margin-top: 16px;
+}
+
+log-entry:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+svg {
+  overflow: visible;
+
+  ::ng-deep path {
+    stroke-width: 2px;
+    stroke: black;
+    fill: #fff;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: end;
+  gap: 16px;
+}

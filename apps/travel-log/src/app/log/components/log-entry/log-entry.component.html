@@ -1,0 +1,23 @@
+<mat-list-item role="listitem">
+  <svg matListItemIcon [logFromGeoJson]="entry().geoJson" [size]="30"></svg>
+  <div matListItemTitle>{{ entry().name }}</div>
+  <div matListItemLine class="metrics">
+    @if (entry().distance) {
+      <mat-icon>start</mat-icon>
+      {{ entry().distance! / 1000 | number: '1.0-1' }} km
+    }
+
+    <mat-icon>speed</mat-icon>
+    {{ entry().averageMovingSpeed | number: '1.0-1' }} km/h
+
+    <mat-icon>landscape</mat-icon>
+    {{ entry().elevationGain | number: '1.0-0' }} m
+
+    <mat-icon>device_thermostat</mat-icon>
+    {{ entry().averageTemperature | number: '1.0-0' }} °C
+  </div>
+
+  <button matListItemMeta mat-icon-button type="button" (click)="delete.emit()">
+    <mat-icon>delete</mat-icon>
+  </button>
+</mat-list-item>

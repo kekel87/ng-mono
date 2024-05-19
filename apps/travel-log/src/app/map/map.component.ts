@@ -8,9 +8,8 @@ import { Map, TileLayer, GeoJSON, LatLngBounds } from 'leaflet';
 import { interval } from 'rxjs';
 import { map, takeUntil, switchMap } from 'rxjs/operators';
 
+import { mapActions } from './store/map.actions';
 import { layoutActions } from '../layout/store/layout.actions';
-import { logEntryObjectFeature } from '../shared/stores/log-entry-object/log-entry-object.feature';
-import { mapActions } from '../shared/stores/map/map.actions';
 
 function bboxToLatLngBounds([c2, c1, c4, c3]: BBox): LatLngBounds {
   return new LatLngBounds([c1, c2], [c3, c4]);
@@ -79,9 +78,9 @@ export class MapComponent implements OnInit {
 
     // gpx.addTo(this.map);
 
-    this.store.select(logEntryObjectFeature.selectGeoJsonDisplayed).subscribe((logEntries) => {
-      this.geoJsonLayer.clearLayers();
-      this.geoJsonLayer.addData(logEntries.map(({ geoJson }) => geoJson));
-    });
+    // this.store.select(logEntryObjectFeature.selectGeoJsonDisplayed).subscribe((logEntries) => {
+    //   this.geoJsonLayer.clearLayers();
+    //   this.geoJsonLayer.addData(logEntries.map(({ geoJson }) => geoJson));
+    // });
   }
 }

@@ -1,0 +1,7 @@
+<label for="file">Déposer vos fichier(s) ici ou cliquer pour les sélectionner.</label>
+
+<mat-icon>cloud_upload</mat-icon>
+
+<span class="accepted-files">Fichier acceptés : {{ accept().join(', ') }} </span>
+
+<input id="file" type="file" [attr.accept]="accept().join()" [attr.multiple]="multiple" />

@@ -1,0 +1,16 @@
+<!--<div>Search</div>-->
+
+<div class="list">
+  @for (log of logs$ | async; track log.id) {
+    <log-card [log]="log" [entries]="[]" />
+  } @empty {
+    <p>Vous n'avez pas encore de voyage. Cliquer sur le bouton en bas pour en ajouter.</p>
+  }
+</div>
+
+<div class="action">
+  <button mat-button routerLink="new">
+    <mat-icon>add</mat-icon>
+    Ajouter un voyage ou une sortie
+  </button>
+</div>

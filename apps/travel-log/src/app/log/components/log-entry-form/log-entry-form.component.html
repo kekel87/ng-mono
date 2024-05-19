@@ -1,0 +1,21 @@
+<form [formGroup]="formGroup">
+  <mat-form-field>
+    <mat-label>Titre</mat-label>
+    <input matInput placeholder="Titre" formControlName="title" />
+  </mat-form-field>
+
+  <div class="dropzone">
+    <label for="file">
+      <mat-icon>add</mat-icon>
+      <p>Cliquer ou déposer un nouveau GPX</p>
+      <input id="file" type="file" accept=".gpx" (change)="onFileSelected($event)" />
+    </label>
+  </div>
+
+  @for (entry of formGroup.controls.entries.controls; track entry) {
+    <mat-form-field>
+      <mat-label>Titre</mat-label>
+      <input matInput placeholder="Titre" [formControl]="entry" />
+    </mat-form-field>
+  }
+</form>

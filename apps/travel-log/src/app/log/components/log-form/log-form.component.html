@@ -1,0 +1,41 @@
+<form [formGroup]="formGroup" (ngSubmit)="submit()">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="Titre" formControlName="name" />
+  </mat-form-field>
+
+  <div class="tiles">
+    @if (formGroup.value.geoJson) {
+      <div class="tile">
+        <svg [logFromGeoJson]="formGroup.value.geoJson" />
+      </div>
+    }
+
+    @if (formGroup.value.distance) {
+      <div class="tile">
+        <mat-icon>start</mat-icon>
+        {{ formGroup.value.distance! / 1000 | number: '1.0-1' }} km
+      </div>
+    }
+
+    @if (formGroup.value.elevationGain) {
+      <div class="tile">
+        <mat-icon>landscape</mat-icon>
+        {{ formGroup.value.elevationGain | number: '1.0-0' }} m
+      </div>
+    }
+  </div>
+
+  <dropzone [accept]="['gpx']" multiple formControlName="files" />
+
+  <mat-list cdkDropList (cdkDropListDropped)="drop($event)">
+    @for (entry of formGroup.controls.entries.controls; track entry) {
+      <log-entry cdkDrag [entry]="entry.value" (delete)="removeEntry($index)" />
+    }
+  </mat-list>
+
+  <div class="actions">
+    <button type="button" mat-flat-button routerLink="/">Annuler</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="formGroup.invalid">Sauvegarder</button>
+  </div>
+</form>

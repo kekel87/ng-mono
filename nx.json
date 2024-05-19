@@ -28,7 +28,9 @@
         "{workspaceRoot}/jest.config.angular.ts",
         "{workspaceRoot}/jest.preset.js",
         "{projectRoot}/jest.config.ts",
-        { "externalDependencies": ["jest"] }
+        {
+          "externalDependencies": ["jest"]
+        }
       ],
       "cache": true
     },
@@ -52,7 +54,9 @@
         "{workspaceRoot}/.prettierignore",
         "{workspaceRoot}/.prettierrc",
         "{projectRoot}/.eslintrc.json",
-        { "externalDependencies": ["eslint"] }
+        {
+          "externalDependencies": ["eslint"]
+        }
       ],
       "cache": true
     }

@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ng-mono/shared/ui": ["libs/shared/ui/shared/src/index.ts"],
       "@ng-mono/shared/utils": ["libs/shared/util/shared/src/index.ts"]
     }
   },

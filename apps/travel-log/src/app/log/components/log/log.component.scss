@@ -1,0 +1,9 @@
+svg {
+  overflow: visible;
+
+  ::ng-deep path {
+    stroke-width: 2px;
+    stroke: black;
+    fill: #fff;
+  }
+}
