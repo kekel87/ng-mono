@@ -2,7 +2,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import bbox from '@turf/bbox';
 
-import { RequestState } from '@ng-mono/shared';
+import { RequestState } from '@ng-mono/shared/utils';
 
 import { logObjectActions } from './log-object.actions';
 import { LogObject } from '../../models/log-object';

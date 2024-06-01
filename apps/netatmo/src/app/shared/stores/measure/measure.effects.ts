@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { isoStringToUnixTimestamp } from '@ng-mono/shared';
+import { isoStringToUnixTimestamp } from '@ng-mono/shared/utils';
 
 import { measureActions } from './measure.actions';
 import { Measure } from '../../api/models/measure';

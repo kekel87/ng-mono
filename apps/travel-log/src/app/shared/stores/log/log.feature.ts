@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
-import { RequestState } from '@ng-mono/shared';
+import { RequestState } from '@ng-mono/shared/utils';
 
 import { logActions } from './log.actions';
 

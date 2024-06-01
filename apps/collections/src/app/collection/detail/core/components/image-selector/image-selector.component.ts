@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { OperatorFunction, of, pipe } from 'rxjs';
 import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 
-import { hasValue, RequestState } from '@ng-mono/shared';
+import { hasValue, RequestState } from '@ng-mono/shared/utils';
 import { LoaderComponent } from '~shared/components/loader/loader.component';
 import { ImageDowloaderDirective } from '~shared/directives/image-downloader/image-downloader.directive';
 import { ImageService } from '~shared/services/image.service';

@@ -23,8 +23,7 @@
             "prefix": "log",
             "style": "kebab-case"
           }
-        ],
-        "@typescript-eslint/naming-convention": 0
+        ]
       }
     }
   ]

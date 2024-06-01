@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 
 import 'leaflet-gpx';
 
-import { RequestState } from '@ng-mono/shared';
+import { RequestState } from '@ng-mono/shared/utils';
 
 import { FromGeoJsonDirective } from '../shared/directive/from-geojson.directive';
 import { LogObject } from '../shared/models/log-object';

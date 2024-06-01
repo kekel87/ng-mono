@@ -7,7 +7,7 @@ import { first, tap } from 'rxjs/operators';
 import { authActions } from './auth.actions';
 import { authFeature } from './auth.feature';
 
-export const canActivate: CanActivateFn = (_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> => {
+export const canActivate: CanActivateFn = (_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> => {
   const store = inject(Store);
   return store.select(authFeature.selectIsLoggedIn).pipe(
     first(),

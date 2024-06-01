@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface User {
   email?: string;
-  langage?: string;
+  language?: string;
   locale?: string;
   feel_like_algorithm?: number;
   unit_pressure?: number;
@@ -8,3 +9,4 @@ export interface User {
   unit_wind?: number;
   id?: string;
 }
+/* eslint-enable @typescript-eslint/naming-convention */

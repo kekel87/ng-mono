@@ -6,7 +6,7 @@ import 'leaflet-gpx';
 import { FeatureCollection, Geometry } from 'geojson';
 import { GPX } from 'leaflet';
 
-import { RequestState } from '@ng-mono/shared';
+import { RequestState } from '@ng-mono/shared/utils';
 
 import { logEntryObjectActions } from './log-entry-object.actions';
 import { LogEntryObject } from '../../models/log-entry-object';

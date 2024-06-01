@@ -26,7 +26,7 @@ export class CollectionsEffects {
         mergeMap(({ collection }) =>
           this.supabaseService.onChange<Item>(collection).pipe(
             map((items: Item[]) => collectionsActions.dataChange({ collection, items })),
-            catchError((_: unknown) => of(collectionsActions.error({ collection })))
+            catchError(() => of(collectionsActions.error({ collection })))
           )
         )
       );
@@ -50,7 +50,7 @@ export class CollectionsEffects {
         switchMap(({ collection, item }) =>
           this.supabaseService.save<Item>(collection, item).pipe(
             map(() => collectionsActions.saveSuccess({ collection })),
-            catchError((_: unknown) => of(collectionsActions.error({ collection })))
+            catchError(() => of(collectionsActions.error({ collection })))
           )
         )
       );
@@ -65,7 +65,7 @@ export class CollectionsEffects {
         concatMap(({ collection, id }) =>
           this.supabaseService.delete(collection, id).pipe(
             map(() => collectionsActions.deleteSuccess({ collection })),
-            catchError((_: unknown) => of(collectionsActions.error({ collection })))
+            catchError(() => of(collectionsActions.error({ collection })))
           )
         )
       );

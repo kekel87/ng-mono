@@ -26,7 +26,7 @@ export class LayoutEffects {
     return this.actions$.pipe(
       ofType(ROUTER_NAVIGATED),
       concatLatestFrom(() => this.store.select(layoutFeature.selectShowSearchBar)),
-      filter(([_, show]: [RouterEvent, boolean]) => show),
+      filter(([_action, show]: [RouterEvent, boolean]) => show),
       map(() => layoutActions.closeSearchBar())
     );
   });

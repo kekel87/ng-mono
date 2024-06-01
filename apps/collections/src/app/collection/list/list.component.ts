@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { delay, filter, first, switchMap } from 'rxjs/operators';
 
-import { hasValue } from '@ng-mono/shared';
+import { hasValue } from '@ng-mono/shared/utils';
 import { layoutActions } from '~app/core/layout/layout.actions';
 import { layoutFeature } from '~app/core/layout/layout.feature';
 import { routerActions } from '~app/core/router/router.actions';
@@ -96,5 +96,5 @@ export class ListComponent implements OnInit, AfterViewInit {
     this.store.dispatch(collectionListActions.saveScrollIndex({ scrollIndex }));
   }
 
-  titleTrackFn = (_: number, item: ItemToDisplay) => item.title;
+  titleTrackFn = (_index: number, item: ItemToDisplay) => item.title;
 }

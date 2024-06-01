@@ -7,12 +7,12 @@ export const collectionsActions = createActionGroup({
   source: 'Collection',
   events: {
     init: props<{ collection: Collection }>(),
-    'Init success': props<{ collection: Collection }>(),
-    'Data change': props<{ collection: Collection; items: Item[] }>(),
+    initSuccess: props<{ collection: Collection }>(),
+    dataChange: props<{ collection: Collection; items: Item[] }>(),
     save: props<{ collection: Collection; item: Partial<Item> | Item }>(),
-    'Save success': props<{ collection: Collection }>(),
+    saveSuccess: props<{ collection: Collection }>(),
     delete: props<{ collection: Collection; id: string }>(),
-    'Delete Success': props<{ collection: Collection }>(),
+    deleteSuccess: props<{ collection: Collection }>(),
     error: props<{ collection: Collection }>(),
   },
 });

@@ -1,6 +1,6 @@
 import { Dictionary } from '@ngrx/entity';
 
-import { toPredicate } from '@ng-mono/shared';
+import { toPredicate } from '@ng-mono/shared/utils';
 import { Collection } from '~shared/enums/collection';
 import { Console } from '~shared/models/console';
 import { Game } from '~shared/models/game';

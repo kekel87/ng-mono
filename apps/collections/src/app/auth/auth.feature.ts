@@ -22,7 +22,7 @@ export const authFeature = createFeature({
     on(authActions.findUserSuccess, (state, { user }): State => ({ ...state, user, loading: false })),
     on(
       authActions.notAuthenticated,
-      (_, { redirectUrl }): State => ({
+      (_state, { redirectUrl }): State => ({
         ...initialState,
         redirectUrl: redirectUrl || '/',
         loading: false,

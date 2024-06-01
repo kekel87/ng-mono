@@ -14,7 +14,7 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
-import { original } from '@ng-mono/shared';
+import { original } from '@ng-mono/shared/utils';
 import { authActions } from '~app/auth/auth.actions';
 import { authFeature } from '~app/auth/auth.feature';
 import { User } from '~app/auth/user.model';

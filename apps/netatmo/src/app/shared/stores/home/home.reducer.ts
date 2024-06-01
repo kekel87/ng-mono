@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { createFeature, createReducer, on, createSelector } from '@ngrx/store';
 
-import { RequestState } from '@ng-mono/shared';
+import { RequestState } from '@ng-mono/shared/utils';
 
 import { homeActions } from './home.actions';
 import { Home } from '../../api/models/home';

@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 
-import { original } from '@ng-mono/shared';
+import { original } from '@ng-mono/shared/utils';
 import { metas } from '~shared/consts/metas';
 
 @Component({

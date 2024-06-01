@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, concatMap, filter, first, map, switchMap } from 'rxjs/operators';
 
-import { hasValue, isRecord } from '@ng-mono/shared';
+import { hasValue, isRecord } from '@ng-mono/shared/utils';
 import { routerActions } from '~app/core/router/router.actions';
 
 import { authActions } from './auth.actions';
@@ -45,7 +45,7 @@ export class AuthEffects {
         switchMap(({ email, password }) =>
           this.authService.signInWithEmailAndPassword(email, password).pipe(
             map(({ error }) => (error ? authActions.error({ error: error.message }) : authActions.loginSuccess())),
-            catchError((_: unknown) => of(authActions.error({})))
+            catchError(() => of(authActions.error({})))
           )
         )
       );
@@ -82,7 +82,7 @@ export class AuthEffects {
         switchMap(() =>
           this.authService.signOut().pipe(
             map(() => authActions.notAuthenticated({})),
-            catchError((_: unknown) => of(authActions.error({})))
+            catchError(() => of(authActions.error({})))
           )
         )
       );

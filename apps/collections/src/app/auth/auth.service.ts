@@ -19,7 +19,7 @@ export class AuthService {
     this.supabase.client.auth.getUser().then(({ data, error }) => {
       this._user$.next(data && data.user && !error ? data.user : null);
 
-      this.supabase.client.auth.onAuthStateChange((_, session) => {
+      this.supabase.client.auth.onAuthStateChange((_authChangeEvent, session) => {
         this._user$.next(session?.user ?? null);
         this._error$.next(error);
       });

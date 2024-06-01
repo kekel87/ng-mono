@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import * as MockImage from '~tests/mocks/images';
 import { MockRuntimeConfig } from '~tests/mocks/runtime-config';
 

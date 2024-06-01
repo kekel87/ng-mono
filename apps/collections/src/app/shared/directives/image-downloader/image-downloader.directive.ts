@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 
-import { hasValue, isEmpty } from '@ng-mono/shared';
+import { hasValue, isEmpty } from '@ng-mono/shared/utils';
 import { SupabaseService } from '~shared/services/supabase.service';
 
 @Directive({

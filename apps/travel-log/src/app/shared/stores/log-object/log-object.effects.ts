@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { from } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import { RequestState, hasValue, merge } from '@ng-mono/shared';
+import { RequestState, hasValue, merge } from '@ng-mono/shared/utils';
 
 import { logObjectActions } from './log-object.actions';
 import { logEntryObjectActions } from '../log-entry-object/log-entry-object.actions';

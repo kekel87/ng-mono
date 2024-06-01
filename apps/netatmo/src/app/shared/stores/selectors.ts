@@ -1,7 +1,7 @@
 import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 
-import { isEmpty, getElementAt } from '@ng-mono/shared';
+import { isEmpty, getElementAt } from '@ng-mono/shared/utils';
 
 import { filterFeature } from './filter/filter.reducer';
 import { homeFeature } from './home/home.reducer';

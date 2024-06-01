@@ -3,7 +3,7 @@ import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-moc
 import { of } from 'rxjs';
 
 import { ImageService } from '~shared/services/image.service';
-import * as MockImage from '~tests/mocks/images';
+import * as mockImage from '~tests/mocks/images';
 
 import { ImageFinderDialogComponent } from './images-finder-dialog.component';
 
@@ -13,7 +13,7 @@ describe('ImageFinderDialogComponent', () => {
   const searchTerm = ['seach', 'term'];
 
   beforeEach(async () => {
-    imageService.findGoogleImages.mockReturnValue(of(MockImage.images));
+    imageService.findGoogleImages.mockReturnValue(of(mockImage.images));
 
     await MockBuilder(ImageFinderDialogComponent)
       .provide({ provide: MAT_DIALOG_DATA, useValue: searchTerm })

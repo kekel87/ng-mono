@@ -5,12 +5,12 @@ import { SnackbarOptions, ToolbarConfig } from './layout.models';
 export const layoutActions = createActionGroup({
   source: 'Layout',
   events: {
-    'Open search bar': emptyProps(),
-    'Close search bar': emptyProps(),
+    openSearchBar: emptyProps(),
+    closeSearchBar: emptyProps(),
     search: props<{ search: string }>(),
-    'Toggle Sidenav': emptyProps(),
-    'Open snackbar': props<{ options: SnackbarOptions }>(),
-    'Set toolbar': props<{ toolbarConfig: ToolbarConfig }>(),
-    'Reset toolbar': emptyProps(),
+    toggleSidenav: emptyProps(),
+    openSnackbar: props<{ options: SnackbarOptions }>(),
+    setToolbar: props<{ toolbarConfig: ToolbarConfig }>(),
+    resetToolbar: emptyProps(),
   },
 });

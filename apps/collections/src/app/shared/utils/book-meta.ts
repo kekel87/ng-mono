@@ -1,6 +1,6 @@
 import { Dictionary } from '@ngrx/entity';
 
-import { toPredicate } from '@ng-mono/shared';
+import { toPredicate } from '@ng-mono/shared/utils';
 import { BookType } from '~shared/enums/book-type';
 import { Book } from '~shared/models/book';
 import { Item } from '~shared/models/item';

@@ -1,4 +1,4 @@
-import { RequestState } from '@ng-mono/shared';
+import { RequestState } from '@ng-mono/shared/utils';
 
 import { Log } from './log';
 
