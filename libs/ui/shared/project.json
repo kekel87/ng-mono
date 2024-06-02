@@ -1,0 +1,19 @@
+{
+  "name": "shared-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/shared/src",
+  "prefix": "",
+  "projectType": "library",
+  "tags": ["type:lib", "lib:ui", "scope:shared"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "cache": true,
+        "cacheLocation": ".cache/eslint",
+        "cacheStrategy": "content"
+      }
+    }
+  }
+}

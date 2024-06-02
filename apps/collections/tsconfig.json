@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.angular.json",
   "compilerOptions": {
     "paths": {
-      "@ng-mono/shared/utils": ["libs/shared/util/shared/src/index.ts"],
+      "@ng-mono/shared/ui": ["libs/shared/ui/shared/src/index.ts"],
+      "@ng-mono/shared/utils": ["libs/util/shared/src/index.ts"],
       "~shared/*": ["apps/collections/src/app/shared/*"],
       "~app/*": ["apps/collections/src/app/*"],
       "~tests/*": ["apps/collections/src/tests/*"]
