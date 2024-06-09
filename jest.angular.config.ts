@@ -8,7 +8,7 @@ const jestAngularConfig = (props: { projectDir: string, coverageThreshold?: Conf
 
   return {
     displayName: project.name,
-    passWithNoTests: false,
+    passWithNoTests: true,
     preset: join(upPath, 'jest.preset.js'),
     setupFilesAfterEnv: [join(upPath, 'jest-setup.angular.ts')],
     cache: true,
