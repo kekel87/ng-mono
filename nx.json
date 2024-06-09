@@ -5,12 +5,9 @@
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
-      "!{projectRoot}/eslint.config.js",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/test-setup.[jt]s"
+      "!{projectRoot}/jest.config.[jt]s"
     ],
     "sharedGlobals": ["{workspaceRoot}/tsconfig.angular.json"]
   },
@@ -27,10 +24,7 @@
         "{workspaceRoot}/jest-setup.angular.ts",
         "{workspaceRoot}/jest.config.angular.ts",
         "{workspaceRoot}/jest.preset.js",
-        "{projectRoot}/jest.config.ts",
-        {
-          "externalDependencies": ["jest"]
-        }
+        { "externalDependencies": ["jest"]  }
       ],
       "cache": true
     },
@@ -54,9 +48,7 @@
         "{workspaceRoot}/.prettierignore",
         "{workspaceRoot}/.prettierrc",
         "{projectRoot}/.eslintrc.json",
-        {
-          "externalDependencies": ["eslint"]
-        }
+        { "externalDependencies": ["eslint"] }
       ],
       "cache": true
     }
