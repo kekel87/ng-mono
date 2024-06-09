@@ -88,5 +88,10 @@
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.2",
     "typescript": "5.4.5"
+  },
+  "overrides": {
+    "@supabase/supabase-js": {
+      "@supabase/auth-js": "2.61.0"
+    }
   }
 }
