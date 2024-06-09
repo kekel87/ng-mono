@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 
-import { authActions } from '~app/auth/auth.actions';
+import { authActions } from '@ng-mono/auth';
 import { initializeAppFactory } from '~app/core/initialize-app-factory';
 
 describe('initializeAppFactory', () => {
@@ -21,6 +21,6 @@ describe('initializeAppFactory', () => {
     store.select.mockReturnValue(cold('-a--b-', { a: true, b: false }));
 
     expect(initializeAppFn()).toBeObservable(cold('----(a|)-', { a: false }));
-    expect(store.dispatch).toHaveBeenCalledWith(authActions.findUser());
+    expect(store.dispatch).toHaveBeenCalledWith(authActions.init());
   });
 });

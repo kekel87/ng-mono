@@ -1,6 +1,6 @@
 <div class="content" [ngSwitch]="uploadState">
   <div *ngSwitchCase="RequestState.Loading" class="upload">
-    <col-loader [diameter]="80"></col-loader>
+    <full-page-loader [diameter]="80"></full-page-loader>
     <mat-icon>cloud_upload</mat-icon>
   </div>
   <mat-error *ngSwitchCase="RequestState.Error">Error durant l'upload</mat-error>

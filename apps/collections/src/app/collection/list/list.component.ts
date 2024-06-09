@@ -7,10 +7,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { delay, filter, first, switchMap } from 'rxjs/operators';
 
-import { hasValue } from '@ng-mono/shared/utils';
+import { hasValue, routerActions } from '@ng-mono/shared/utils';
 import { layoutActions } from '~app/core/layout/layout.actions';
 import { layoutFeature } from '~app/core/layout/layout.feature';
-import { routerActions } from '~app/core/router/router.actions';
 import { metas } from '~shared/consts/metas';
 import { ImageDowloaderDirective } from '~shared/directives/image-downloader/image-downloader.directive';
 import { Collection } from '~shared/enums/collection';

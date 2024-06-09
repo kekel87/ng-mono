@@ -4,13 +4,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 
-import { LoaderComponent } from '~shared/components/loader/loader.component';
+import { FullPageLoaderComponent } from '@ng-mono/shared/ui';
 import { GoogleImage } from '~shared/models/google-image';
 import { ImageService } from '~shared/services/image.service';
 
 @Component({
   standalone: true,
-  imports: [NgIf, NgForOf, MatDialogModule, MatButtonModule, MatInputModule, LoaderComponent],
+  imports: [NgIf, NgForOf, MatDialogModule, MatButtonModule, MatInputModule, FullPageLoaderComponent],
   selector: 'col-images-finder-dialog',
   templateUrl: './images-finder-dialog.component.html',
   styleUrls: ['./images-finder-dialog.component.scss'],

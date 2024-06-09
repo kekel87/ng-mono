@@ -2,8 +2,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
-import { authActions } from '~app/auth/auth.actions';
-import { authFeature } from '~app/auth/auth.feature';
+import { authActions, authFeature } from '@ng-mono/auth';
 
 /**
  * initializeAppFactory is a "Resolver".
@@ -14,7 +13,7 @@ import { authFeature } from '~app/auth/auth.feature';
  */
 export function initializeAppFactory(store: Store): () => Observable<boolean> {
   return () => {
-    store.dispatch(authActions.findUser());
+    store.dispatch(authActions.init());
 
     return store.select(authFeature.selectLoading).pipe(
       filter((loading) => loading === false),

@@ -1,4 +1,4 @@
-import { User } from '~app/auth/user.model';
+import { User } from '../../src/lib/auth/models/user';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export const mockUser: User = {

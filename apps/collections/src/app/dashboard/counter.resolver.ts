@@ -4,10 +4,10 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Collection } from '~shared/enums/collection';
-import { SupabaseService } from '~shared/services/supabase.service';
+import { SupabaseHelperService } from '~shared/services/supabase-helper.service';
 
 export const counterResolver: ResolveFn<Partial<Record<Collection, number>>> = () => {
-  const supabaseService = inject(SupabaseService);
+  const supabaseService = inject(SupabaseHelperService);
 
   return forkJoin([
     supabaseService.count(Collection.Amiibos),

@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Choisir une image</h2>
 
 <mat-dialog-content>
-  <col-loader *ngIf="loading"></col-loader>
+  <full-page-loader *ngIf="loading"></full-page-loader>
 
   <ul>
     <li *ngFor="let image of images" [class.selected]="image === selected" (click)="selectImage(image)">
@@ -10,7 +10,7 @@
   </ul>
 
   <button #button mat-raised-button *ngIf="!loading" (click)="getMore()">
-    <col-loader [diameter]="20" *ngIf="loadingMore"></col-loader>
+    <full-page-loader [diameter]="20" *ngIf="loadingMore"></full-page-loader>
     Afficher plus
   </button>
 </mat-dialog-content>

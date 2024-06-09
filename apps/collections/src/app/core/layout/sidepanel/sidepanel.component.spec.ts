@@ -7,14 +7,13 @@ import { cold, hot } from 'jasmine-marbles';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
 import { Subject } from 'rxjs';
 
-import { authActions } from '~app/auth/auth.actions';
-import { authFeature } from '~app/auth/auth.feature';
+import { authActions, authFeature } from '@ng-mono/auth';
+import { mockUser } from '@ng-mono/auth/testing';
 import { layoutActions } from '~app/core/layout/layout.actions';
 import { SnackbarOptions } from '~app/core/layout/layout.models';
 import { SidePanelComponent } from '~app/core/layout/sidepanel/sidepanel.component';
 import { Collection } from '~shared/enums/collection';
 import { RouteName } from '~shared/enums/route-name';
-import { mockUser } from '~tests/mocks/user';
 
 import { layoutFeature } from '../layout.feature';
 

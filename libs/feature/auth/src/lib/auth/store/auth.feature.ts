@@ -1,7 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { User } from '@supabase/supabase-js';
 
 import { authActions } from './auth.actions';
-import { User } from './user.model';
 
 export interface State {
   user: User | null;
@@ -19,7 +19,7 @@ export const authFeature = createFeature({
   name: 'auth',
   reducer: createReducer(
     initialState,
-    on(authActions.findUserSuccess, (state, { user }): State => ({ ...state, user, loading: false })),
+    on(authActions.setUser, (state, { user }): State => ({ ...state, user, loading: false })),
     on(
       authActions.notAuthenticated,
       (_state, { redirectUrl }): State => ({
@@ -29,7 +29,7 @@ export const authFeature = createFeature({
       })
     ),
     on(authActions.googleLogin, authActions.logout, (state): State => ({ ...state, loading: true })),
-    on(authActions.error, (state): State => ({ ...state, loading: false }))
+    on(authActions.setError, (state): State => ({ ...state, loading: false }))
   ),
   extraSelectors: ({ selectUser }) => ({
     selectIsLoggedIn: createSelector(selectUser, (user: User | null): boolean => !!user),

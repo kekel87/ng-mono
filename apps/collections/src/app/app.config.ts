@@ -8,16 +8,15 @@ import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { Store, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
+import { provideAuth } from '@ng-mono/auth';
+import { RouterEffects } from '@ng-mono/shared/utils';
 import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
 import { RuntimeConfig } from '~shared/models/runtime-config';
 
 import appRoutes from './app.routes';
-import { AuthEffects } from './auth/auth.effets';
-import { authFeature } from './auth/auth.feature';
 import { initializeAppFactory } from './core/initialize-app-factory';
 import { LayoutEffects } from './core/layout/layout.effects';
 import { layoutFeature } from './core/layout/layout.feature';
-import { RouterEffects } from './core/router/router.effects';
 
 export const appConfig: (runtimeConfig: RuntimeConfig) => ApplicationConfig = (runtimeConfig: RuntimeConfig) => ({
   providers: [
@@ -29,14 +28,14 @@ export const appConfig: (runtimeConfig: RuntimeConfig) => ApplicationConfig = (r
       {
         router: routerReducer,
         [layoutFeature.name]: layoutFeature.reducer,
-        [authFeature.name]: authFeature.reducer,
       },
       { runtimeChecks: runtimeConfig.ngrx.runtimeChecks }
     ),
     ...(runtimeConfig.ngrx.devtoolsOptions ? [provideStoreDevtools(runtimeConfig.ngrx.devtoolsOptions)] : []),
     provideRouterStore(),
-    provideEffects(RouterEffects, LayoutEffects, AuthEffects),
+    provideEffects(RouterEffects, LayoutEffects),
     provideAnimations(),
+    provideAuth(runtimeConfig.supabase),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,

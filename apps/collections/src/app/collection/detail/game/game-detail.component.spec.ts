@@ -86,13 +86,13 @@ describe('GameDetailComponent', () => {
   });
 
   it('should toggle loader', () => {
-    expect(ngMocks.find('col-loader', null)).toBeNull();
+    expect(ngMocks.find('full-page-loader', null)).toBeNull();
 
     detailFeature.selectLoading.setResult(true);
     store.refreshState();
     fixture.detectChanges();
 
-    expect(ngMocks.find('col-loader')).not.toBeNull();
+    expect(ngMocks.find('full-page-loader')).not.toBeNull();
   });
 
   it('should set header title with game title', () => {

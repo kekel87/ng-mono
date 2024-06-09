@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.angular.json",
   "compilerOptions": {
     "paths": {
-      "@ng-mono/shared/ui": ["libs/shared/ui/shared/src/index.ts"],
+      "@ng-mono/auth": ["libs/feature/auth/src/index.ts"],
+      "@ng-mono/auth/testing": ["libs/feature/auth/testing/index.ts"],
+      "@ng-mono/shared/ui": ["libs/ui/shared/src/index.ts"],
       "@ng-mono/shared/utils": ["libs/util/shared/src/index.ts"],
       "~shared/*": ["apps/collections/src/app/shared/*"],
       "~app/*": ["apps/collections/src/app/*"],

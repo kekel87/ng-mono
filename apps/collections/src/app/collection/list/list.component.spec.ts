@@ -7,9 +7,9 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MockBuilder, MockRender, MockedComponentFixture, ngMocks } from 'ng-mocks';
 import { BehaviorSubject } from 'rxjs';
 
+import { routerActions } from '@ng-mono/shared/utils';
 import { layoutActions } from '~app/core/layout/layout.actions';
 import { layoutFeature } from '~app/core/layout/layout.feature';
-import { routerActions } from '~app/core/router/router.actions';
 import { metas } from '~shared/consts/metas';
 import { Collection } from '~shared/enums/collection';
 import { ItemToDisplay } from '~shared/models/item-to-display';

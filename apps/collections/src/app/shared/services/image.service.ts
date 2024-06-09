@@ -8,7 +8,7 @@ import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
 import { GoogleImage, GoogleImageSearchResponse } from '~shared/models/google-image';
 import { RuntimeConfig } from '~shared/models/runtime-config';
 
-import { SupabaseService } from './supabase.service';
+import { SupabaseHelperService } from './supabase-helper.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class ImageService {
 
   constructor(
     private http: HttpClient,
-    private supabaseService: SupabaseService,
+    private supabaseService: SupabaseHelperService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(RUNTIME_CONFIG) { corsAnywhere, googleSearch }: RuntimeConfig
   ) {

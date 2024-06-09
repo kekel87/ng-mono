@@ -6,7 +6,7 @@
     </mat-form-field>
 
     <div class="img-wrapper" *ngIf="url$ | async as url">
-      <col-loader *ngIf="requestState === RequestState.Loading"></col-loader>
+      <full-page-loader *ngIf="requestState === RequestState.Loading"></full-page-loader>
       <mat-error *ngIf="requestState === RequestState.Error">Image non trouvée</mat-error>
       <img [src]="url" alt="" (load)="requestState$.next(RequestState.Success)" (error)="requestState$.next(RequestState.Error)" />
     </div>

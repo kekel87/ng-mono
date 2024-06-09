@@ -1,0 +1,27 @@
+@if (loading()) {
+  <full-page-loader />
+}
+
+<div>
+  <form [formGroup]="formGroup" (ngSubmit)="signInWithEmailAndPassword()">
+    <h3>Connexion</h3>
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput type="text" formControlName="email" placeholder="Email" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" formControlName="password" placeholder="Email" />
+    </mat-form-field>
+
+    <button mat-raised-button color="warn" type="submit">Se connecter</button>
+  </form>
+
+  <div class="providers">
+    <button mat-raised-button color="warn" type="button" (click)="signInWithGoogle()">
+      <span class="google">G</span>
+    </button>
+  </div>
+</div>

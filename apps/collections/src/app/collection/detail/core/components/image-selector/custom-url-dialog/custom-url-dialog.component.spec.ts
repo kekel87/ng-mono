@@ -29,7 +29,7 @@ describe('CustomUrlDialogComponent', () => {
     tick(200);
     fixture.detectChanges();
 
-    expect(ngMocks.find('col-loader')).not.toBeNull();
+    expect(ngMocks.find('full-page-loader')).not.toBeNull();
   }));
 
   it('should show image and active button when user enter correct url', fakeAsync(() => {

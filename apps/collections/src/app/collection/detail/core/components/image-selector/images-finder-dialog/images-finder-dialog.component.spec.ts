@@ -29,7 +29,7 @@ describe('ImageFinderDialogComponent', () => {
   it('should display search images on init', () => {
     expect(imageService.findGoogleImages).toHaveBeenCalledWith(searchTerm);
     expect(ngMocks.findAll('img').length).toBe(2);
-    expect(ngMocks.find('mat-dialog-content > col-loader', null)).toBeNull();
+    expect(ngMocks.find('mat-dialog-content > full-page-loader', null)).toBeNull();
   });
 
   it('should get more images', () => {
@@ -38,7 +38,7 @@ describe('ImageFinderDialogComponent', () => {
 
     expect(imageService.findGoogleImages).toHaveBeenCalledWith(searchTerm, 3);
     expect(ngMocks.findAll('img').length).toBe(4);
-    expect(ngMocks.find(' mat-dialog-content button > col-loader', null)).toBeNull();
+    expect(ngMocks.find(' mat-dialog-content button > full-page-loader', null)).toBeNull();
   });
 
   it('should have choose button disabled', () => {

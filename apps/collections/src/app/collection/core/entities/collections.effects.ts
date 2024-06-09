@@ -6,7 +6,7 @@ import { catchError, concatMap, filter, map, mergeMap, switchMap } from 'rxjs/op
 
 import { LinkState } from '~shared/enums/link-state';
 import { Item } from '~shared/models/item';
-import { SupabaseService } from '~shared/services/supabase.service';
+import { SupabaseHelperService } from '~shared/services/supabase-helper.service';
 
 import { collectionsActions } from './collections.actions';
 import * as collectionsSelectors from './collections.selectors';
@@ -15,7 +15,7 @@ import * as collectionsSelectors from './collections.selectors';
 export class CollectionsEffects {
   constructor(
     private actions$: Actions,
-    private supabaseService: SupabaseService,
+    private supabaseService: SupabaseHelperService,
     private store: Store
   ) {}
 
