@@ -10,7 +10,7 @@ import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
 import { SaveState } from '~shared/enums/save-state';
 import { Item } from '~shared/models/item';
-import { SupabaseService } from '~shared/services/supabase.service';
+import { SupabaseHelperService } from '~shared/services/supabase-helper.service';
 import { MockCollection } from '~tests/mocks/collection';
 
 import { collectionDetailActions } from './core/store/detail.actions';
@@ -48,7 +48,7 @@ describe('detail.resolver.spec.ts', () => {
   const initCollectionsSpy = jest.spyOn(initUtils, 'initCollections').mockImplementation();
 
   beforeEach(async () => {
-    await MockBuilder().provide(provideMockStore()).mock(SupabaseService, supabaseService);
+    await MockBuilder().provide(provideMockStore()).mock(SupabaseHelperService, supabaseService);
 
     store = ngMocks.findInstance(MockStore);
     jest.spyOn(store, 'dispatch');

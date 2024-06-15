@@ -5,19 +5,18 @@ import { of } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { RUNTIME_CONFIG } from '~shared/consts/runtime-config';
-// eslint-disable-next-line @typescript-eslint/naming-convention
-import * as MockImage from '~tests/mocks/images';
+import { SupabaseHelperService } from '~shared/services/supabase-helper.service';
+import { imagesReponse } from '~tests/mocks/images';
 import { MockRuntimeConfig } from '~tests/mocks/runtime-config';
 
 import { ImageService } from './image.service';
-import { SupabaseService } from './supabase.service';
 
 describe('ImageService', () => {
   let service: ImageService;
   let httpMock: HttpTestingController;
   const document = { createElement: jest.fn(), querySelectorAll: () => [] };
   const returnPath = 'path';
-  const supabaseService = { upload: jest.fn() };
+  const supabaseHelperService = { upload: jest.fn() };
   const blob = new Blob();
 
   // https://newdevzone.com/posts/how-to-test-imgonload-using-jest
@@ -48,7 +47,7 @@ describe('ImageService', () => {
   beforeEach(async () => {
     await MockBuilder(ImageService)
       .keep(HttpClientTestingModule)
-      .mock(SupabaseService, supabaseService)
+      .mock(SupabaseHelperService, supabaseHelperService)
       .provide({ provide: DOCUMENT, useValue: document })
       .provide({ provide: RUNTIME_CONFIG, useValue: MockRuntimeConfig.base });
 
@@ -82,7 +81,7 @@ describe('ImageService', () => {
     };
 
     beforeEach(() => {
-      supabaseService.upload.mockReturnValue(of(returnPath));
+      supabaseHelperService.upload.mockReturnValue(of(returnPath));
       document.createElement.mockReturnValue(canvas);
       canvas.getContext.mockReturnValue(context);
       canvas.toBlob.mockImplementation((callback) => callback(blob));
@@ -95,7 +94,7 @@ describe('ImageService', () => {
         .subscribe({
           next: (newUrl) => {
             expect(newUrl).toEqual(returnPath);
-            expect(supabaseService.upload).toHaveBeenCalledWith('path', blob, {
+            expect(supabaseHelperService.upload).toHaveBeenCalledWith('path', blob, {
               cacheControl: '7200',
               upsert: true,
             });
@@ -218,7 +217,7 @@ describe('ImageService', () => {
 
   it('should find search google image', () => {
     service.findGoogleImages(['Search', 'term', 'toto tata']).subscribe((images) => {
-      expect(images).toEqual(MockImage.images);
+      expect(images).toEqual(images);
     });
 
     const req = httpMock.expectOne({ method: 'GET' });
@@ -227,13 +226,13 @@ describe('ImageService', () => {
     expect(req.request.params.get('start')).toEqual('1');
     expect(req.request.params.get('cx')).toEqual(MockRuntimeConfig.base.googleSearch.cseId);
     expect(req.request.params.get('key')).toEqual(MockRuntimeConfig.base.googleSearch.apiKey);
-    req.flush(MockImage.imagesReponse);
+    req.flush(imagesReponse);
     httpMock.verify();
   });
 
   it('should find search google image with paginate', () => {
     service.findGoogleImages(['toto'], 11).subscribe((images) => {
-      expect(images).toEqual(MockImage.images);
+      expect(images).toEqual(images);
     });
 
     const req = httpMock.expectOne({ method: 'GET' });
@@ -242,7 +241,7 @@ describe('ImageService', () => {
     expect(req.request.params.get('start')).toEqual('11');
     expect(req.request.params.get('cx')).toEqual(MockRuntimeConfig.base.googleSearch.cseId);
     expect(req.request.params.get('key')).toEqual(MockRuntimeConfig.base.googleSearch.apiKey);
-    req.flush(MockImage.imagesReponse);
+    req.flush(imagesReponse);
     httpMock.verify();
   });
 });

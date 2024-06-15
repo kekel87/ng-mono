@@ -13,8 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { debounceTime } from 'rxjs/operators';
 
+import { FullPageLoaderComponent } from '@ng-mono/shared/ui';
 import { isEmpty, hasValue } from '@ng-mono/shared/utils';
-import { LoaderComponent } from '~shared/components/loader/loader.component';
 import { ImageDowloaderDirective } from '~shared/directives/image-downloader/image-downloader.directive';
 import { BookType } from '~shared/enums/book-type';
 import { Book } from '~shared/models/book';
@@ -56,7 +56,7 @@ type ComicBookForm = FormGroup<{
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    LoaderComponent,
+    FullPageLoaderComponent,
     ConfirmDialogComponent,
     ImageSelectorComponent,
     TomeDialogComponent,

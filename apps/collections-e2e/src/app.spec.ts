@@ -27,19 +27,19 @@ test.describe('Before authentication', () => {
     //   await page.locator('[name="password"]').fill('azerty123456');
     //   await page.locator('.dev-auth button').click();
 
-    //   await expect(page.locator('col-login col-loader')).toBeHidden();
+    //   await expect(page.locator('col-login full-page-loader')).toBeHidden();
     //   await expect(page.locator('col-dashboard')).toBeVisible();
     // });
   });
 
   // test.describe('Once authenticated', () => {
   //   test.beforeEach(async () => {
-  //     await expect(page.locator('col-login col-loader')).toBeHidden();
+  //     await expect(page.locator('col-login full-page-loader')).toBeHidden();
   //   });
 
   //   test.describe('Once authenticated', () => {
   //     test('User should see loader in games card', async () => {
-  //       await expect(page.locator('mat-card:nth-of-type(1) col-loader')).toBeVisible();
+  //       await expect(page.locator('mat-card:nth-of-type(1) full-page-loader')).toBeVisible();
   //     });
 
   //     test('User should see how many games he has', async () => {

@@ -1,23 +1,20 @@
 import { MockBuilder, ngMocks } from 'ng-mocks';
 import { first } from 'rxjs/operators';
 
-import { SupabaseService } from '~shared/services/supabase.service';
-import { mockUser } from '~tests/mocks/user';
+import { SupabaseService } from '@ng-mono/shared/utils';
 
 import { AuthService } from './auth.service';
+import { mockUser } from '../../../../testing/mocks/user';
 
 describe('AuthService', () => {
   let authService: AuthService;
-  let callback: (event: unknown, session: unknown) => void | Promise<void>;
   const supabaseService = {
-    client: {
-      auth: {
-        getUser: jest.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
-        onAuthStateChange: jest.fn((cb) => (callback = cb)),
-        signOut: jest.fn(),
-        signInWithOAuth: jest.fn(),
-        signInWithPassword: jest.fn(),
-      },
+    auth: {
+      getUser: jest.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
+      onAuthStateChange: jest.fn(),
+      signOut: jest.fn(),
+      signInWithOAuth: jest.fn(),
+      signInWithPassword: jest.fn(),
     },
   };
 
@@ -31,7 +28,9 @@ describe('AuthService', () => {
     expect(authService).toBeDefined();
   });
 
-  it('should return an observable of the user', (done: jest.DoneCallback) => {
+  it('should return an observable of the user after init', (done: jest.DoneCallback) => {
+    authService.init();
+
     authService.user$.pipe(first()).subscribe({
       next: (v) => {
         expect(v).toEqual(mockUser);
@@ -39,19 +38,17 @@ describe('AuthService', () => {
       },
       error: done.fail,
     });
-
-    callback(null, { user: mockUser });
   });
 
   it('should sign-in with google', (done: jest.DoneCallback) => {
-    supabaseService.client.auth.signInWithOAuth.mockResolvedValue({});
+    supabaseService.auth.signInWithOAuth.mockResolvedValue({});
 
     authService
       .signInWithGoogle()
       .pipe(first())
       .subscribe({
         next: () => {
-          expect(supabaseService.client.auth.signInWithOAuth).toHaveBeenCalledWith({ provider: 'google' });
+          expect(supabaseService.auth.signInWithOAuth).toHaveBeenCalledWith({ provider: 'google' });
           done();
         },
         error: done.fail,
@@ -59,14 +56,14 @@ describe('AuthService', () => {
   });
 
   it('should sign-in with email and password', (done: jest.DoneCallback) => {
-    supabaseService.client.auth.signInWithPassword.mockResolvedValue({});
+    supabaseService.auth.signInWithPassword.mockResolvedValue({});
 
     authService
       .signInWithEmailAndPassword('test@test.fr', '123456')
       .pipe(first())
       .subscribe({
         next: () => {
-          expect(supabaseService.client.auth.signInWithPassword).toHaveBeenCalledWith({ email: 'test@test.fr', password: '123456' });
+          expect(supabaseService.auth.signInWithPassword).toHaveBeenCalledWith({ email: 'test@test.fr', password: '123456' });
           done();
         },
         error: done.fail,
@@ -74,10 +71,10 @@ describe('AuthService', () => {
   });
 
   it('should call the sign method', () => {
-    supabaseService.client.auth.signOut.mockReturnValue(Promise.resolve());
+    supabaseService.auth.signOut.mockReturnValue(Promise.resolve());
 
     authService.signOut();
 
-    expect(supabaseService.client.auth.signOut).toHaveBeenCalled();
+    expect(supabaseService.auth.signOut).toHaveBeenCalled();
   });
 });

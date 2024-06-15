@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-import { LoaderComponent } from '~shared/components/loader/loader.component';
+import { FullPageLoaderComponent } from '@ng-mono/shared/ui';
 import { Amiibo } from '~shared/models/amiibo';
 
 import { ConfirmDialogComponent } from '../core/components/confirm-dialog/confirm-dialog.component';
@@ -42,7 +42,7 @@ type AmiiboForm = FormGroup<{
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    LoaderComponent,
+    FullPageLoaderComponent,
     ConfirmDialogComponent,
     ImageSelectorComponent,
   ],

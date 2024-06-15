@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'col-not-activate',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIcon],
   templateUrl: 'access-denied.component.html',
   styleUrls: ['access-denied.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

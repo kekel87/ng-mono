@@ -7,7 +7,7 @@ import { Observable, of, throwError } from 'rxjs';
 
 import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
-import { SupabaseService } from '~shared/services/supabase.service';
+import { SupabaseHelperService } from '~shared/services/supabase-helper.service';
 import { MockCollection } from '~tests/mocks/collection';
 
 import { collectionsActions } from './collections.actions';
@@ -29,7 +29,7 @@ describe('CollectionsEffects', () => {
     await MockBuilder(CollectionsEffects)
       .provide(provideMockActions(() => actions$))
       .provide(provideMockStore())
-      .mock(SupabaseService, supabaseService);
+      .mock(SupabaseHelperService, supabaseService);
 
     effects = ngMocks.findInstance(CollectionsEffects);
   });

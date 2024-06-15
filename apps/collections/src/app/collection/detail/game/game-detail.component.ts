@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-import { LoaderComponent } from '~shared/components/loader/loader.component';
+import { FullPageLoaderComponent } from '@ng-mono/shared/ui';
 import { Collection } from '~shared/enums/collection';
 import { Console } from '~shared/models/console';
 import { Game } from '~shared/models/game';
@@ -49,7 +49,7 @@ type GameForm = FormGroup<{
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    LoaderComponent,
+    FullPageLoaderComponent,
     ConfirmDialogComponent,
     ImageSelectorComponent,
   ],

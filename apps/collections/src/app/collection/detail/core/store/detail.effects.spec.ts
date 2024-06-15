@@ -5,8 +5,8 @@ import { cold, hot } from 'jasmine-marbles';
 import { MockBuilder, ngMocks } from 'ng-mocks';
 import { Observable } from 'rxjs';
 
+import { routerActions } from '@ng-mono/shared/utils';
 import { layoutActions } from '~app/core/layout/layout.actions';
-import { routerActions } from '~app/core/router/router.actions';
 import { Collection } from '~shared/enums/collection';
 
 import { collectionDetailActions } from './detail.actions';

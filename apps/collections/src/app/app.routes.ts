@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { isAuthCanActivate, authRoutes } from '@ng-mono/auth';
 import { RouteName } from '~shared/enums/route-name';
-
-import * as authGuards from './auth/auth.guard';
 
 export default [
   {
@@ -12,12 +11,12 @@ export default [
   },
   {
     path: '',
-    loadChildren: () => import('./auth/auth.routes'),
+    children: authRoutes,
   },
   {
     path: RouteName.Dashboard,
     loadChildren: () => import('./dashboard/dashboard.routes'),
-    canActivate: [authGuards.canActivate],
+    canActivate: [isAuthCanActivate],
   },
   {
     path: RouteName.Error,
@@ -26,7 +25,7 @@ export default [
   {
     path: '',
     loadChildren: () => import('./collection/collection.routes'),
-    canActivate: [authGuards.canActivate],
+    canActivate: [isAuthCanActivate],
   },
   { path: '**', redirectTo: `/${RouteName.Dashboard}` },
 ] satisfies Routes;

@@ -5,7 +5,7 @@ import { MockBuilder } from 'ng-mocks';
 import { of } from 'rxjs';
 
 import { Collection } from '~shared/enums/collection';
-import { SupabaseService } from '~shared/services/supabase.service';
+import { SupabaseHelperService } from '~shared/services/supabase-helper.service';
 import { MockCounter } from '~tests/mocks/counter';
 
 import { counterResolver } from './counter.resolver';
@@ -17,7 +17,7 @@ describe('counterResolver', () => {
   const supabaseService = { count: jest.fn() };
 
   beforeEach(async () => {
-    await MockBuilder().mock(SupabaseService, supabaseService);
+    await MockBuilder().mock(SupabaseHelperService, supabaseService);
   });
 
   it('should return counter', () => {

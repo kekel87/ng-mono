@@ -10,7 +10,7 @@ import { Collection } from '~shared/enums/collection';
 import { LinkState } from '~shared/enums/link-state';
 import { SaveState } from '~shared/enums/save-state';
 import { Item } from '~shared/models/item';
-import { SupabaseService } from '~shared/services/supabase.service';
+import { SupabaseHelperService } from '~shared/services/supabase-helper.service';
 
 import { collectionDetailActions } from './core/store/detail.actions';
 import * as collectionsSelectors from '../core/entities/collections.selectors';
@@ -23,7 +23,7 @@ interface ItemCollection {
 
 export const detailResolver: ResolveFn<ItemCollection> = (route: ActivatedRouteSnapshot) => {
   const store = inject(Store);
-  const supabase = inject(SupabaseService);
+  const supabase = inject(SupabaseHelperService);
   const collection = route.data['collection'] as Collection;
   const id = route.paramMap.get('id') as string;
   const meta = metas[collection];
