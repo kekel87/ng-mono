@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, concatMap, filter, first, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, first, map, switchMap } from 'rxjs/operators';
 
-import { hasValue, isRecord, routerActions } from '@ng-mono/shared/utils';
+import { isRecord, routerActions } from '@ng-mono/shared/utils';
 
 import { authActions } from './auth.actions';
 import { authFeature } from './auth.feature';
@@ -30,15 +30,6 @@ export class AuthEffects {
         return this.authService.user$;
       }),
       map((user) => (user ? authActions.setUser({ user }) : authActions.notAuthenticated({})))
-    );
-  });
-
-  watchError$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(authActions.init),
-      switchMap(() => this.authService.error$),
-      filter(hasValue),
-      map(({ message }) => authActions.setError({ error: message }))
     );
   });
 
@@ -82,14 +73,6 @@ export class AuthEffects {
           catchError(() => of(authActions.setError({})))
         )
       )
-    );
-  });
-
-  accessDenied$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(authActions.setError),
-      filter(({ error }) => error === 'invalid claim: missing sub claim'),
-      map(() => routerActions.navigate({ commands: ['/access-denied'] }))
     );
   });
 

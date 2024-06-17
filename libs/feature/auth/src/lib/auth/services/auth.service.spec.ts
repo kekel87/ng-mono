@@ -10,8 +10,7 @@ describe('AuthService', () => {
   let authService: AuthService;
   const supabaseService = {
     auth: {
-      getUser: jest.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
-      onAuthStateChange: jest.fn(),
+      onAuthStateChange: jest.fn((callback) => callback(undefined, { user: mockUser })),
       signOut: jest.fn(),
       signInWithOAuth: jest.fn(),
       signInWithPassword: jest.fn(),
@@ -29,15 +28,15 @@ describe('AuthService', () => {
   });
 
   it('should return an observable of the user after init', (done: jest.DoneCallback) => {
-    authService.init();
-
     authService.user$.pipe(first()).subscribe({
-      next: (v) => {
-        expect(v).toEqual(mockUser);
+      next: (user) => {
+        expect(user).toEqual(mockUser);
         done();
       },
       error: done.fail,
     });
+
+    authService.init();
   });
 
   it('should sign-in with google', (done: jest.DoneCallback) => {

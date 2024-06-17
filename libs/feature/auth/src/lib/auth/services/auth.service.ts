@@ -9,20 +9,13 @@ import { SupabaseService } from '@ng-mono/shared/utils';
 })
 export class AuthService {
   private _user$ = new Subject<User | null>();
-  private _error$ = new Subject<AuthError | null>();
   public user$ = this._user$.asObservable();
-  public error$ = this._error$.asObservable();
 
   constructor(private supabase: SupabaseService) {}
 
   init(): void {
-    this.supabase.auth.getUser().then(({ data, error }) => {
-      this._user$.next(data && data.user && !error ? data.user : null);
-
-      this.supabase.auth.onAuthStateChange((_authChangeEvent, session) => {
-        this._user$.next(session?.user ?? null);
-        this._error$.next(error);
-      });
+    this.supabase.auth.onAuthStateChange((_authChangeEvent, session) => {
+      this._user$.next(session?.user ?? null);
     });
   }
 

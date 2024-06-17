@@ -59,16 +59,6 @@ describe('Auth Effects', () => {
     });
   });
 
-  describe('watchError$', () => {
-    it('should watch auth service errors', () => {
-      authService.error$.next({ message: 'error' } as unknown as AuthError);
-
-      actions$ = hot('-a-', { a: authActions.init() });
-
-      expect(effects.watchError$).toBeObservable(cold('-b-', { b: authActions.setError({ error: 'error' }) }));
-    });
-  });
-
   describe('googleLogin$', () => {
     it('should dispatch success when signInWithGoogle successfully', () => {
       authService.signInWithGoogle.mockReturnValue(of({}));
@@ -149,14 +139,6 @@ describe('Auth Effects', () => {
 
       expect(effects.logout$).toBeObservable(cold('-a-', { a: authActions.setError({}) }));
       expect(authService.signOut).toHaveBeenCalled();
-    });
-  });
-
-  describe('accessDenied$', () => {
-    it(`should navigate when AuthError with 'auth/user-disabled' code is dispatched`, () => {
-      actions$ = hot('-a-', { a: authActions.setError({ error: 'invalid claim: missing sub claim' }) });
-
-      expect(effects.accessDenied$).toBeObservable(cold('-b-', { b: routerActions.navigate({ commands: ['/access-denied'] }) }));
     });
   });
 
