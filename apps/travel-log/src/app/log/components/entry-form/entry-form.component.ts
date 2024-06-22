@@ -26,10 +26,10 @@ export interface LogEntry {
 @Component({
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, MatFormField, MatIcon, MatLabel, MatInput],
-  templateUrl: './log-entry-form.component.html',
-  styleUrls: ['./log-entry-form.component.scss'],
+  templateUrl: './entry-form.component.html',
+  styleUrls: ['./entry-form.component.scss'],
 })
-export class LogEntryFormComponent {
+export class EntryFormComponent {
   protected readonly formGroup = this.formBuilder.group({
     title: this.formBuilder.nonNullable.control<string>('', Validators.required),
     tags: this.formBuilder.nonNullable.array<string>([]),

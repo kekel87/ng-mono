@@ -1,3 +1,14 @@
 mat-select {
   flex: 0 1 160px;
 }
+
+.user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .email {
+    font-size: 14px;
+    margin-right: 8px;
+  }
+}

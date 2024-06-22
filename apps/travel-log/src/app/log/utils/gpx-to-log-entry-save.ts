@@ -3,9 +3,9 @@ import bbox from '@turf/bbox';
 import { FeatureCollection, Geometry } from 'geojson';
 import { GPX } from 'leaflet';
 
-import { LogEntrySave } from '../models/log-entry';
+import { EntrySave } from '../models/entry';
 
-export function gpxToLogEntrySave(raw: string): LogEntrySave {
+export function gpxToLogEntrySave(raw: string): EntrySave {
   const gpx = new GPX(raw, {
     async: false,
     // eslint-disable-next-line @typescript-eslint/naming-convention

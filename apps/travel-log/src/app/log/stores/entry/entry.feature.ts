@@ -4,34 +4,31 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import 'leaflet-gpx';
 import { RequestState } from '@ng-mono/shared/utils';
 
-import { logEntryActions } from './log-entry.actions';
-import { LogEntry } from '../../models/log-entry';
+import { entryActions } from './entry.actions';
+import { Entry } from '../../models/entry';
 
-interface LogEntryLoading {
+interface EntryLoading {
   id: string;
   loadRequestState: RequestState.Loading;
 }
 
-interface LogEntryWithRequestState extends LogEntry {
+interface EntryWithRequestState extends Entry {
   loadRequestState: RequestState;
 }
 
-type LogEntryForStore = LogEntryLoading | LogEntryWithRequestState;
+type EntryForStore = EntryLoading | EntryWithRequestState;
 
-export type State = EntityState<LogEntryForStore>;
+export type State = EntityState<EntryForStore>;
 
-const adapter = createEntityAdapter<LogEntryForStore>();
+const adapter = createEntityAdapter<EntryForStore>();
 const initialState: State = adapter.getInitialState();
 
-export const logEntryFeature = createFeature({
-  name: 'logEntryObject',
+export const entryFeature = createFeature({
+  name: 'entry',
   reducer: createReducer(
     initialState,
-    on(
-      logEntryActions.load,
-      (state, { id }): State => adapter.updateOne({ id, changes: { loadRequestState: RequestState.Loading } }, state)
-    ),
-    on(logEntryActions.loadSuccess, (state, { entry }): State => {
+    on(entryActions.load, (state, { id }): State => adapter.updateOne({ id, changes: { loadRequestState: RequestState.Loading } }, state)),
+    on(entryActions.loadSuccess, (state, { entry }): State => {
       return adapter.updateOne(
         {
           id: entry.id,
@@ -44,7 +41,7 @@ export const logEntryFeature = createFeature({
       );
     }),
     on(
-      logEntryActions.loadError,
+      entryActions.loadError,
       (state, { id }): State => adapter.updateOne({ id, changes: { loadRequestState: RequestState.Error } }, state)
     )
     // on(
@@ -52,8 +49,8 @@ export const logEntryFeature = createFeature({
     //   (state, { logEntry, logId }): State => adapter.upsertOne({ ...logEntry, logId, load: RequestState.Initial, displayed: true }, state)
     // ),
   ),
-  extraSelectors: ({ selectLogEntryObjectState }) => {
-    const entitySelectors = adapter.getSelectors(selectLogEntryObjectState);
+  extraSelectors: ({ selectEntryState }) => {
+    const entitySelectors = adapter.getSelectors(selectEntryState);
     return {
       ...entitySelectors,
       // selectGeoJsonDisplayed: createSelector(entitySelectors.selectAll, (logEntryObjects) =>

@@ -1,26 +1,21 @@
 import { BBox } from 'geojson';
 
-import { LogEntrySave } from './log-entry';
-
-export interface LogComputedField {
-  start?: string;
-  end?: string;
-
-  bbox: BBox;
-  geoJson: any;
-  distance: number;
-  elevationGain: number;
-}
-
-export interface Log extends LogComputedField {
+export interface Log {
   id: string;
-  name: string;
+  name: string | null;
   tags: string[];
 
-  description?: string;
+  description: string | null;
+
+  bbox: BBox | null;
+  geoJson: any | null;
+  distance: number | null;
+  elevationGain: number | null;
+
+  start: string | null;
+  end: string | null;
 }
 
-export interface LogSave extends Omit<Log, 'id'> {
-  id?: string;
-  entries: LogEntrySave[];
+export interface LogSave extends Omit<Partial<Log>, 'id' | 'tags'> {
+  id: string | null;
 }

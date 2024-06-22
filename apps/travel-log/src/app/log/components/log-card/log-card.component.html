@@ -34,9 +34,11 @@
       <mat-icon>visibility</mat-icon>
     </button>
 
-    <button mat-icon-button (click)="fit()">
-      <mat-icon>crop_free</mat-icon>
-    </button>
+    @if (log().bbox) {
+      <button mat-icon-button (click)="fit(log().bbox!)">
+        <mat-icon>crop_free</mat-icon>
+      </button>
+    }
 
     <button mat-icon-button>
       <mat-icon>edit</mat-icon>

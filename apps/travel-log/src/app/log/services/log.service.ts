@@ -1,19 +1,31 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { SupabaseService } from '@ng-mono/shared/utils';
+import { from, map, Observable } from 'rxjs';
 
-import { Log } from '../models/log';
-import { LogEntry } from '../models/log-entry';
+import { Entry, EntrySave } from '../models/entry';
+import { Log, LogSave } from '../models/log';
 
 @Injectable({ providedIn: 'root' })
 export class LogService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private supabase: SupabaseService) {}
 
-  getLogs(): Observable<Log[]> {
-    return of([]);
+  saveLog(log: LogSave): Observable<Log> {
+    return from(this.supabase.from('log').upsert(log).select()).pipe(map((dataSource) => dataSource.data?.[0]));
   }
 
-  getLogEntry(_id: string): Observable<LogEntry> {
-    return of({} as unknown as LogEntry);
+  getLogs(): Observable<Log[]> {
+    return from(this.supabase.from('log').select()).pipe(map((dataSource) => dataSource.data || []));
+  }
+
+  getEntries(logId: string): Observable<Entry[]> {
+    return from(this.supabase.from('entry').select().eq('logId', logId)).pipe(map((dataSource) => dataSource.data || []));
+  }
+
+  getEntry(id: string): Observable<Entry> {
+    return from(this.supabase.from('entry').select().eq('id', id)).pipe(map((dataSource) => dataSource.data?.[0] || undefined));
+  }
+
+  saveEntry(log: EntrySave): Observable<Entry> {
+    return from(this.supabase.from('entry').upsert(log).select()).pipe(map((dataSource) => dataSource.data?.[0]));
   }
 }

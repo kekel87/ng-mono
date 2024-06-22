@@ -4,14 +4,11 @@ import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { RequestState } from '@ng-mono/shared/utils';
 import { Store } from '@ngrx/store';
 
-import { RequestState } from '@ng-mono/shared/utils';
-
-import { mapActions } from '../../../map/store/map.actions';
-import { Log } from '../../models/log';
+import { entryFeature } from '../../stores/entry/entry.feature';
 import { logFeature } from '../../stores/log/log.feature';
-import { logEntryFeature } from '../../stores/log-entry/log-entry.feature';
 import { LogCardComponent } from '../log-card/log-card.component';
 
 @Component({
@@ -23,12 +20,8 @@ import { LogCardComponent } from '../log-card/log-card.component';
 })
 export class LogListComponent {
   protected readonly logs$ = this.store.select(logFeature.selectAll);
-  protected readonly logEntryEntities$ = this.store.select(logEntryFeature.selectEntities);
+  protected readonly logEntryEntities$ = this.store.select(entryFeature.selectEntities);
   protected readonly RequestState = RequestState;
 
   constructor(private store: Store) {}
-
-  protected fit(log: Log) {
-    this.store.dispatch(mapActions.fit({ bbox: log.bbox }));
-  }
 }

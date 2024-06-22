@@ -7,15 +7,15 @@ import { MatDivider } from '@angular/material/divider';
 import { MatExpansionPanel, MatExpansionPanelContent, MatExpansionPanelHeader } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { MatList } from '@angular/material/list';
-import { Store } from '@ngrx/store';
-
 import { RequestState } from '@ng-mono/shared/utils';
+import { Store } from '@ngrx/store';
+import { BBox } from 'geojson';
 
 import { mapActions } from '../../../map/store/map.actions';
+import { Entry } from '../../models/entry';
 import { Log } from '../../models/log';
-import { LogEntry } from '../../models/log-entry';
+import { EntryComponent } from '../entry/entry.component';
 import { LogComponent } from '../log/log.component';
-import { LogEntryComponent } from '../log-entry/log-entry.component';
 
 @Component({
   standalone: true,
@@ -36,20 +36,20 @@ import { LogEntryComponent } from '../log-entry/log-entry.component';
     MatIconButton,
     MatList,
     LogComponent,
-    LogEntryComponent,
+    EntryComponent,
   ],
   templateUrl: './log-card.component.html',
   styleUrls: ['./log-card.component.scss'],
 })
 export class LogCardComponent {
   log = input.required<Log>();
-  entries = input.required<LogEntry[]>();
+  entries = input.required<Entry[]>();
 
   protected readonly RequestState = RequestState;
 
   constructor(private store: Store) {}
 
-  protected fit() {
-    this.store.dispatch(mapActions.fit({ bbox: this.log().bbox }));
+  protected fit(bbox: BBox) {
+    this.store.dispatch(mapActions.fit({ bbox }));
   }
 }
