@@ -10,6 +10,7 @@ import { ModuleMesureType } from '../../models/module-measure-type';
 import { homeActions } from '../home/home.actions';
 import { measureActions } from '../measure/measure.actions';
 import { selectModulesWithMeasureType } from '../selectors';
+import { weatherActions } from '../weather/weather.actions';
 
 @Injectable()
 export class FilterEffects {
@@ -70,6 +71,20 @@ export class FilterEffects {
           )
         )
       )
+    );
+  });
+
+  temperatureForecast$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(
+        homeActions.select,
+        filterActions.changeIntervalType,
+        filterActions.nextInterval,
+        filterActions.previousInterval,
+        filterActions.toggleTemperatureForecast,
+        filterActions.toggleHumidityForecast
+      ),
+      map(() => weatherActions.fetch())
     );
   });
 }

@@ -36,11 +36,21 @@
 }
 
 <div class="row">
-  <button mat-icon-button (click)="refresh()" color="accent">
+  <button mat-icon-button class="enabled" (click)="refresh()">
     <mat-icon>refresh</mat-icon>
   </button>
 
-  <mat-slide-toggle [checked]="autoRefresh()" (change)="changeAutoRefresh($event.checked)">Auto refresh</mat-slide-toggle>
+  <button mat-icon-button [class.enabled]="autoRefresh()" (click)="changeAutoRefresh(!autoRefresh())">
+    <mat-icon>autorenew</mat-icon>
+  </button>
+
+  <button mat-icon-button [class.enabled]="temparatureForecast()" (click)="toggleTemperatureForecast(!temparatureForecast())">
+    <mat-icon>thermostat</mat-icon>
+  </button>
+
+  <button mat-icon-button [class.enabled]="humidityForecast()" (click)="toggleHumidityForecast(!humidityForecast())">
+    <mat-icon>water_drop</mat-icon>
+  </button>
 </div>
 
 <mat-list role="list">

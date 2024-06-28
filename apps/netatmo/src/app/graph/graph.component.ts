@@ -2,7 +2,7 @@ import { HostListener, Component, ElementRef, ViewChild, OnInit } from '@angular
 import { ofType } from '@ngrx/effects';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { init, ECharts } from 'echarts';
-import { interval } from 'rxjs';
+import { combineLatest, interval } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { layoutActions } from '../layout/store/layout.actions';
@@ -55,14 +55,23 @@ export class GraphComponent implements OnInit {
         },
       })
     );
-    this.store.select(measureFeature.selectAll).subscribe((source) => this.chart.setOption({ dataset: [{ source }] }));
-    this.store
-      .select(selectModuleWithEnabledMeasureType)
+    this.store.select(measureFeature.selectAll).subscribe((source) => {
+      this.chart.setOption({ dataset: [{ source }] });
+    });
+
+    combineLatest(
+      this.store.select(selectModuleWithEnabledMeasureType),
+      this.store.select(filterFeature.selectTemparatureForecast),
+      this.store.select(filterFeature.selectHumidityForecast)
+    )
       .pipe(
-        map((modules) => {
-          return modules.reduce((acc: any[], curr) => {
-            return [...acc, ...curr.enabledMeasureTypes.map((type) => this.toSerie(type, curr))];
-          }, []);
+        map(([modules, temparatureForecast, selectHumidityForecast]) => {
+          return modules.reduce(
+            (acc: any[], curr) => {
+              return [...acc, ...curr.enabledMeasureTypes.map((type) => this.toSerie(type, curr))];
+            },
+            [...this.toForecastSeries(temparatureForecast, selectHumidityForecast)]
+          );
         })
       )
       .subscribe((series) => this.chart.setOption({ series }, { replaceMerge: ['series'] }));
@@ -167,6 +176,42 @@ export class GraphComponent implements OnInit {
     };
   }
 
+  private toForecastSeries(temparatureForecast: boolean, selectHumidityForecast: boolean) {
+    const serie = [];
+
+    if (temparatureForecast) {
+      serie.push({
+        id: `weather_id-${MeasureType.Temperature}`,
+        type: 'line',
+        yAxisId: MeasureType.Temperature,
+        datasetId: 'weather_id',
+        name: 'Prédiction',
+        color: ['#f39611'],
+        encode: {
+          x: 'timestamp',
+          y: MeasureType.Temperature,
+        },
+      });
+    }
+
+    if (selectHumidityForecast) {
+      serie.push({
+        id: `weather_id-${MeasureType.Humidity}`,
+        type: 'line',
+        yAxisId: MeasureType.Humidity,
+        datasetId: 'weather_id',
+        name: 'Prédiction',
+        color: ['#11e0f3'],
+        encode: {
+          x: 'timestamp',
+          y: MeasureType.Humidity,
+        },
+      });
+    }
+
+    return serie;
+  }
+
   private setOptions(modules: ModuleWithRoom[]): void {
     // https://echarts.apache.org/examples/en/editor.html?c=line-marker
     const option = {
@@ -199,6 +244,14 @@ export class GraphComponent implements OnInit {
           id: 'raw',
           dimensions: ['id', 'timestamp', ...Object.values(MeasureType)],
           source: [],
+        },
+        {
+          id: 'weather_id',
+          fromDatasetId: 'raw',
+          transform: {
+            type: 'filter',
+            config: { dimension: 'id', '=': 'weather_id' },
+          },
         },
         ...modules.map(({ id }) => ({
           id: id,
