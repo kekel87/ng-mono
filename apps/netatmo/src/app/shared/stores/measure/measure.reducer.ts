@@ -4,14 +4,14 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import { RequestState } from '@ng-mono/shared/utils';
 
 import { measureActions } from './measure.actions';
-import { MeasureSource } from '../../models/measure-source';
+import { MeasureEntry } from '../../models/measure-entry';
 
-export interface State extends EntityState<MeasureSource> {
+export interface State extends EntityState<MeasureEntry> {
   requestState: RequestState;
 }
 
-const adapter: EntityAdapter<MeasureSource> = createEntityAdapter<MeasureSource>({
-  selectId: ({ id, timestamp }: MeasureSource) => `${id}-${timestamp}`,
+const adapter: EntityAdapter<MeasureEntry> = createEntityAdapter<MeasureEntry>({
+  selectId: ({ id, timestamp }: MeasureEntry) => `${id}-${timestamp}`,
 });
 
 const initialState: State = adapter.getInitialState({

@@ -1,5 +1,6 @@
-import { AsyncPipe, DatePipe, KeyValuePipe, NgForOf, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
-import { Component } from '@angular/core';
+import { DatePipe, KeyValuePipe } from '@angular/common';
+import { Component, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -7,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
 
 import { MeasureType } from '../shared/api/enums/measure-type';
 import { MEASURE_TYPE_ICONS } from '../shared/constants/measure-type-icon';
@@ -21,13 +21,8 @@ import { asNext } from '../shared/utils/date-interval';
   selector: 'net-filter',
   standalone: true,
   imports: [
-    AsyncPipe,
     KeyValuePipe,
     DatePipe,
-    NgForOf,
-    NgIf,
-    NgSwitch,
-    NgSwitchCase,
     MatExpansionModule,
     MatIconModule,
     MatListModule,
@@ -42,12 +37,15 @@ export class FilterComponent {
   readonly MEASURE_TYPE_ICONS = MEASURE_TYPE_ICONS;
   readonly IntervalType = IntervalType;
 
-  autoRefresh$ = this.store.select(filterFeature.selectAutoRefresh);
-  interval$ = this.store.select(filterFeature.selectInterval);
-  asNext$ = this.interval$.pipe(map((interval) => asNext(interval)));
-  rooms$ = this.store.select(selectRooms);
-  modules$ = this.store.select(selectModulesEntities);
-  enabledModulesType$ = this.store.select(filterFeature.selectEntities);
+  autoRefresh = toSignal(this.store.select(filterFeature.selectAutoRefresh));
+  interval = toSignal(this.store.select(filterFeature.selectInterval));
+  asNext = computed(() => {
+    const interval = this.interval();
+    return interval ? asNext(interval) : undefined;
+  });
+  rooms = toSignal(this.store.select(selectRooms));
+  modules = toSignal(this.store.select(selectModulesEntities));
+  enabledModulesType = toSignal(this.store.select(filterFeature.selectEntities));
 
   constructor(private store: Store) {}
 

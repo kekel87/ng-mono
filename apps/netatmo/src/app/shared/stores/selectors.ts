@@ -8,6 +8,7 @@ import { homeFeature } from './home/home.reducer';
 import { MeasureType } from '../api/enums/measure-type';
 import { Home } from '../api/models/home';
 import { Room } from '../api/models/room';
+import { MEASURE_SOURCE_BY_MODULE_TYPE } from '../constants/measure-source-by-module-type';
 import { MEASURE_TYPE_BY_MODULE_TYPE } from '../constants/measure-type-by-module-type';
 import { MEASURE_TYPE_PALETTES } from '../constants/measure-type-palettes';
 import { ModuleMesureType } from '../models/module-measure-type';
@@ -25,18 +26,23 @@ export const selectModules = createSelector(homeFeature.selectHome, (home: Home 
   return home.modules.filter(hasRoom);
 });
 
+/**
+ * Remove same module type in same room
+ * Remove module without types
+ */
 export const selectModulesWithMeasureType = createSelector(selectModules, (modules: ModuleWithRoom[]): ModuleWithMeasureTypes[] => {
-  return modules.map((module, index) => ({
-    ...module,
-    measureType: MEASURE_TYPE_BY_MODULE_TYPE[module.type],
-    measureTypeColors: MEASURE_TYPE_BY_MODULE_TYPE[module.type].reduce(
-      (acc, type) => ({
-        ...acc,
-        [type]: getElementAt(MEASURE_TYPE_PALETTES[type], index),
-      }),
-      {}
-    ),
-  }));
+  return modules
+    .filter((value, index, self) => index === self.findIndex((t) => t.type === value.type && t.room_id === value.room_id))
+    .map((module, index) => ({
+      ...module,
+      measureSource: MEASURE_SOURCE_BY_MODULE_TYPE[module.type],
+      measureType: MEASURE_TYPE_BY_MODULE_TYPE[module.type],
+      measureTypeColors: MEASURE_TYPE_BY_MODULE_TYPE[module.type].reduce(
+        (acc, type) => ({ ...acc, [type]: getElementAt(MEASURE_TYPE_PALETTES[type], index) }),
+        {}
+      ),
+    }))
+    .filter((m) => m.measureType.length > 0);
 });
 
 export const selectModulesEntities = createSelector(

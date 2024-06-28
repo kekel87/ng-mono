@@ -1,19 +1,10 @@
 mat-list-item ::ng-deep .mat-mdc-list-item-unscoped-content {
   display: flex;
   align-items: center;
-}
 
-mat-list,
-mat-list-item {
-  padding: 0;
-}
-
-.mat-expansion-panel-header {
-  padding: 0 16px 0 8px;
-}
-
-mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
-  padding: 0 8px 8px;
+  & > span:first-child {
+    margin-right: 16px;
+  }
 }
 
 button:not(.enabled) {

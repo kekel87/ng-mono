@@ -6,6 +6,7 @@ import { Body } from '../models/body';
 import { HomesDataResponse } from '../models/home-data-response';
 import { Measure } from '../models/measure';
 import { MeasureParams } from '../models/measure-params';
+import { RoomMeasureParams } from '../models/room-measure-params';
 
 @Injectable({ providedIn: 'root' })
 export class NetatmoService {
@@ -19,6 +20,12 @@ export class NetatmoService {
 
   getMeasure(params: MeasureParams): Observable<Body<Measure[]>> {
     return this.httpClient.get<Body<Measure[]>>(`${this.baseUrl}/getmeasure`, {
+      params: new HttpParams({ fromObject: { ...params } }),
+    });
+  }
+
+  getRoomMeasure(params: RoomMeasureParams): Observable<Body<Measure[]>> {
+    return this.httpClient.get<Body<Measure[]>>(`${this.baseUrl}/getroommeasure`, {
       params: new HttpParams({ fromObject: { ...params } }),
     });
   }
