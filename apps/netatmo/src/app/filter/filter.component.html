@@ -1,58 +1,68 @@
-<div *ngIf="interval$ | async as interval" [ngSwitch]="interval.type">
-  <div class="row">
-    <button mat-icon-button (click)="previous()">
-      <mat-icon>arrow_back_ios</mat-icon>
-    </button>
-    <div *ngSwitchCase="IntervalType.Day">{{ interval.begin | date: 'mediumDate' }}</div>
-    <div *ngSwitchCase="IntervalType.Week">{{ interval.begin | date: 'd' }}-{{ interval.end | date: 'd MMMM yyyy' }}</div>
-    <div *ngSwitchCase="IntervalType.Month">{{ interval.begin | date: 'MMMM yyyy' }}</div>
-    <div *ngSwitchCase="IntervalType.Year">{{ interval.begin | date: 'yyyy' }}</div>
-    <button mat-icon-button [disabled]="(asNext$ | async) === false" (click)="next()">
-      <mat-icon>arrow_forward_ios</mat-icon>
-    </button>
-  </div>
+@if (interval(); as interval) {
+  <div>
+    <div class="row">
+      <button mat-icon-button (click)="previous()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
 
-  <mat-button-toggle-group name="intervalType" [value]="interval.type" (change)="changeIntervalType($event.value)">
-    <mat-button-toggle *ngFor="let kv of IntervalType | keyvalue: unsorted" [value]="kv.value">{{ kv.key }}</mat-button-toggle>
-  </mat-button-toggle-group>
-</div>
+      <div>
+        @switch (interval.type) {
+          @case (IntervalType.Day) {
+            {{ interval.begin | date: 'mediumDate' }}
+          }
+          @case (IntervalType.Week) {
+            {{ interval.begin | date: 'd' }}-{{ interval.end | date: 'd MMMM yyyy' }}
+          }
+          @case (IntervalType.Month) {
+            {{ interval.begin | date: 'MMMM yyyy' }}
+          }
+          @case (IntervalType.Year) {
+            {{ interval.begin | date: 'yyyy' }}
+          }
+        }
+      </div>
+
+      <button mat-icon-button [disabled]="asNext() === false" (click)="next()">
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+    </div>
+
+    <mat-button-toggle-group name="intervalType" [value]="interval.type" (change)="changeIntervalType($event.value)">
+      @for (kv of IntervalType | keyvalue: unsorted; track kv.key) {
+        <mat-button-toggle [value]="kv.value">{{ kv.key }}</mat-button-toggle>
+      }
+    </mat-button-toggle-group>
+  </div>
+}
 
 <div class="row">
   <button mat-icon-button (click)="refresh()" color="accent">
     <mat-icon>refresh</mat-icon>
   </button>
 
-  <mat-slide-toggle [checked]="autoRefresh$ | async" (change)="changeAutoRefresh($event.checked)">Auto refresh</mat-slide-toggle>
+  <mat-slide-toggle [checked]="autoRefresh()" (change)="changeAutoRefresh($event.checked)">Auto refresh</mat-slide-toggle>
 </div>
 
-<mat-accordion
-  displayMode="flat"
-  multi
-  *ngIf="{ rooms: rooms$ | async, modules: modules$ | async, enabled: enabledModulesType$ | async } as vm"
->
-  <mat-expansion-panel *ngFor="let room of vm.rooms" expanded>
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{ room.name }}</mat-panel-title>
-    </mat-expansion-panel-header>
+<mat-list role="list">
+  @for (room of rooms(); track room.id) {
+    <mat-list-item role="listitem">
+      <span>{{ room.name }}</span>
+      <div class="spacer"></div>
 
-    <mat-list role="list">
-      <mat-list-item *ngFor="let id of room.module_ids" role="listitem">
-        <ng-container *ngIf="vm.modules![id] as module">
-          {{ module?.name }}
-
-          <div class="spacer"></div>
-
-          <button
-            mat-icon-button
-            *ngFor="let measureType of module.measureType"
-            [class.enabled]="vm.enabled![id + measureType]"
-            [style.color]="module.measureTypeColors[measureType]"
-            (click)="toggleEnabled(id, measureType, !vm.enabled![id + measureType])"
-          >
-            <mat-icon>{{ MEASURE_TYPE_ICONS[measureType] }}</mat-icon>
-          </button>
-        </ng-container>
-      </mat-list-item>
-    </mat-list>
-  </mat-expansion-panel>
-</mat-accordion>
+      @for (id of room.module_ids; track id) {
+        @if (modules()![id]; as module) {
+          @for (measureType of module.measureType; track measureType) {
+            <button
+              mat-icon-button
+              [class.enabled]="enabledModulesType()![id + measureType]"
+              [style.color]="module.measureTypeColors[measureType]"
+              (click)="toggleEnabled(id, measureType, !enabledModulesType()![id + measureType])"
+            >
+              <mat-icon>{{ MEASURE_TYPE_ICONS[measureType] }}</mat-icon>
+            </button>
+          }
+        }
+      }
+    </mat-list-item>
+  }
+</mat-list>

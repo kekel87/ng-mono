@@ -9,8 +9,9 @@ import { isoStringToUnixTimestamp } from '@ng-mono/shared/utils';
 import { measureActions } from './measure.actions';
 import { Measure } from '../../api/models/measure';
 import { NetatmoService } from '../../api/servives/netatmo.service';
+import { MeasureSource } from '../../enums/mesure-source';
 import { Interval } from '../../models/interval';
-import { MeasureSource } from '../../models/measure-source';
+import { MeasureEntry } from '../../models/measure-entry';
 import { ModuleWithEnabledMeasureTypes } from '../../models/module-with-enabled-measure-types';
 import { filterFeature } from '../filter/filter.reducer';
 import { selectModuleWithEnabledMeasureType } from '../selectors';
@@ -56,11 +57,24 @@ export class MeasureEffects {
     );
   });
 
-  private getModuleMeasureDataSetSource(module: ModuleWithEnabledMeasureTypes, interval: Interval): Observable<MeasureSource[]> {
+  private getModuleMeasureDataSetSource(module: ModuleWithEnabledMeasureTypes, interval: Interval): Observable<MeasureEntry[]> {
+    if (module.measureSource === MeasureSource.Measure) {
+      return this.netamoService
+        .getMeasure({
+          module_id: module.id,
+          device_id: module.bridge ?? module.id,
+          type: module.enabledMeasureTypes.join(','),
+          scale: interval.scale,
+          date_begin: isoStringToUnixTimestamp(interval.begin),
+          date_end: isoStringToUnixTimestamp(interval.end),
+        })
+        .pipe(map(({ body }) => this.toDataSetSource(module, body)));
+    }
+
     return this.netamoService
-      .getMeasure({
-        module_id: module.id,
-        device_id: module.bridge ?? module.id,
+      .getRoomMeasure({
+        home_id: '5f8dcf5f2827f313353b08f3',
+        room_id: module.room_id,
         type: module.enabledMeasureTypes.join(','),
         scale: interval.scale,
         date_begin: isoStringToUnixTimestamp(interval.begin),
@@ -69,12 +83,12 @@ export class MeasureEffects {
       .pipe(map(({ body }) => this.toDataSetSource(module, body)));
   }
 
-  private toDataSetSource(module: ModuleWithEnabledMeasureTypes, measures: Measure[]): MeasureSource[] {
-    return measures.reduce<MeasureSource[]>(
+  private toDataSetSource(module: ModuleWithEnabledMeasureTypes, measures: Measure[]): MeasureEntry[] {
+    return measures.reduce<MeasureEntry[]>(
       (acc, { beg_time, step_time, value }) => [
         ...acc,
         ...value.map(
-          (values, index): MeasureSource => ({
+          (values, index): MeasureEntry => ({
             id: module.id,
             timestamp: new Date((beg_time + index * (step_time ?? 1)) * 1000).toISOString(),
             ...module.enabledMeasureTypes.reduce((acc, type, index) => ({ ...acc, [type]: values[index] }), {}),

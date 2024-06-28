@@ -1,6 +1,6 @@
 import { createActionGroup, props, emptyProps } from '@ngrx/store';
 
-import { MeasureSource } from '../../models/measure-source';
+import { MeasureEntry } from '../../models/measure-entry';
 import { ModuleMesureType } from '../../models/module-measure-type';
 
 export const measureActions = createActionGroup({
@@ -8,7 +8,7 @@ export const measureActions = createActionGroup({
   events: {
     fetch: props<{ moduleMeasureType: ModuleMesureType }>(),
     'Fetch many': emptyProps(),
-    'Fetch success': props<{ measures: MeasureSource[] }>(),
+    'Fetch success': props<{ measures: MeasureEntry[] }>(),
     'Fetch error': emptyProps(),
   },
 });
