@@ -1,5 +1,34 @@
 # Changelog
 
+## [2023.4.0](https://github.com/kekel87/ng-mono/compare/v2023.3.0...v2023.4.0) (2024-06-28)
+
+
+### ✨ Features
+
+* **netatmo:** use getroommeasure ([#50](https://github.com/kekel87/ng-mono/issues/50)) ([1d2aab5](https://github.com/kekel87/ng-mono/commit/1d2aab5b4c08880ec4462449e7541ac3f1d92193))
+* **travel-log:** add auth ([c30b9f1](https://github.com/kekel87/ng-mono/commit/c30b9f107828412192f6a35dd6a943bd24a77e45))
+* **travel-log:** add log and entry form ([e16eabb](https://github.com/kekel87/ng-mono/commit/e16eabb752ae64b003fa9b82accba6190d90a038))
+
+
+### 🐛 Bug Fixes
+
+* supabase/auth-js error on startup ([3ff6238](https://github.com/kekel87/ng-mono/commit/3ff6238119a2da30f33ef5c4c829e22ddd19b80a))
+
+
+### 🛠️ Refactorings
+
+* extract auth into lib ([#49](https://github.com/kekel87/ng-mono/issues/49)) ([47f36f5](https://github.com/kekel87/ng-mono/commit/47f36f5bde935a7616c3663b41f0c654cae898fc))
+* move libs ([5088d71](https://github.com/kekel87/ng-mono/commit/5088d71dbc1685d511f14b709ad79c6cc67b79b0))
+
+
+### ⚙️ Global
+
+* ⬆️ update repo and dependencies ([#43](https://github.com/kekel87/ng-mono/issues/43)) ([6d4f8b9](https://github.com/kekel87/ng-mono/commit/6d4f8b9b481a950e1c67557969add7bd5408a35e))
+* ⬆️ update repo and dependencies ([#45](https://github.com/kekel87/ng-mono/issues/45)) ([65884a5](https://github.com/kekel87/ng-mono/commit/65884a5d1edb1fa83987fec1e3c92da050d68926))
+* ⬆️ update repo and dependencies ([#45](https://github.com/kekel87/ng-mono/issues/45)) ([#48](https://github.com/kekel87/ng-mono/issues/48)) ([2b606f7](https://github.com/kekel87/ng-mono/commit/2b606f7b307eb2f8ef1bcf52ed5ae12d95b203bf))
+* ⬆️ update repo and dependencies ([#47](https://github.com/kekel87/ng-mono/issues/47)) ([933230f](https://github.com/kekel87/ng-mono/commit/933230fb741cab57f45de22c31d1c59587461041))
+* move shared utils, fix jest angular config and eslint ([bef844c](https://github.com/kekel87/ng-mono/commit/bef844c043bf99ced0822d572aa320e2259f226d))
+
 ## [2023.3.0](https://github.com/kekel87/ng-mono/compare/v2023.2.0...v2023.3.0) (2023-12-20)
 
 
